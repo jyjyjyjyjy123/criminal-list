@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://jyjyjyjyjy123.github.io/criminal-list/sitemap.xml
