@@ -8,6 +8,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>내란 범죄혐의자 명단</title>
+    <script src="config.js"></script>
+    <script src="js/github.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/octokit@1.7.2/dist/octokit.min.js"></script>
     <style>
         /* 공통 스타일 */
         * {
@@ -1098,6 +1101,7 @@
             <div class="modal-footer">
                 <button id="adminLoginBtn" class="admin-btn">관리자 로그인</button>
                 <button id="saveBtn" class="save-btn" style="display: none;">저장</button>
+                <button id="saveActions" class="save-btn" style="display: none;">저장</button>
             </div>
         </div>
     </div>
@@ -1369,7 +1373,7 @@
             card.appendChild(role2);
 
             // 클릭 이벤트 추가
-            card.addEventListener('click', function() {
+            card.addEventListener('click', async function() {
                 const modal = document.getElementById('personModal');
                 const modalImage = document.getElementById('modalImage');
                 const modalName = document.getElementById('modalName');
@@ -1382,15 +1386,20 @@
                 modalName.textContent = person.name;
                 modalRole1.textContent = person.role1;
                 modalRole2.textContent = person.role2;
-                
-                const actions = person.actions || '';
-                modalActions.value = actions;
-                modalActionsView.innerHTML = formatActions(actions);
 
-                // 관리자 상태에 따라 UI 조정
-                document.getElementById('adminLoginBtn').style.display = isAdmin ? 'none' : 'inline-block';
-                document.getElementById('saveBtn').style.display = isAdmin ? 'inline-block' : 'none';
-                document.getElementById('modalActions').style.display = isAdmin ? 'block' : 'none';
+                // 행적 데이터 로드
+                const actionsData = await loadActionsData();
+                const personActions = actionsData[person.name] || '';
+                
+                if (isAdmin) {
+                    modalActions.style.display = 'block';
+                    modalActionsView.style.display = 'none';
+                    modalActions.value = personActions;
+                } else {
+                    modalActions.style.display = 'none';
+                    modalActionsView.style.display = 'block';
+                    modalActionsView.innerHTML = formatActions(personActions);
+                }
 
                 modal.style.display = 'block';
             });
@@ -1705,7 +1714,7 @@
             });
 
             // 저장 버튼 클릭 시
-            saveBtn.addEventListener('click', function() {
+            saveBtn.addEventListener('click', async function() {
                 if (!isAdmin) return;
                 
                 const personName = document.getElementById('modalName').textContent;
@@ -1782,6 +1791,20 @@
             setupSearch();
             setupScrollTopButton();
             setupModal();
+            
+            // 저장 버튼 이벤트 핸들러 추가
+            document.getElementById('saveActions').addEventListener('click', async function() {
+                const modalName = document.getElementById('modalName').textContent;
+                const modalActions = document.getElementById('modalActions').value;
+                
+                const success = await updateGitHubFile(modalActions, modalName);
+                if (success) {
+                    alert('저장되었습니다.');
+                    document.getElementById('modalActionsView').innerHTML = formatActions(modalActions);
+                } else {
+                    alert('저장에 실패했습니다.');
+                }
+            });
         });
     </script>
 </body>
