@@ -1414,7 +1414,7 @@
             const modalActionsView = document.getElementById('modalActionsView');
             const modalActions = document.getElementById('modalActions');
             
-            modalImage.src = `images/${person.group}/${person.name}.jpg`;
+            modalImage.src = `/criminal-list/images/${person.group}/${person.name}.jpg`;
             modalName.textContent = person.name;
             modalRole1.textContent = person.role1;
             modalRole2.textContent = person.role2;
@@ -1468,15 +1468,15 @@
             // 이미지 생성
             const img = document.createElement('img');
             const groupFolder = person.group;
-            img.src = `images/${groupFolder}/${person.name}.jpeg`;
+            img.src = `/criminal-list/images/${groupFolder}/${person.name}.jpeg`;
             img.alt = person.name;
             
             // 이미지 로드 실패시 .jpg 확장자로 재시도, 그래도 실패하면 대체 이미지 사용
             img.onerror = function() {
                 if (this.src.endsWith('.jpeg')) {
-                    this.src = `images/${groupFolder}/${person.name}.jpg`;
+                    this.src = `/criminal-list/images/${groupFolder}/${person.name}.jpg`;
                 } else {
-                    this.src = `images/${groupFolder}/${groupFolder}.jpeg`;
+                    this.src = `/criminal-list/images/${groupFolder}/${groupFolder}.jpeg`;
                 }
             };
 
