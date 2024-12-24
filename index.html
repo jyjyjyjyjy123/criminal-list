@@ -1719,7 +1719,7 @@
                 const modalName = document.getElementById('modalName').textContent;
                 const actions = modalActions.value;
 
-                const success = await updateGitHubFile(actions, modalName);
+                const success = await updateActions(modalName, actions);
                 if (success) {
                     alert('저장되었습니다.');
                     modalActionsView.innerHTML = formatActions(actions);
@@ -1785,6 +1785,36 @@
             setupScrollTopButton();
             setupModal();
         });
+
+        // 구글 스프레드시트 API URL
+        const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzeIQ10JSjCGgxifdpWf8A5kouTj2ElAxfGiLJAeDsEEM9la4_qdHI-xOj4C60XchHH/exec';
+        
+        // 행적 데이터 가져오기
+        async function loadActionsData() {
+            try {
+                const response = await fetch(SHEET_URL);
+                if (!response.ok) throw new Error('Failed to load data');
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error loading actions:', error);
+                return {};
+            }
+        }
+        
+        // 행적 데이터 저장하기
+        async function updateActions(name, actions) {
+            try {
+                const response = await fetch(`${SHEET_URL}?name=${encodeURIComponent(name)}&actions=${encodeURIComponent(actions)}`, {
+                    method: 'POST'
+                });
+                if (!response.ok) throw new Error('Failed to save data');
+                return true;
+            } catch (error) {
+                console.error('Error saving actions:', error);
+                return false;
+            }
+        }
     </script>
 </body>
 </html>
