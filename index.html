@@ -1002,6 +1002,7 @@
             background-color: #6b0000;
         }
     </style>
+    <script src="config.js"></script>
 </head>
 <body>
     <div class="container">
@@ -1328,7 +1329,7 @@
 
         // GitHub API 관련 함수들
         async function updateGitHubFile(content, personName) {
-            const token = '';  
+            const token = config.GITHUB_TOKEN;  
             const owner = 'jyjyjyjyjy123';
             const repo = 'criminal-list';
             const path = 'data/actions.json';
