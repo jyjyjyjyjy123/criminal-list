@@ -1066,6 +1066,13 @@
         .notice-close:hover {
             background-color: #6b0000;
         }
+
+        /* 모바일 화면에서 링크 텍스트 크기 조절 */
+        @media screen and (max-width: 768px) {
+            .notice-text a {
+                font-size: 0.9em;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1092,7 +1099,7 @@
         <!-- 군부 섹션 -->
         <div class="section" id="군부-section">
             <div class="section-header">
-                <img src="images/군부/군부.jpeg" alt="군부 로고" class="section-logo">
+                <img src="images/군부/군부.jpg" alt="군부 로고" class="section-logo" onerror="this.src='images/군부/군부.jpeg'">
                 <h2>군부</h2>
             </div>
             <div class="people-container" id="군부-container"></div>
@@ -1101,7 +1108,7 @@
         <!-- 경찰 섹션 -->
         <div class="section" id="경찰-section">
             <div class="section-header">
-                <img src="images/경찰/경찰.jpeg" alt="경찰 로고" class="section-logo">
+                <img src="images/경찰/경찰.jpg" alt="경찰 로고" class="section-logo" onerror="this.src='images/경찰/경찰.jpeg'">
                 <h2>경찰</h2>
             </div>
             <div class="people-container" id="경찰-container"></div>
@@ -1110,7 +1117,7 @@
         <!-- 대통령실 섹션 -->
         <div class="section" id="대통령실-section">
             <div class="section-header">
-                <img src="images/대통령실/대통령실.jpeg" alt="대통령실 로고" class="section-logo">
+                <img src="images/대통령실/대통령실.jpg" alt="대통령실 로고" class="section-logo" onerror="this.src='images/대통령실/대통령실.jpeg'">
                 <h2 style="margin-top: 10px;">대통령실</h2>
             </div>
             <div class="people-container" id="대통령실-container"></div>
@@ -1119,7 +1126,7 @@
         <!-- 내란의힘 섹션 -->
         <div class="section" id="내란의힘-section">
             <div class="section-header">
-                <img src="images/내란의힘/내란의힘.jpeg" alt="내란의힘 로고" class="section-logo">
+                <img src="images/내란의힘/내란의힘.jpg" alt="내란의힘 로고" class="section-logo" onerror="this.src='images/내란의힘/내란의힘.jpeg'">
                 <h2>내란의힘</h2>
             </div>
             <div class="people-container" id="내란의힘-container"></div>
@@ -1128,7 +1135,7 @@
         <!-- 기타·극우미디어 섹션 -->
         <div class="section" id="기타·극우미디어-section">
             <div class="section-header">
-                <img src="images/기타·극우미디어/기타·극우미디어.jpg" alt="기타·극우미디어 로고" class="section-logo">
+                <img src="images/기타·극우미디어/기타·극우미디어.jpg" alt="기타·극우미디어 로고" class="section-logo" onerror="this.src='images/기타·극우미디어/기타·극우미디어.jpeg'">
                 <h2>기타·극우미디어</h2>
             </div>
             <div class="people-container" id="기타·극우미디어-container"></div>
@@ -1192,8 +1199,8 @@
                 ❗2. 인물들의 행적을 함께 조사해주실 국민여러분들을 찾습니다.
                 ❗3. 누락된 범죄자들 제보해주시면 업데이트 시키겠습니다
                 ❗4. 범죄자들이 너무 많아 혼자 관리하기엔 힘이 듭니다. 많은 연락 부탁드리겠습니다.
-                🌟criminalyoon@gmail.com🌟
-                🌟https://open.kakao.com/o/g6m4OK6g🌟
+                🌟<a href="mailto:criminalyoon@gmail.com" style="color: #0066cc; text-decoration: underline; transition: color 0.3s; font-size: 0.9em;" onmouseover="this.style.color='#0099ff'" onmouseout="this.style.color='#0066cc'">criminalyoon@gmail.com</a>🌟
+                🌟<a href="https://open.kakao.com/o/g6m4OK6g" style="color: #0066cc; text-decoration: underline; transition: color 0.3s; font-size: 0.75em; word-break: break-all;" onmouseover="this.style.color='#0099ff'" onmouseout="this.style.color='#0066cc'">https://open.kakao.com/o/g6m4OK6g</a>🌟
                 ❗독일에서 운영중이라 로딩속도가 조금 느립니다. 개선방법 찾아보겠습니다.
                 모바일용 디자인도 만들어보겠습니다. 우선 가로모드 부탁드립니다!
                 인물 클릭 시 자세한 행적을 볼 수 있습니다.</div>
@@ -1242,7 +1249,7 @@
             { name: "문진영", role1: "내란가담자", role2: "과천서장", group: "경찰", row: 2,},
             { name: "최영기", role1: "시위방해자", role2: "방배서장", group: "경찰", row: 3,},
 
-            // 행정부
+            // 대통령실
             // 1열: 핵심 인물
             { name: "한덕수", role1: "내란주동자", role2: "국무총리", group: "대통령실", row: 1 },
             { name: "이상민", role1: "내란주동자", role2: "행안부장관", group: "대통령실", row: 1 },
@@ -1271,6 +1278,7 @@
             // 내란의힘
             { name: "추경호", role1: "내란주동자", role2: "대구 달성군", group: "내란의힘", row: 1 },
             { name: "권성동", role1: "내란동조자", role2: "강원 강릉시", group: "내란의힘", row: 1 },
+            { name: "권영세", role1: "내란동조자", role2: "서울 용산구", group: "내란의힘", row: 1 },
             { name: "김석기", role1: "내란동조자", role2: "경북 경주시", group: "내란의힘", row: 1 },
             { name: "나경원", role1: "내란동조자", role2: "서울 동작구", group: "내란의힘", row: 1 },
             { name: "유상범", role1: "내란동조자", role2: "강원 홍천군횡성군영월군평창군", group: "내란의힘", row: 1 },
@@ -1285,7 +1293,6 @@
             { name: "강승규", role1: "내란동조자", role2: "충남 홍성군예산군", group: "내란의힘", row: 1 },
             { name: "고동진", role1: "내란동조자", role2: "서울 강남구병", group: "내란의힘", row: 1 },
             { name: "구자근", role1: "내란동조자", role2: "경북 구미시갑", group: "내란의힘", row: 1 },
-            { name: "권영세", role1: "내란동조자", role2: "서울 용산구", group: "내란의힘", row: 1 },
             { name: "권영진", role1: "내란동조자", role2: "대구 달서구병", group: "내란의힘", row: 1 },
             { name: "김건", role1: "내란동조자", role2: "비례대표", group: "내란의힘", row: 1 },
             { name: "김기웅", role1: "내란동조자", role2: "대구 중구남구", group: "내란의힘", row: 1 },
@@ -1379,31 +1386,32 @@
             { name: "한동훈", role1: "혼동훈", role2: "한미꾸라지", group: "내란의힘", row: 3 },
             { name: "홍준표", role1: "내란선동자", role2: "대구시장", group: "내란의힘", row: 3 },
             { name: "황교안", role1: "내란선동자", role2: "유튜버", group: "내란의힘", row: 3 },
-            { name: "선주헌", role1: "내란선동자", role2: "영월군의원 나", group: "내란의힘", row: 3 },
-            { name: "이종배B", role1: "내란선동자", role2: "비례대표", group: "내란의힘", row: 3 },
-            { name: "문성호", role1: "내란선동자", role2: "서대문2구:연희,홍제1,2동", group: "내란의힘", row: 3 },
-            { name: "이성배", role1: "내란선동자", role2: "송파4구:삼전,잠실본,2,3,7동", group: "내란의힘", row: 3 },
-            { name: "이경숙", role1: "내란선동자", role2: "도봉구1구:창1,4,5동", group: "내란의힘", row: 3 },
-            { name: "김규남", role1: "내란선동자", role2: "송파1구:풍납1,2,잠실4,6동", group: "내란의힘", row: 3 },
-            { name: "황철규", role1: "내란선동자", role2: "성동4구:응봉,성수1가1,2,성수2가1,3동", group: "내란의힘", row: 3 },
-            { name: "이희원", role1: "내란선동자", role2: "동작4구:흑석,사당1,2동", group: "내란의힘", row: 3 },
-            { name: "송경택", role1: "내란선동자", role2: "비례대표", group: "내란의힘", row: 3 },
-            { name: "박석", role1: "내란선동자", role2: "도봉3구:쌍문2,4,방학3동", group: "내란의힘", row: 3 },
-            { name: "김혜영", role1: "내란선동자", role2: "광진4구:자양3,4,화양동", group: "내란의힘", row: 3 },
-            { name: "강석주", role1: "내란선동자", role2: "강서2구:화곡3,우장산,발산1동", group: "내란의힘", row: 3 },
-            { name: "유만희", role1: "내란선동자", role2: "강남4구:일원본,1,개포3,수서,세곡동", group: "내란의힘", row: 3 },
-            { name: "김혜지", role1: "내란선동자", role2: "강동1구:고덕1,암사1,2,3동", group: "내란의힘", row: 3 },
-            { name: "이승복", role1: "내란선동자", role2: "양천4구:신월2,6,신정3,4동)", group: "내란의힘", row: 3 },
-            { name: "남궁역", role1: "내란선동자", role2: "동대문3구:전농1,2,답십리1동", group: "내란의힘", row: 3 },
-            { name: "신복자", role1: "내란선동자", role2: "동대문4구:답십리2,장안1,2동", group: "내란의힘", row: 3 },
-            { name: "신동원", role1: "내란선동자", role2: "노원1구:월계1,2,3동", group: "내란의힘", row: 3 },
-            { name: "황유정", role1: "내란선동자", role2: "비례대표", group: "내란의힘", row: 3 },
-            { name: "김영철", role1: "내란선동자", role2: "강동5구:성내1,2,3,둔촌1동,2동", group: "내란의힘", row: 3 },
-            { name: "박춘선", role1: "내란선동자", role2: "강동3구:강일,상일1,2,고덕2동", group: "내란의힘", row: 3 },
-            { name: "고광민", role1: "내란선동자", role2: "서초3구:서초1,3,방배2,3동", group: "내란의힘", row: 3 },
-            { name: "김원중", role1: "내란선동자", role2: "성북2구:정릉1,2,3,4,길음동", group: "내란의힘", row: 3 },
-            { name: "김춘곤", role1: "내란선동자", role2: "강서4구:등촌3,가양1,2,방화3동", group: "내란의힘", row: 3 },
-            { name: "서호연", role1: "내란선동자", role2: "구로3구:신도림,구로1,2,5동", group: "내란의힘", row: 3 },
+
+            { name: "선주헌", role1: "내란선동자", role2: "영월군의원 나", group: "내란의힘", row: 4 },
+            { name: "이종배B", role1: "내란선동자", role2: "비례대표", group: "내란의힘", row: 4 },
+            { name: "문성호", role1: "내란선동자", role2: "서대문2구:연희,홍제1,2동", group: "내란의힘", row: 4 },
+            { name: "이성배", role1: "내란선동자", role2: "송파4구:삼전,잠실본,2,3,7동", group: "내란의힘", row: 4 },
+            { name: "이경숙", role1: "내란선동자", role2: "도봉구1구:창1,4,5동", group: "내란의힘", row: 4 },
+            { name: "김규남", role1: "내란선동자", role2: "송파1구:풍납1,2,잠실4,6동", group: "내란의힘", row: 4 },
+            { name: "황철규", role1: "내란선동자", role2: "성동4구:응봉,성수1가1,2,성수2가1,3동", group: "내란의힘", row: 4 },
+            { name: "이희원", role1: "내란선동자", role2: "동작4구:흑석,사당1,2동", group: "내란의힘", row: 4 },
+            { name: "송경택", role1: "내란선동자", role2: "비례대표", group: "내란의힘", row: 4 },
+            { name: "박석", role1: "내란선동자", role2: "도봉3구:쌍문2,4,방학3동", group: "내란의힘", row: 4 },
+            { name: "김혜영", role1: "내란선동자", role2: "광진4구:자양3,4,화양동", group: "내란의힘", row: 4 },
+            { name: "강석주", role1: "내란선동자", role2: "강서2구:화곡3,우장산,발산1동", group: "내란의힘", row: 4 },
+            { name: "유만희", role1: "내란선동자", role2: "강남4구:일원본,1,개포3,수서,세곡동", group: "내란의힘", row: 4 },
+            { name: "김혜지", role1: "내란선동자", role2: "강동1구:고덕1,암사1,2,3동", group: "내란의힘", row: 4 },
+            { name: "이승복", role1: "내란선동자", role2: "양천4구:신월2,6,신정3,4동)", group: "내란의힘", row: 4 },
+            { name: "남궁역", role1: "내란선동자", role2: "동대문3구:전농1,2,답십리1동", group: "내란의힘", row: 4 },
+            { name: "신복자", role1: "내란선동자", role2: "동대문4구:답십리2,장안1,2동", group: "내란의힘", row: 4 },
+            { name: "신동원", role1: "내란선동자", role2: "노원1구:월계1,2,3동", group: "내란의힘", row: 4 },
+            { name: "황유정", role1: "내란선동자", role2: "비례대표", group: "내란의힘", row: 4 },
+            { name: "김영철", role1: "내란선동자", role2: "강동5구:성내1,2,3,둔촌1동,2동", group: "내란의힘", row: 4 },
+            { name: "박춘선", role1: "내란선동자", role2: "강동3구:강일,상일1,2,고덕2동", group: "내란의힘", row: 4 },
+            { name: "고광민", role1: "내란선동자", role2: "서초3구:서초1,3,방배2,3동", group: "내란의힘", row: 4 },
+            { name: "김원중", role1: "내란선동자", role2: "성북2구:정릉1,2,3,4,길음동", group: "내란의힘", row: 4 },
+            { name: "김춘곤", role1: "내란선동자", role2: "강서4구:등촌3,가양1,2,방화3동", group: "내란의힘", row: 4 },
+            { name: "서호연", role1: "내란선동자", role2: "구로3구:신도림,구로1,2,5동", group: "내란의힘", row: 4 },
 
 
             // 기타·극우미디어
@@ -1432,18 +1440,22 @@
 
             const img = document.createElement('img');
             img.loading = 'lazy';
-            // 먼저 .jpg로 시도
+            
+            // 인물 사진 jpg 시도
             img.src = `images/${person.group}/${person.name}.jpg`;
             img.alt = person.name;
+            
+            // 첫 번째 onerror: jpg -> jpeg
             img.onerror = function() {
-                // .jpg가 실패하면 .jpeg로 시도
-                const jpegPath = `images/${person.group}/${person.name}.jpeg`;
-                if (this.src !== jpegPath) {
-                    this.src = jpegPath;
-                } else {
-                    // 둘 다 실패하면 기본 이미지 사용
-                    this.src = 'images/default.jpg';
-                }
+                this.onerror = function() {
+                    // 두 번째 onerror: jpeg -> 섹션 jpg
+                    this.onerror = function() {
+                        // 세 번째 onerror: 섹션 jpg -> 섹션 jpeg
+                        this.src = `images/${person.group}/${person.group}.jpeg`;
+                    };
+                    this.src = `images/${person.group}/${person.group}.jpg`;
+                };
+                this.src = `images/${person.group}/${person.name}.jpeg`;
             };
 
             // 이름과 역할 정보
