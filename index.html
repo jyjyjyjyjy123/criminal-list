@@ -1235,7 +1235,8 @@
             { name: "조지호", role1: "내란주동자", role2: "경찰청장", group: "경찰", row: 1,},
             { name: "강상문", role1: "내란주동자", role2: "영등포서장", group: "경찰", row: 1, },
             { name: "목현태", role1: "내란주동자", role2: "국회경비대장", group: "경찰", row: 2,},
-            { name: "최창복", role1: "내란주동잔자", role2: "서울경비안전계장", group: "경찰", row: 2,},
+            { name: "최창복", role1: "내란주동자", role2: "서울경비안전계장", group: "경찰", row: 2,},
+            { name: "최영기", role1: "시위방해자", role2: "방배서장", group: "경찰", row: 3,},
 
             // 행정부
             // 1열: 핵심 인물
@@ -1420,25 +1421,16 @@
 
         // 카드 생성 함수
         function createPersonCard(person) {
-            const card = document.createElement('div');
-            card.className = 'person-container';
-            card.setAttribute('data-name', person.name.toLowerCase());
-            card.setAttribute('data-role1', person.role1.toLowerCase());
-            card.setAttribute('data-role2', person.role2.toLowerCase());
-            
-            // 이미지 생성
+            const personContainer = document.createElement('div');
+            personContainer.className = 'person-container';
+            personContainer.setAttribute('data-section', person.group);
+
             const img = document.createElement('img');
-            const groupFolder = person.group;
-            img.src = `images/${groupFolder}/${person.name}.jpeg`;
+            img.loading = 'lazy';  // 이미지 지연 로딩 추가
+            img.src = person.image;
             img.alt = person.name;
-            
-            // 이미지 로드 실패시 .jpg 확장자로 재시도, 그래도 실패하면 대체 이미지 사용
             img.onerror = function() {
-                if (this.src.endsWith('.jpeg')) {
-                    this.src = `images/${groupFolder}/${person.name}.jpg`;
-                } else {
-                    this.src = `images/${groupFolder}/${groupFolder}.jpeg`;
-                }
+                this.src = 'images/default.jpg';
             };
 
             // 이름과 역할 정보
@@ -1455,13 +1447,13 @@
             role2.textContent = person.role2;
 
             // 요소들을 카드에 추가
-            card.appendChild(img);
-            card.appendChild(name);
-            card.appendChild(role1);
-            card.appendChild(role2);
+            personContainer.appendChild(img);
+            personContainer.appendChild(name);
+            personContainer.appendChild(role1);
+            personContainer.appendChild(role2);
 
             // 클릭 이벤트 추가
-            card.addEventListener('click', async function() {
+            personContainer.addEventListener('click', async function() {
                 const modal = document.getElementById('personModal');
                 const modalImage = document.getElementById('modalImage');
                 const modalName = document.getElementById('modalName');
@@ -1492,7 +1484,7 @@
                 modal.style.display = 'block';
             });
 
-            return card;
+            return personContainer;
         }
 
         // 사람들 렌더링 함수
@@ -1882,12 +1874,33 @@
             showNotice();
         };
 
-        // 페이지 로드시 실행
+        // 이미지 지연 로딩을 위한 Intersection Observer 설정
         document.addEventListener('DOMContentLoaded', function() {
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            if (img.dataset.src) {
+                                img.src = img.dataset.src;
+                                img.removeAttribute('data-src');
+                            }
+                            observer.unobserve(img);
+                        }
+                    });
+                }, {
+                    rootMargin: '50px 0px'
+                });
+
+                document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+                    imageObserver.observe(img);
+                });
+            }
             renderPeople();
             setupSearch();
             setupScrollTopButton();
             setupModal();
+            showNotice();
         });
 
         // 구글 스프레드시트 API URL
