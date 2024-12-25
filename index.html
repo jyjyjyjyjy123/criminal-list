@@ -1210,21 +1210,23 @@
         const people = [ 
             
             // 내란수괴
-            { name: "윤석열", role1: "내란수괴1", role2: "시대의 로맨티스트", group: "내란수괴", row: 1, position: "center" },
-            { name: "김건희", role1: "대한민국 최고존엄", role2: "시대의 사기꾼", group: "내란수괴", row: 1, position: "right" },
+            { name: "윤석열", role1: "내란수괴1", role2: "시대의로맨티스트", group: "내란수괴", row: 1, position: "center" },
+            { name: "김건희", role1: "대한민국 최고존엄", role2: "시대의사기꾼", group: "내란수괴", row: 1, position: "right" },
 
             // 군 관계자
             { name: "김용현", role1: "내란수괴2", role2: "국방부장관", group: "군부", row: 1 },
-            { name: "노상원", role1: "내란수괴3", role2: "성범죄자,전정보사령관", group: "군부", row: 2 },
+            { name: "노상원", role1: "내란수괴3", role2: "성범죄자,전 정보사령관", group: "군부", row: 2 },
             { name: "여인형", role1: "내란수괴4", role2: "방첩사령관", group: "군부", row: 2 },
             { name: "박안수", role1: "내란주동자", role2: "계엄사령관", group: "군부", row: 3 }, 
             { name: "정진팔", role1: "내란주동자", role2: "계엄부사령관", group: "군부", row: 3 },
             { name: "문상호", role1: "내란주동자", role2: "정보사령관", group: "군부", row: 3 },
             { name: "이진우", role1: "내란주동자", role2: "수방사령관", group: "군부", row: 3 },
-            { name: "곽종근", role1: "내란주동자", role2: "특전사령관", group: "군부", row: 3 },
-            { name: "박종선", role1: "내란주동자", role2: "777사령관", group: "군부", row: 3 },
             { name: "구삼회", role1: "내란주동자", role2: "제2기갑여단장", group: "군부", row: 3 },
-            { name: "김대우", role1: "내란주동잔자", role2: "방첩사수사단장", group: "군부", row: 3 },
+            { name: "방정환", role1: "내란주동자", role2: "국방부정책기획차장", group: "군부", row: 3 },
+            { name: "김용군", role1: "내란주동자", role2: "전국방부수사단장", group: "군부", row: 3 },
+            { name: "곽종근", role1: "내란주동자(?)", role2: "특전사령관", group: "군부", row: 3 },
+            
+            { name: "김대우", role1: "내란주동자(?)", role2: "방첩사수사단장", group: "군부", row: 4 },
             { name: "이경민", role1: "내란가담자", role2: "방첩사참모장", group: "군부", row: 4 },
             { name: "안무성", role1: "내란가담자", role2: "제9공수여단장", group: "군부", row: 4 },
             { name: "박성하", role1: "내란가담자", role2: "방첩사기획관리실장", group: "군부", row: 4 },
@@ -1233,7 +1235,12 @@
             { name: "이상현", role1: "내란가담자", role2: "제1공수특전여단장", group: "군부", row: 4 },
             { name: "김정근", role1: "내란가담자", role2: "제3공수특전여단장", group: "군부", row: 4 },
             { name: "조종래", role1: "내란가담자", role2: "육군정보참모부장", group: "군부", row: 4 },
-            { name: "김현태", role1: "내란가담자", role2: "707특임단장", group: "군부", row: 5 },
+            { name: "박종선", role1: "내란가담자(?)", role2: "777사령관", group: "군부", row: 4 },
+            { name: "김봉규", role1: "내란가담자", role2: "정보사태령", group: "군부", row: 4 },
+            { name: "정성욱", role1: "내란가담자", role2: "정보사대령", group: "군부", row: 4 },
+            { name: "고동희", role1: "내란가담자", role2: "정보사대령", group: "군부", row: 4 },
+
+            { name: "김현태", role1: "내란가담자(?)", role2: "707특임단장", group: "군부", row: 5 },
             { name: "김세운", role1: "부화내동자", role2: "작전항공단장", group: "군부", row: 5 },
             { name: "정성우", role1: "부화내동자", role2: "방첩사1처장", group: "군부", row: 5 },
 
@@ -1446,12 +1453,8 @@
             // 첫 번째 onerror: jpg -> jpeg
             img.onerror = function() {
                 this.onerror = function() {
-                    // 두 번째 onerror: jpeg -> 섹션 jpg
-                    this.onerror = function() {
-                        // 세 번째 onerror: 섹션 jpg -> 섹션 jpeg
-                        this.src = `images/${person.group}/${person.group}.jpeg`;
-                    };
-                    this.src = `images/${person.group}/${person.group}.jpg`;
+                    // 두 번째 onerror: jpeg -> unknown.jpg
+                    this.src = `images/${person.group}/unknown.jpg`;
                 };
                 this.src = `images/${person.group}/${person.name}.jpeg`;
             };
@@ -1550,12 +1553,17 @@
                         let martialLawAgreePeople = [];
                         let otherPeople = [];
                         let row3People = [];
+                        let row4People = [];  // row4를 위한 배열 추가
                         let isInMartialLawGroup = false;
                         let isInMartialLawAgreeGroup = false;
                         
                         groupedPeople[group].forEach(person => {
                             if (person.row === 3) {
                                 row3People.push(person);
+                                return;
+                            }
+                            if (person.row === 4) {  // row4 처리 추가
+                                row4People.push(person);
                                 return;
                             }
                             
@@ -1638,6 +1646,23 @@
                                 row3Container.appendChild(rowDiv);
                             }
                             container.appendChild(row3Container);
+                        }
+                        
+                        // row4 인물들 8명씩 자동 정렬
+                        if (row4People.length > 0) {
+                            const row4Container = document.createElement('div');
+                            row4Container.className = 'row4-container';
+                            
+                            for (let i = 0; i < row4People.length; i += 8) {
+                                const rowDiv = document.createElement('div');
+                                rowDiv.className = 'row';
+                                const chunk = row4People.slice(i, i + 8);
+                                chunk.forEach(person => {
+                                    rowDiv.appendChild(createPersonCard(person));
+                                });
+                                row4Container.appendChild(rowDiv);
+                            }
+                            container.appendChild(row4Container);
                         }
                     } else {
                         // row 값으로 그룹화
