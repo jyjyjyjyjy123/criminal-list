@@ -1427,11 +1427,19 @@
             personContainer.setAttribute('data-section', person.group);
 
             const img = document.createElement('img');
-            img.loading = 'lazy';  // 이미지 지연 로딩 추가
-            img.src = `images/${person.group}/${person.name}.jpg`;  // jpg 확장자로 수정
+            img.loading = 'lazy';
+            // 먼저 .jpg로 시도
+            img.src = `images/${person.group}/${person.name}.jpg`;
             img.alt = person.name;
             img.onerror = function() {
-                this.src = 'images/default.jpg';  // jpg 확장자로 수정
+                // .jpg가 실패하면 .jpeg로 시도
+                const jpegPath = `images/${person.group}/${person.name}.jpeg`;
+                if (this.src !== jpegPath) {
+                    this.src = jpegPath;
+                } else {
+                    // 둘 다 실패하면 기본 이미지 사용
+                    this.src = 'images/default.jpg';
+                }
             };
 
             // 이름과 역할 정보
