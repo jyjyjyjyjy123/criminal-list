@@ -3,10 +3,10 @@
 <head>
     <meta name="naver-site-verification" content="5f12187fe023b8cfc326daf4d484946eaf965074" /> 
     <meta name="description" content="내란범죄혐의자 명단 - 내란범죄자들을 끝까지 추적해내겠습니다.">
-    <meta name="keywords" content="내란, 내란수괴, 내란음모, 내란선동, 계엄령, 윤석열, 김건희, 추경호, 이상민, 여인형, 노상원, 김용현, 국민의힘, 내란의힘">
+    <meta name="keywords" content="내란, 내란음모, 내란선동, 계엄령, 윤석열, 김건희, 한동훈, 추경호, 이상민, 내란의힘">
     <meta name="author" content="내란범죄혐의자 명단">
     <meta property="og:title" content="내란범죄혐의자 명단">
-    <meta property="og:description" content="내란, 내란수괴, 내란음모, 내란선동, 계엄령, 윤석열, 김건희, 추경호, 이상민, 여인형, 노상원, 김용현, 국민의힘, 내란의힘">
+    <meta property="og:description" content="내란범죄혐의자 명단 - 내란범죄자들을 끝까지 추적해내겠습니다.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.criminalyoon.com">
     <meta property="og:image" content="https://www.criminalyoon.com/images/logo.png">
@@ -263,6 +263,116 @@
             }
         }
 
+        @media screen and (max-width: 768px) {
+            .filters {
+                padding: 0 5px;
+                gap: 3px;
+            }
+
+            .filter-btn {
+                padding: 5px;
+                font-size: 11px;
+                border-width: 1px;
+            }
+
+            .people-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                padding: 0;
+                gap: 0;
+            }
+
+            .row {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                width: 100%;
+                gap: 0;
+                margin: 0;
+            }
+
+            .person-container {
+                width: calc(100% / 8) !important;
+                flex: 0 0 calc(100% / 8) !important;
+                margin: 0;
+                padding: 0;
+            }
+
+            .person-container img {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 3/4;
+                object-fit: cover;
+                margin: 0 !important;
+                border-radius: 0;
+            }
+
+            .person-name {
+                font-size: 8px;
+                margin: 1px 0 0 0 !important;
+                padding: 0;
+                line-height: 1.2;
+            }
+
+            .person-role {
+                font-size: 5.5px !important;
+                margin: 0 !important;
+                padding: 0;
+                line-height: 1.2;
+            }
+
+            .person-role2 {
+                font-size: 5px !important;
+                margin: 0 !important;
+                padding: 0;
+                line-height: 1.2;
+            }
+
+            .martial-law-group,
+            .martial-law-agree-group,
+            .row3-container {
+                margin-bottom: 20px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .martial-law-group::before,
+            .martial-law-agree-group::before {
+                font-size: 10px;
+                padding: 0 6px;
+                top: -7px;
+                left: 10px;
+            }
+
+            .martial-law-group,
+            .martial-law-agree-group {
+                padding: 15px;
+                margin: 15px 0;
+            }
+
+            .person-container {
+                width: calc(100% / 8) !important;
+                flex: 0 0 calc(100% / 8) !important;
+            }
+
+            .person-name {
+                font-size: 8.2px !important;
+                font-weight: bold;
+            }
+
+            .person-role {
+                font-size: 5.5px !important;
+                margin: 0.5px 0;
+            }
+
+            .person-role2 {
+                font-size: 4.5px !important;
+                margin-top: 0;
+            }
+        }
+
         /* 필터 버튼 스타일 */
         .filters {
             display: flex;
@@ -339,28 +449,29 @@
         /* 인물 카드 레이아웃 스타일 */
         .people-container {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            padding: 15px;
+            flex-direction: column;
+            align-items: center;
             width: 100%;
+            padding: 5px;
+            gap: 3px;
             box-sizing: border-box;
         }
 
         .row {
             display: flex;
-            flex-wrap: nowrap;
-            gap: 10px;
+            flex-wrap: wrap;
             justify-content: center;
             width: 100%;
+            gap: 3px;
             margin-bottom: 5px;
         }
 
         .person-container {
             position: relative;
-            width: calc((100% - 35px) / 8);
-            flex: 0 0 calc((100% - 35px) / 8);
-            margin-bottom: 10px;
+            width: calc((100% - 21px) / 8) !important;
+            flex: 0 0 calc((100% - 21px) / 8) !important;
+            margin: 0;
+            padding: 1px;
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -379,7 +490,7 @@
             aspect-ratio: 3/4;
             object-fit: cover;
             border-radius: 4px;
-            margin-bottom: 5px;
+            margin-bottom: 2px !important;
         }
 
         .person-name {
@@ -489,108 +600,6 @@
 
         /* 반응형 디자인 */
         @media screen and (max-width: 768px) {
-            .filters {
-                padding: 0 5px;
-                gap: 3px;
-            }
-
-            .filter-btn {
-                padding: 5px;
-                font-size: 11px;
-                border-width: 1px;
-            }
-
-            .people-container {
-                padding: 5px;
-                gap: 5px;  /* 2px에서 5px로 증가 */
-            }
-
-            .row {
-                gap: 5px;  /* 3px에서 5px로 증가 */
-            }
-
-            .person-container {
-                width: calc((100% - 35px) / 8) !important;
-                flex: 0 0 calc((100% - 35px) / 8) !important;
-                margin-bottom: 15px;  /* 세로 간격 추가 */
-            }
-
-            .person-container img {
-                width: 100% !important;
-                aspect-ratio: 3/4;
-                object-fit: cover;
-                margin-bottom: 1px !important;
-            }
-
-            .person-name {
-                font-size: 8px;
-                margin: 1.2px 0 0 0 !important;
-                padding: 0;
-                line-height: 1.3;
-            }
-
-            .person-role {
-                font-size: 5.5px;
-                margin: 1px 0 0 0 !important;
-                padding: 0;
-                line-height: 1.3;
-            }
-
-            .person-role2 {
-                font-size: 5px;
-                margin: 1px 0 0 0 !important;
-                padding: 0;
-                line-height: 1.3;
-            }
-        }
-
-        @media screen and (max-width: 480px) {
-            .filters {
-                gap: 2px;
-            }
-
-            .filter-btn {
-                padding: 3px 4px;
-                font-size: 9px;
-            }
-
-            .martial-law-group::before,
-            .martial-law-agree-group::before {
-                font-size: 10px;
-                padding: 0 6px;
-                top: -7px;
-                left: 10px;
-            }
-
-            .martial-law-group,
-            .martial-law-agree-group {
-                padding: 15px;
-                margin: 15px 0;
-            }
-
-            .person-container {
-                width: calc((100% - 35px) / 8) !important;
-                flex: 0 0 calc((100% - 35px) / 8) !important;
-            }
-
-            .person-name {
-                font-size: 8.2px;
-                font-weight: bold;
-            }
-
-            .person-role {
-                font-size: 5.5px;
-                margin: 0.5px 0;
-            }
-
-            .person-role2 {
-                font-size: 4.5px;
-                margin-top: 0;
-            }
-        }
-
-        /* 모바일 환경 스타일 */
-        @media screen and (max-width: 768px) {
             .section-logo {
                 max-width: 100px;
             }
@@ -610,16 +619,17 @@
 
             .people-container {
                 display: flex;
-                flex-wrap: wrap;
-                justify-content: flex-start;
-                gap: 5px;  /* 2px에서 5px로 증가 */
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
                 padding: 0;
+                gap: 0;
             }
 
             .person-card {
-                width: calc((100% - 35px) / 8);  /* 8명씩 배치, 간격 2px 고려 */
+                width: calc(100% / 8);  /* 8명씩 배치, 간격 1px 고려 */
                 margin: 0;
-                padding: 2px;
+                padding: 0;
                 border: none;
                 box-shadow: none;
             }
@@ -627,7 +637,7 @@
             .person-card img {
                 width: 100%;
                 height: auto;
-                margin-bottom: 2px;
+                margin-bottom: 0 !important;
             }
 
             .person-card .name {
@@ -657,12 +667,12 @@
             }
 
             .people-container {
-                gap: 1px;  /* 1px에서 3px로 증가 */
+                gap: 0;  /* 1px에서 0px로 감소 */
             }
 
             .person-card {
-                width: calc((100% - 21px) / 8);  /* 8명씩 배치, 간격 1px 고려 */
-                padding: 1px;
+                width: calc(100% / 8);  /* 8명씩 배치, 간격 1px 고려 */
+                padding: 0;
             }
 
             .person-card .name {
@@ -1221,7 +1231,7 @@
             { name: "윤상현", role1: "내란동조자", role2: "인천 동구미추홀구을", group: "내란의힘", row: 1 },
             { name: "윤한홍", role1: "내란동조자", role2: "경남 창원시마산회원구", group: "내란의힘", row: 1 },
             { name: "최형두", role1: "내란동조자", role2: "경남 창원시마산회원구", group: "내란의힘", row: 1 },
-            { name: "강대식", role1: "내란동조자", role2: "대구 동구군위군을", group: "내란의힘", row: 1 },
+            { name: "강대식", role1: "내란동조자", role2: "대구ㄴ 동구군위군을", group: "내란의힘", row: 1 },
             { name: "강명구", role1: "내란동조자", role2: "경북 구미시을", group: "내란의힘", row: 1 },
             { name: "강민국", role1: "내란동조자", role2: "경남 진주시을", group: "내란의힘", row: 1 },
             { name: "강선영", role1: "내란동조자", role2: "비례대표", group: "내란의힘", row: 1 },
@@ -1364,7 +1374,7 @@
             { name: "장재언", role1: "내란선동자", role2: "유튜버", group: "기타·극우미디어", row: 3 }
 
            
-        ];
+        ];  // 여기를 수정
 
         // 카드 생성 함수
         function createPersonCard(person) {
@@ -1513,7 +1523,7 @@
                             }
                         });
                         
-                        // 계엄해제 불참자 그룹 먼저 렌더링
+                        // 계엄해제 불참자 그룹 렌더링
                         const martialLawGroup = document.createElement('div');
                         martialLawGroup.className = 'martial-law-group';
                         const martialLawContainer = document.createElement('div');
@@ -1573,40 +1583,32 @@
                             container.appendChild(row3Container);
                         }
                     } else {
-                        // row 별로 정렬
+                        // row 값으로 그룹화
                         const rowGroups = {};
                         groupedPeople[group].forEach(person => {
-                            if (!rowGroups[person.row]) {
-                                rowGroups[person.row] = [];
+                            const row = person.row || 1; // row가 없으면 1로 처리
+                            if (!rowGroups[row]) {
+                                rowGroups[row] = [];
                             }
-                            rowGroups[person.row].push(person);
+                            rowGroups[row].push(person);
                         });
 
-                        // 각 row 렌더링
-                        Object.keys(rowGroups).sort().forEach(rowNum => {
-                            const people = rowGroups[rowNum];
-                            
-                            if (group === '기타·극우미디어') {
-                                // 8명씩 나누어 새로운 row 생성
-                                for (let i = 0; i < people.length; i += 8) {
+                        // row 순서대로 정렬
+                        Object.keys(rowGroups)
+                            .sort((a, b) => parseInt(a) - parseInt(b))
+                            .forEach(row => {
+                                const peopleInRow = rowGroups[row];
+                                // 8명씩 나누기
+                                for (let i = 0; i < peopleInRow.length; i += 8) {
                                     const rowDiv = document.createElement('div');
                                     rowDiv.className = 'row';
-                                    const chunk = people.slice(i, i + 8);
+                                    const chunk = peopleInRow.slice(i, i + 8);
                                     chunk.forEach(person => {
                                         rowDiv.appendChild(createPersonCard(person));
                                     });
                                     container.appendChild(rowDiv);
                                 }
-                            } else {
-                                // 다른 섹션은 기존 방식대로 처리
-                                const rowDiv = document.createElement('div');
-                                rowDiv.className = 'row';
-                                people.forEach(person => {
-                                    rowDiv.appendChild(createPersonCard(person));
-                                });
-                                container.appendChild(rowDiv);
-                            }
-                        });
+                            });
                     }
                 }
             });
