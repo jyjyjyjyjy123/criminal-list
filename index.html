@@ -2,12 +2,23 @@
 <html lang="ko">
 <head>
     <meta name="naver-site-verification" content="5f12187fe023b8cfc326daf4d484946eaf965074" /> 
-    <meta name="description" content="내란 범죄 혐의자 명단 - 내란 혐의자들의 정보를 제공합니다">
-    <meta name="keywords" content=" 계엄령, 내란, 탄핵, 윤석열, 김건희, 내란의 힘, 김용현, 노상원, 여인형, 추경호, 권성동, 나경원, 윤상현, 내란의 힘">
+    <meta name="description" content="내란범죄혐의자 명단 - 내란범죄자들을 끝까지 추적해내겠습니다.">
+    <meta name="keywords" content="내란, 내란수괴, 내란음모, 내란선동, 계엄령, 윤석열, 김건희, 추경호, 이상민, 여인형, 노상원, 김용현, 국민의힘, 내란의힘">
+    <meta name="author" content="내란범죄혐의자 명단">
+    <meta property="og:title" content="내란범죄혐의자 명단">
+    <meta property="og:description" content="내란, 내란수괴, 내란음모, 내란선동, 계엄령, 윤석열, 김건희, 추경호, 이상민, 여인형, 노상원, 김용현, 국민의힘, 내란의힘">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.criminalyoon.com">
+    <meta property="og:image" content="https://www.criminalyoon.com/images/logo.png">
     <meta name="robots" content="index, follow">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>내란 범죄혐의자 명단</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: 'unsafe-inline' 'unsafe-eval'; img-src 'self' https: data:;">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <title>내란범죄혐의자 명단</title>
     <script src="config.js"></script>
     <script src="js/github.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/octokit@1.7.2/dist/octokit.min.js"></script>
@@ -1471,10 +1482,16 @@
                         let martialLawPeople = [];
                         let martialLawAgreePeople = [];
                         let otherPeople = [];
+                        let row3People = [];
                         let isInMartialLawGroup = false;
                         let isInMartialLawAgreeGroup = false;
                         
                         groupedPeople[group].forEach(person => {
+                            if (person.row === 3) {
+                                row3People.push(person);
+                                return;
+                            }
+                            
                             if (person.name === '추경호') {
                                 isInMartialLawGroup = true;
                             } else if (person.name === '곽규택') {
@@ -1538,6 +1555,23 @@
                         otherPeople.forEach(person => {
                             container.appendChild(createPersonCard(person));
                         });
+                        
+                        // row3 인물들 8명씩 자동 정렬
+                        if (row3People.length > 0) {
+                            const row3Container = document.createElement('div');
+                            row3Container.className = 'row3-container';
+                            
+                            for (let i = 0; i < row3People.length; i += 8) {
+                                const rowDiv = document.createElement('div');
+                                rowDiv.className = 'row';
+                                const chunk = row3People.slice(i, i + 8);
+                                chunk.forEach(person => {
+                                    rowDiv.appendChild(createPersonCard(person));
+                                });
+                                row3Container.appendChild(rowDiv);
+                            }
+                            container.appendChild(row3Container);
+                        }
                     } else {
                         // row 별로 정렬
                         const rowGroups = {};
