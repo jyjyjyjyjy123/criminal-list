@@ -1428,10 +1428,10 @@
 
             const img = document.createElement('img');
             img.loading = 'lazy';  // 이미지 지연 로딩 추가
-            img.src = `images/${person.group}/${person.name}.jpeg`;  // 이미지 경로 수정
+            img.src = `images/${person.group}/${person.name}.jpg`;  // jpg 확장자로 수정
             img.alt = person.name;
             img.onerror = function() {
-                this.src = 'images/default.jpeg';  // 기본 이미지 경로 수정
+                this.src = 'images/default.jpg';  // jpg 확장자로 수정
             };
 
             // 이름과 역할 정보
