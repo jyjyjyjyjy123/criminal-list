@@ -1524,7 +1524,23 @@
             // 이미지 로딩 로직 개선
             const tryLoadImage = (formats) => {
                 if (formats.length === 0) {
-                    img.src = 'images/unknown.webp'; // 모든 형식 실패시 기본 이미지
+                    // 모든 형식 실패시 unknown 이미지 시도
+                    const tryUnknownImage = (unknownFormats) => {
+                        if (unknownFormats.length === 0) {
+                            img.src = 'images/unknown.webp'; // 최종 폴백 이미지
+                            return;
+                        }
+                        
+                        const format = unknownFormats[0];
+                        const unknownPath = `images/${person.group}/unknown.${format}`;
+                        
+                        img.onerror = () => {
+                            tryUnknownImage(unknownFormats.slice(1));
+                        };
+                        img.src = unknownPath;
+                    };
+                    
+                    tryUnknownImage(['webp', 'jpg', 'jpeg', 'png']);
                     return;
                 }
                 
