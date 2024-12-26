@@ -17,10 +17,6 @@
     <meta name="naverbot" content="index, follow">
     <meta name="title" content="내란범죄혐의자 명단">
     <title>내란범죄혐의자 명단</title>
-    <script src="config.js"></script>
-    <script src="js/github.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/octokit@1.7.2/dist/octokit.min.js"></script>
-    <script src="https://apis.google.com/js/api.js"></script>
     <style>
         /* 공통 스타일 */
         * {
@@ -1203,7 +1199,7 @@
             </div>
             <div class="modal-footer">
                 <button id="adminLoginBtn" class="admin-btn">관리자 로그인</button>
-                <button id="saveBtn" class="save-btn" style="display: none;">저장</button>
+                <button id="saveBtn" class="save-btn" style="display: none;" onclick="saveModalActions()">저장</button>
             </div>
         </div>
     </div>
@@ -1217,7 +1213,7 @@
             </div>
             <div class="modal-body">
                 <input type="password" id="adminPassword" placeholder="관리자 비밀번호를 입력하세요" style="width: 100%; padding: 10px; margin: 10px 0;">
-                <button id="adminLoginSubmit" style="width: 100%; padding: 10px; margin: 10px 0;">로그인</button>
+                <button id="adminLoginSubmit" style="width: 100%; padding: 10px; margin: 10px 0;" onclick="checkAdminPassword()">로그인</button>
             </div>
         </div>
     </div>
@@ -1239,6 +1235,67 @@
             <button class="notice-close" onclick="closeNotice()">확인</button>
         </div>
     </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+
+        // Firebase 구성
+        const firebaseConfig = {
+            apiKey: "AIzaSyCMN4o3bjh2tOLBs0VX4amemvthvGsWXS4",
+            authDomain: "criminal-list.firebaseapp.com",
+            projectId: "criminal-list",
+            storageBucket: "criminal-list.firebasestorage.app",
+            messagingSenderId: "696329370561",
+            appId: "1:696329370561:web:265d119f1d0b3199c6cd40",
+            measurementId: "G-YVGDF0WFBQ",
+            databaseURL: "https://criminal-list-default-rtdb.asia-southeast1.firebasedatabase.app"
+        };
+
+        // Firebase 초기화
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const database = getDatabase(app);
+
+        // 전역 변수로 Firebase 함수들 설정
+        window.firebaseDB = {
+            // 행적 저장
+            saveActions: async (name, actions) => {
+                try {
+                    const personRef = ref(database, `actions/${name}`);
+                    await set(personRef, actions);
+                    return true;
+                } catch (error) {
+                    console.error('Error saving actions:', error);
+                    return false;
+                }
+            },
+            
+            // 행적 불러오기
+            loadAllActions: (callback) => {
+                const actionsRef = ref(database, 'actions');
+                onValue(actionsRef, (snapshot) => {
+                    const data = snapshot.val() || {};
+                    callback(data);
+                });
+            }
+        };
+
+        // 기존 함수를 Firebase 버전으로 대체
+        window.loadActionsData = () => {
+            return new Promise((resolve) => {
+                firebaseDB.loadAllActions(data => {
+                    resolve(data);
+                });
+            });
+        };
+
+        // 행적 저장 함수 수정
+        window.saveActions = async (name, actions) => {
+            return await firebaseDB.saveActions(name, actions);
+        };
+    </script>
 
     <script>
         const people = [ 
@@ -1979,46 +2036,49 @@
             const adminModal = document.getElementById('adminModal');
             const modalClose = modal.querySelector('.modal-close');
             const adminModalClose = adminModal.querySelector('.modal-close');
+            const adminLoginBtn = document.getElementById('adminLoginBtn');
             const saveBtn = document.getElementById('saveBtn');
 
             // 모달 창 닫기
-            modalClose.addEventListener('click', function() {
-                modal.style.display = 'none';
-            });
+            modalClose.onclick = function() {
+                modal.style.display = "none";
+            }
 
-            adminModalClose.addEventListener('click', function() {
-                adminModal.style.display = 'none';
-            });
+            adminModalClose.onclick = function() {
+                adminModal.style.display = "none";
+            }
 
             // 모달 창 외부 클릭시 닫기
-            window.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    modal.style.display = 'none';
+            window.onclick = function(event) {
+                if (event.target === modal) {
+                    modal.style.display = "none";
                 }
-                if (e.target === adminModal) {
-                    adminModal.style.display = 'none';
+                if (event.target === adminModal) {
+                    adminModal.style.display = "none";
                 }
-            });
+            }
 
-            // 저장된 행적 불러오기
-            const savedActions = JSON.parse(localStorage.getItem('personActions') || '{}');
-            people.forEach(person => {
-                if (savedActions[person.name]) {
-                    person.actions = savedActions[person.name];
-                }
-            });
+            // 관리자 로그인 버튼 클릭
+            adminLoginBtn.onclick = function() {
+                adminModal.style.display = 'block';
+            }
+
+            // 저장 버튼 클릭
+            saveBtn.onclick = saveModalActions;
+
         }
 
-        // 관리자 비밀번호 확인
+        // 관리자 로그인 체크
         function checkAdminPassword() {
             const password = document.getElementById('adminPassword').value;
-            if (password === ADMIN_PASSWORD) {
+            if (password === '03122024') {
                 isAdmin = true;
                 document.getElementById('adminModal').style.display = 'none';
                 document.getElementById('adminLoginBtn').style.display = 'none';
-                document.getElementById('saveBtn').style.display = 'inline-block';
+                document.getElementById('saveBtn').style.display = 'block';
                 document.getElementById('modalActions').style.display = 'block';
-                alert('관리자 로그인 성공');
+                document.getElementById('modalActionsView').style.display = 'none';
+                alert('관리자로 로그인되었습니다.');
             } else {
                 alert('비밀번호가 올바르지 않습니다.');
             }
@@ -2095,132 +2155,21 @@
             });
         }
 
-        // Google Apps Script 설정
-        const SCRIPT_ID = 'AKfycbw6rw3fK41wElQpTGQ25g58xg9_8RbRn1kKDiG1rshcPgLyPuzeC6UcKLytbhD-kMPo';
-        const SCRIPT_URL = `https://script.google.com/macros/d/${SCRIPT_ID}/exec`;
-        
-        // Google Apps Script API 초기화
-        function initializeGoogleApi() {
-            gapi.load('client', () => {
-                gapi.client.init({
-                    apiKey: null,  // API 키가 필요없는 경우 null
-                    discoveryDocs: ['https://script.googleapis.com/$discovery/rest?version=v1'],
-                }).then(() => {
-                    console.log('Google API initialized');
-                }).catch(err => {
-                    console.error('Error initializing Google API:', err);
-                });
-            });
-        }
-
-        // 행적 저장 함수 수정
-        async function updateActions(name, actions) {
-            try {
-                console.log('저장 시도:', { name, actions });  // 디버깅 로그
-
-                if (!actions || !name) {
-                    throw new Error('이름과 행적을 모두 입력해주세요.');
-                }
-
-                const formData = new FormData();
-                formData.append('name', name);
-                formData.append('actions', actions);
-
-                console.log('요청 URL:', SCRIPT_URL);  // 디버깅 로그
-
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'cors',
-                    headers: {
-                        'Accept': 'application/json'
-                    },
-                    body: formData
-                });
-
-                console.log('응답 상태:', response.status);  // 디버깅 로그
-                console.log('응답 헤더:', [...response.headers.entries()]);  // 응답 헤더 로깅
-
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error('서버 응답:', errorText);
-                    throw new Error(`서버 응답 오류 (${response.status}): ${errorText}`);
-                }
-
-                const responseText = await response.text();
-                console.log('응답 텍스트:', responseText);  // 응답 텍스트 로깅
-
-                let result;
-                try {
-                    result = JSON.parse(responseText);
-                } catch (e) {
-                    console.error('JSON 파싱 오류:', e);
-                    throw new Error('서버 응답을 처리할 수 없습니다.');
-                }
-
-                console.log('응답 결과:', result);  // 디버깅 로그
-
-                if (result.success) {
-                    alert('행적이 성공적으로 저장되었습니다.');
-                    // 저장 후 UI 업데이트
-                    document.getElementById('modalActionsView').innerHTML = formatActions(actions);
-                    // 모달 닫기
-                    document.getElementById('personModal').style.display = 'none';
-                    return true;
-                } else {
-                    throw new Error(result.error || '저장 실패');
-                }
-            } catch (error) {
-                console.error('행적 저장 중 오류:', error);
-                alert('행적 저장 중 오류가 발생했습니다: ' + error.message);
-                return false;
+        // 행적 저장 함수
+        async function saveModalActions() {
+            const name = document.getElementById('modalName').textContent;
+            const actions = document.getElementById('modalActions').value;
+            
+            if (await saveActions(name, actions)) {
+                alert('행적이 저장되었습니다.');
+                // 저장 후 뷰 모드로 전환
+                document.getElementById('modalActions').style.display = 'none';
+                document.getElementById('modalActionsView').style.display = 'block';
+                document.getElementById('modalActionsView').innerHTML = formatActions(actions);
+            } else {
+                alert('행적 저장에 실패했습니다.');
             }
         }
-
-        // 관리자 로그인 관련 코드
-        const adminLoginBtn = document.getElementById('adminLoginBtn');
-        const adminModal = document.getElementById('adminModal');
-        const adminModalClose = document.querySelector('#adminModal .modal-close');
-        const adminLoginSubmit = document.getElementById('adminLoginSubmit');
-
-        if (adminLoginBtn) {
-            adminLoginBtn.addEventListener('click', function() {
-                adminModal.style.display = 'block';
-            });
-        }
-        
-        if (adminModalClose) {
-            adminModalClose.addEventListener('click', function() {
-                adminModal.style.display = 'none';
-            });
-        }
-        
-        if (adminLoginSubmit) {
-            adminLoginSubmit.addEventListener('click', checkAdminPassword);
-        }
-
-        // 엔터 키로 로그인
-        const adminPasswordInput = document.getElementById('adminPassword');
-        if (adminPasswordInput) {
-            adminPasswordInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    checkAdminPassword();
-                }
-            });
-        }
-
-        // 공지사항 관련 함수
-        function showNotice() {
-            document.getElementById('noticeModal').style.display = 'block';
-        }
-
-        function closeNotice() {
-            document.getElementById('noticeModal').style.display = 'none';
-        }
-
-        // 페이지 로드시 공지사항 표시
-        window.onload = function() {
-            showNotice();
-        };
 
         // 페이지 초기화 코드 추가
         document.addEventListener('DOMContentLoaded', async function() {
@@ -2229,20 +2178,7 @@
             setupSearch();
             setupScrollTopButton();
             setupModal();
-            initializeGoogleApi();  // Google API 초기화 추가
-            
-            // 먼저 정적 데이터 로드
             renderPeople();
-            
-            // 저장 버튼 이벤트 리스너
-            const saveBtn = document.getElementById('saveBtn');
-            if (saveBtn) {
-                saveBtn.addEventListener('click', function() {
-                    const name = document.getElementById('modalName').textContent;
-                    const actions = document.getElementById('modalActions').value;
-                    updateActions(name, actions);
-                });
-            }
         });
     </script>
 </body>
