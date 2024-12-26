@@ -1105,7 +1105,7 @@
         }
     </style>
 </head>
-<body>
+<body onload="onload()">
     <div class="container">
         <h1>내란범죄혐의자 명단</h1>
         
@@ -2192,6 +2192,29 @@
         window.onload = function() {
             showNotice();
         };
+
+        // 페이지 초기화 코드 추가
+        document.addEventListener('DOMContentLoaded', async function() {
+            initializeDOM();
+            initializeModal();
+            setupSearch();
+            setupScrollTopButton();
+            setupModal();
+            initializeGoogleApi();  // Google API 초기화 추가
+            
+            // 먼저 정적 데이터 로드
+            renderPeople();
+            
+            // 저장 버튼 이벤트 리스너
+            const saveBtn = document.getElementById('saveBtn');
+            if (saveBtn) {
+                saveBtn.addEventListener('click', function() {
+                    const name = document.getElementById('modalName').textContent;
+                    const actions = document.getElementById('modalActions').value;
+                    updateActions(name, actions);
+                });
+            }
+        });
     </script>
 </body>
 </html>
