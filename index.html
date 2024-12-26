@@ -1493,20 +1493,23 @@
             img.loading = 'lazy';  // 지연 로딩 적용
             
             // 이미지 경로를 미리 설정
+            const webpPath = `images/${person.group}/${person.name}.webp`;
             const jpgPath = `images/${person.group}/${person.name}.jpg`;
             const jpegPath = `images/${person.group}/${person.name}.jpeg`;
-            const unknownPath = `images/${person.group}/unknown.jpg`;
+            const unknownWebpPath = `images/${person.group}/unknown.webp`;
             
-            // 기본 이미지 설정
-            img.src = jpgPath;
+            // WebP 이미지를 우선적으로 사용
+            img.src = webpPath;
             img.alt = person.name;
             
             // 단일 onerror 핸들러로 수정
             img.onerror = function() {
-                if (this.src.endsWith('.jpg')) {
+                if (this.src.endsWith('.webp')) {
+                    this.src = jpgPath;
+                } else if (this.src.endsWith('.jpg')) {
                     this.src = jpegPath;
                 } else {
-                    this.src = unknownPath;
+                    this.src = unknownWebpPath;
                 }
             };
 
