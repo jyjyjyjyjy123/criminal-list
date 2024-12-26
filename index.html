@@ -2135,18 +2135,37 @@
         
         // 행적 데이터 저장하기
         async function updateActions(name, actions) {
+            if (!isAdmin) {
+                alert('관리자만 수정할 수 있습니다.');
+                return;
+            }
+
             try {
                 const response = await fetch(`${SHEET_URL}?name=${encodeURIComponent(name)}&actions=${encodeURIComponent(actions)}`, {
                     method: 'POST'
                 });
-                if (!response.ok) throw new Error('Failed to save data');
-                return true;
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const result = await response.json();
+                if (result.success) {
+                    alert('저장되었습니다.');
+                    // 저장 후 모달 내용 업데이트
+                    loadActionsData().then(actionsData => {
+                        const updatedActions = actionsData[name] || '';
+                        document.getElementById('modalActions').value = updatedActions;
+                    });
+                } else {
+                    alert('저장에 실패했습니다.');
+                }
             } catch (error) {
-                console.error('Error saving actions:', error);
-                return false;
+                console.error('Error:', error);
+                alert('저장 중 오류가 발생했습니다.');
             }
         }
-
+        
         // 행적 데이터 캐시
         let actionsDataCache = null;
         let lastFetchTime = 0;
@@ -2176,20 +2195,6 @@
             }
         }
         
-        // 행적 데이터 저장하기
-        async function updateActions(name, actions) {
-            try {
-                const response = await fetch(`${SHEET_URL}?name=${encodeURIComponent(name)}&actions=${encodeURIComponent(actions)}`, {
-                    method: 'POST'
-                });
-                if (!response.ok) throw new Error('Failed to save data');
-                return true;
-            } catch (error) {
-                console.error('Error saving actions:', error);
-                return false;
-            }
-        }
-
         // 관리자 로그인 관련 코드
         const adminLoginBtn = document.getElementById('adminLoginBtn');
         const adminModal = document.getElementById('adminModal');
