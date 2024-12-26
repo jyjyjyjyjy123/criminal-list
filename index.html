@@ -2095,102 +2095,55 @@
             });
         }
 
-        // 페이지 로드시 초기화
-        document.addEventListener('DOMContentLoaded', async function() {
-            initializeDOM();
-            initializeModal();
-            setupSearch();
-            setupScrollTopButton();
-            setupModal();
-            
-            // 먼저 정적 데이터 로드
-            const staticActions = await loadStaticActions();
-            actionsDataCache = staticActions;
-            
-            // 저장 버튼 이벤트 리스너
-            const saveBtn = document.getElementById('saveBtn');
-            if (saveBtn) {
-                saveBtn.addEventListener('click', function() {
-                    const name = document.getElementById('modalName').textContent;
-                    const actions = document.getElementById('modalActions').value;
-                    updateActions(name, actions);
+        // Google Apps Script 설정
+        const SCRIPT_ID = 'AKfycbzeIQ10JSjCGgxifdpWf8A5kouTj2ElAxfGiLJAeDsEEM9la4_qdHI-xOj4C60XchHH';
+        const SCRIPT_URL = `https://script.google.com/macros/s/${SCRIPT_ID}/exec`;
+        
+        // Google Apps Script API 초기화
+        function initializeGoogleApi() {
+            gapi.load('client', () => {
+                gapi.client.init({
+                    apiKey: null,  // API 키가 필요없는 경우 null
+                    discoveryDocs: ['https://script.googleapis.com/$discovery/rest?version=v1'],
+                }).then(() => {
+                    console.log('Google API initialized');
+                }).catch(err => {
+                    console.error('Error initializing Google API:', err);
                 });
-            }
-            
-            renderPeople();
-            
-            // 백그라운드에서 최신 데이터 로드
-            loadDynamicActions().then(dynamicData => {
-                actionsDataCache = { ...actionsDataCache, ...dynamicData };
             });
-        });
-
-        // 정적 JSON 데이터 로드 함수
-        async function loadStaticActions() {
-            try {
-                const response = await fetch('actions.json');
-                if (!response.ok) throw new Error('Failed to load static actions');
-                return await response.json();
-            } catch (error) {
-                console.error('Error loading static actions:', error);
-                return {};
-            }
         }
 
-        // 동적 데이터 로드 함수
-        async function loadDynamicActions() {
-            try {
-                const response = await fetch(SHEET_URL);
-                if (!response.ok) throw new Error('Failed to load dynamic actions');
-                return await response.json();
-            } catch (error) {
-                console.error('Error loading dynamic actions:', error);
-                return {};
-            }
-        }
-
-        // 행적 데이터 캐시
-        let actionsDataCache = null;
-
-        // 행적 데이터 저장하기
+        // 행적 저장 함수 수정
         async function updateActions(name, actions) {
-            if (!isAdmin) {
-                alert('관리자만 수정할 수 있습니다.');
-                return;
-            }
-
             try {
-                const response = await fetch(`${SHEET_URL}?name=${encodeURIComponent(name)}&actions=${encodeURIComponent(actions)}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    }
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                if (!actions || !name) {
+                    throw new Error('이름과 행적을 모두 입력해주세요.');
                 }
-                
+
+                const formData = new FormData();
+                formData.append('name', name);
+                formData.append('actions', actions);
+
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error('서버 응답 오류');
+                }
+
                 const result = await response.json();
-                
                 if (result.success) {
-                    // 캐시 업데이트
-                    actionsDataCache[name] = actions;
-                    
-                    // UI 업데이트
-                    document.getElementById('modalActions').style.display = 'none';
-                    document.getElementById('modalActionsView').style.display = 'block';
-                    document.getElementById('modalActionsView').innerHTML = formatActions(actions);
-                    document.getElementById('saveBtn').style.display = 'none';
-                    document.getElementById('adminLoginBtn').style.display = 'inline-block';
-                    
-                    alert('저장되었습니다.');
+                    alert('행적이 성공적으로 저장되었습니다.');
+                    return true;
                 } else {
-                    alert('저장에 실패했습니다: ' + (result.message || '알 수 없는 오류'));
+                    throw new Error(result.error || '저장 실패');
                 }
             } catch (error) {
-                console.error('Error saving actions:', error);
-                alert('저장 중 오류가 발생했습니다: ' + error.message);
+                console.error('행적 저장 중 오류:', error);
+                alert('행적 저장 중 오류가 발생했습니다: ' + error.message);
+                return false;
             }
         }
 
