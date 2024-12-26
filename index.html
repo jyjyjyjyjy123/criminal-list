@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Criminal Records Management System">
+    <title>Criminal Records Management</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Criminal Records Management System</h1>
+            <nav class="filters">
+                <button class="filter-btn" data-section="military">Military</button>
+                <button class="filter-btn" data-section="police">Police</button>
+                <button class="filter-btn" data-section="government">Government</button>
+                <button class="filter-btn" data-section="other">Other</button>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Dynamic content will be loaded here -->
+            <div id="records-container"></div>
+        </main>
+
+        <div class="bottom-controls">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search by name or actions...">
+                <div class="search-results"></div>
+            </div>
+            <button class="scroll-top-btn" title="Scroll to top"></button>
+        </div>
+
+        <!-- Modal for viewing/editing records -->
+        <div id="recordModal" class="modal">
+            <div class="modal-content">
+                <span class="modal-close">&times;</span>
+                <div class="modal-header">
+                    <img id="modalImage" src="" alt="">
+                    <div class="modal-header-info">
+                        <h2 id="modalName"></h2>
+                        <p id="modalRole"></p>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div id="modalActionsView"></div>
+                    <textarea id="modalActions" style="display: none;"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button id="editBtn" class="edit-btn">Edit</button>
+                    <button id="saveBtn" class="save-btn" style="display: none;">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

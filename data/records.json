@@ -1,0 +1,32 @@
+{
+    "records": [
+        {
+            "id": "김기현",
+            "name": "김기현",
+            "role": "국민의힘 대표",
+            "section": "정치인",
+            "image": "https://via.placeholder.com/150"
+        },
+        {
+            "id": "이재명",
+            "name": "이재명",
+            "role": "더불어민주당 대표",
+            "section": "정치인",
+            "image": "https://via.placeholder.com/150"
+        },
+        {
+            "id": "박홍근",
+            "name": "박홍근",
+            "role": "더불어민주당 원내대표",
+            "section": "정치인",
+            "image": "https://via.placeholder.com/150"
+        },
+        {
+            "id": "이종철",
+            "name": "이종철",
+            "role": "더불어민주당 수석대변인",
+            "section": "정치인",
+            "image": "https://via.placeholder.com/150"
+        }
+    ]
+}
