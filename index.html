@@ -1200,7 +1200,7 @@
                 🌟<a href="mailto:criminalyoon@gmail.com" style="color: #0066cc; text-decoration: underline; transition: color 0.3s; font-size: 0.9em;" onmouseover="this.style.color='#0099ff'" onmouseout="this.style.color='#0066cc'">criminalyoon@gmail.com</a>🌟
                 🌟<a href="https://open.kakao.com/o/g6m4OK6g" style="color: #0066cc; text-decoration: underline; transition: color 0.3s; font-size: 0.75em; word-break: break-all;" onmouseover="this.style.color='#0099ff'" onmouseout="this.style.color='#0066cc'">https://open.kakao.com/o/g6m4OK6g</a>🌟
                 ❗독일에서 운영중이라 로딩속도가 조금 느립니다. 개선방법 찾아보겠습니다.
-                모바일용 디자인도 만들어보겠습니다. 우선 가로모드 부탁드립니다❗
+                모바일용 디자인도 만들어보겠습니다. 우선 가로모드 부탁드립니다!
                 인물 클릭 시 자세한 행적을 볼 수 있습니다.</div>
             <button class="notice-close" onclick="closeNotice()">확인</button>
         </div>
@@ -1226,7 +1226,7 @@
             { name: "김용군", role1: "내란주동자", role2: "전국방부수사단장", group: "군부", row: 3 },
             { name: "곽종근", role1: "내란주동자(?)", role2: "특전사령관", group: "군부", row: 3 },
             
-            { name: "김대우", role1: "내란주동자(?)", role2: "방첩사수사단장", group: "군부", row: 4 },
+            { name: "김대우", role1: "내란주동자", role2: "방첩사수사단장", group: "군부", row: 4 },
             { name: "이경민", role1: "내란가담자", role2: "방첩사참모장", group: "군부", row: 4 },
             { name: "안무성", role1: "내란가담자", role2: "제9공수여단장", group: "군부", row: 4 },
             { name: "박성하", role1: "내란가담자", role2: "방첩사기획관리실장", group: "군부", row: 4 },
@@ -1313,7 +1313,7 @@
             { name: "김위상", role1: "내란동조자", role2: "비례대표", group: "내란의힘", row: 1 },
             { name: "김은혜", role1: "내란동조자", role2: "경기 성남시분당구을", group: "내란의힘", row: 1 },
             { name: "김장겸", role1: "내란동조자", role2: "비례대표", group: "내란의힘", row: 1 },
-            { name: "김정재", role1: "내란동조자", role2: "경북 포항시북구", group: "내란의힘", row: 1 },
+            { name: "김정재", role1: "내란동조자", role2: "경북 포항시", group: "내란의힘", row: 1 },
             { name: "김종양", role1: "내란동조자", role2: "경남 창원시의창구", group: "내란의힘", row: 1 },
             { name: "김태호", role1: "내란동조자", role2: "경남 양산시을", group: "내란의힘", row: 1 },
             { name: "김희정", role1: "내란동조자", role2: "부산 연제구", group: "내란의힘", row: 1 },
@@ -1539,27 +1539,37 @@
                 const modalActions = document.getElementById('modalActions');
                 const modalActionsView = document.getElementById('modalActionsView');
 
-                // 모달 기본 정보 즉시 설정
+                // 이전 데이터 초기화
+                modalActions.value = '';
+                modalActionsView.innerHTML = '';
+
+                // 모달 기본 정보 설정
                 modalImage.src = img.src;
                 modalName.textContent = person.name;
                 modalRole1.textContent = person.role1;
                 modalRole2.textContent = person.role2;
                 
+                // 현재 선택된 사람의 이름을 저장
+                const currentPerson = person.name;
+                
                 // 모달 표시
                 modal.style.display = 'block';
 
-                // 행적 데이터는 비동기적으로 로드
+                // 행적 데이터 로드
                 loadActionsData().then(actionsData => {
-                    const personActions = actionsData[person.name] || '';
-                    
-                    if (isAdmin) {
-                        modalActions.style.display = 'block';
-                        modalActionsView.style.display = 'none';
-                        modalActions.value = personActions;
-                    } else {
-                        modalActions.style.display = 'none';
-                        modalActionsView.style.display = 'block';
-                        modalActionsView.innerHTML = formatActions(personActions);
+                    // 현재 표시된 모달이 여전히 같은 사람인지 확인
+                    if (modalName.textContent === currentPerson) {
+                        const personActions = actionsData[currentPerson] || '';
+                        
+                        if (isAdmin) {
+                            modalActions.style.display = 'block';
+                            modalActionsView.style.display = 'none';
+                            modalActions.value = personActions;
+                        } else {
+                            modalActions.style.display = 'none';
+                            modalActionsView.style.display = 'block';
+                            modalActionsView.innerHTML = formatActions(personActions);
+                        }
                     }
                 });
             });
@@ -1649,7 +1659,7 @@
                         martialLawContainer.className = 'people-container';
                         martialLawGroup.appendChild(martialLawContainer);
                         
-                        // 8명씩 나누어 렌더링
+                        // 8명씩 나누기
                         for (let i = 0; i < martialLawPeople.length; i += 8) {
                             const rowDiv = document.createElement('div');
                             rowDiv.className = 'row';
@@ -1668,7 +1678,7 @@
                         martialLawAgreeContainer.className = 'people-container';
                         martialLawAgreeGroup.appendChild(martialLawAgreeContainer);
                         
-                        // 8명씩 나누어 렌더링
+                        // 8명씩 나누기
                         for (let i = 0; i < martialLawAgreePeople.length; i += 8) {
                             const rowDiv = document.createElement('div');
                             rowDiv.className = 'row';
@@ -1986,26 +1996,37 @@
 
         // 모달 클릭 이벤트 핸들러
         function handleModalClick(person, img) {
-            // 모달 기본 정보 즉시 설정
+            // 이전 데이터 초기화
+            domCache.modalActions.value = '';
+            domCache.modalActionsView.innerHTML = '';
+            
+            // 모달 기본 정보 설정
             domCache.modalImage.src = img.src;
             domCache.modalName.textContent = person.name;
             domCache.modalRole1.textContent = person.role1;
             domCache.modalRole2.textContent = person.role2;
             
+            // 현재 선택된 사람의 이름을 저장
+            const currentPerson = person.name;
+            
             // 모달 표시
             domCache.modal.style.display = 'block';
 
-            // 행적 데이터는 비동기적으로 로드
+            // 행적 데이터 로드
             loadActionsData().then(actionsData => {
-                const personActions = actionsData[person.name] || '';
-                if (isAdmin) {
-                    domCache.modalActions.style.display = 'block';
-                    domCache.modalActionsView.style.display = 'none';
-                    domCache.modalActions.value = personActions;
-                } else {
-                    domCache.modalActions.style.display = 'none';
-                    domCache.modalActionsView.style.display = 'block';
-                    domCache.modalActionsView.innerHTML = formatActions(personActions);
+                // 현재 표시된 모달이 여전히 같은 사람인지 확인
+                if (domCache.modalName.textContent === currentPerson) {
+                    const personActions = actionsData[currentPerson] || '';
+                    
+                    if (isAdmin) {
+                        domCache.modalActions.style.display = 'block';
+                        domCache.modalActionsView.style.display = 'none';
+                        domCache.modalActions.value = personActions;
+                    } else {
+                        domCache.modalActions.style.display = 'none';
+                        domCache.modalActionsView.style.display = 'block';
+                        domCache.modalActionsView.innerHTML = formatActions(personActions);
+                    }
                 }
             });
         }
@@ -2056,6 +2077,49 @@
             } catch (error) {
                 console.error('Error loading actions:', error);
                 return {};
+            }
+        }
+        
+        // 행적 데이터 저장하기
+        async function updateActions(name, actions) {
+            try {
+                const response = await fetch(`${SHEET_URL}?name=${encodeURIComponent(name)}&actions=${encodeURIComponent(actions)}`, {
+                    method: 'POST'
+                });
+                if (!response.ok) throw new Error('Failed to save data');
+                return true;
+            } catch (error) {
+                console.error('Error saving actions:', error);
+                return false;
+            }
+        }
+
+        // 행적 데이터 캐시
+        let actionsDataCache = null;
+        let lastFetchTime = 0;
+        const CACHE_DURATION = 5 * 60 * 1000; // 5분
+
+        // 행적 데이터 로드 함수 최적화
+        async function loadActionsData() {
+            const now = Date.now();
+            
+            // 캐시된 데이터가 있고 유효기간이 지나지 않았다면 캐시 사용
+            if (actionsDataCache && (now - lastFetchTime < CACHE_DURATION)) {
+                return actionsDataCache;
+            }
+
+            try {
+                const response = await fetch(SHEET_URL);
+                const data = await response.json();
+                
+                // 데이터 캐시 업데이트
+                actionsDataCache = data;
+                lastFetchTime = now;
+                
+                return data;
+            } catch (error) {
+                console.error('행적 데이터 로드 실패:', error);
+                return actionsDataCache || {}; // 에러 시 캐시된 데이터 반환
             }
         }
         
