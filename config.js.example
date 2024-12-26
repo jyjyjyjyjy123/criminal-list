@@ -1,0 +1,6 @@
+const config = {
+    GITHUB_TOKEN: 'your_github_token_here',    // GitHub에서 생성한 토큰
+    REPO_OWNER: 'your_github_username',        // GitHub 사용자명
+    REPO_NAME: 'criminal-list',                // 저장소 이름
+    FILE_PATH: 'data/actions.json'             // 데이터 저장 경로
+};
