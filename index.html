@@ -1181,9 +1181,7 @@
             </div>
             <div class="modal-body">
                 <input type="password" id="adminPassword" placeholder="관리자 비밀번호를 입력하세요" style="width: 100%; padding: 10px; margin: 10px 0;">
-            </div>
-            <div class="modal-footer">
-                <button onclick="checkAdminPassword()" class="save-btn">로그인</button>
+                <button id="adminLoginSubmit" style="width: 100%; padding: 10px; margin: 10px 0;">로그인</button>
             </div>
         </div>
     </div>
@@ -1210,7 +1208,7 @@
         const people = [ 
             
             // 내란수괴
-            { name: "윤석열", role1: "내란수괴1", role2: "시대의로맨티스트", group: "내란수괴", row: 1, position: "center" },
+            { name: "윤석열", role1: "내란수괴1", role2: "대통령", group: "내란수괴", row: 1, position: "center" },
             { name: "김건희", role1: "대한민국 최고존엄", role2: "시대의사기꾼", group: "내란수괴", row: 1, position: "right" },
 
             // 군 관계자
@@ -2009,6 +2007,7 @@
                 document.getElementById('adminLoginBtn').style.display = 'none';
                 document.getElementById('saveBtn').style.display = 'inline-block';
                 document.getElementById('modalActions').style.display = 'block';
+                alert('관리자 로그인 성공');
             } else {
                 alert('비밀번호가 올바르지 않습니다.');
             }
@@ -2189,6 +2188,38 @@
                 console.error('Error saving actions:', error);
                 return false;
             }
+        }
+
+        // 관리자 로그인 관련 코드
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
+        const adminModal = document.getElementById('adminModal');
+        const adminModalClose = document.querySelector('#adminModal .modal-close');
+        const adminLoginSubmit = document.getElementById('adminLoginSubmit');
+
+        if (adminLoginBtn) {
+            adminLoginBtn.addEventListener('click', function() {
+                adminModal.style.display = 'block';
+            });
+        }
+        
+        if (adminModalClose) {
+            adminModalClose.addEventListener('click', function() {
+                adminModal.style.display = 'none';
+            });
+        }
+        
+        if (adminLoginSubmit) {
+            adminLoginSubmit.addEventListener('click', checkAdminPassword);
+        }
+
+        // 엔터 키로 로그인
+        const adminPasswordInput = document.getElementById('adminPassword');
+        if (adminPasswordInput) {
+            adminPasswordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkAdminPassword();
+                }
+            });
         }
 
         // 공지사항 관련 함수
