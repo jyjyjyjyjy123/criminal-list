@@ -2097,7 +2097,7 @@
 
         // Google Apps Script 설정
         const SCRIPT_ID = 'AKfycbw6rw3fK41wElQpTGQ25g58xg9_8RbRn1kKDiG1rshcPgLyPuzeC6UcKLytbhD-kMPo';
-        const SCRIPT_URL = `https://script.google.com/macros/s/${SCRIPT_ID}/exec`;
+        const SCRIPT_URL = `https://script.google.com/macros/d/${SCRIPT_ID}/exec`;
         
         // Google Apps Script API 초기화
         function initializeGoogleApi() {
@@ -2130,16 +2130,33 @@
 
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Accept': 'application/json'
+                    },
                     body: formData
                 });
 
                 console.log('응답 상태:', response.status);  // 디버깅 로그
+                console.log('응답 헤더:', [...response.headers.entries()]);  // 응답 헤더 로깅
 
                 if (!response.ok) {
-                    throw new Error('서버 응답 오류');
+                    const errorText = await response.text();
+                    console.error('서버 응답:', errorText);
+                    throw new Error(`서버 응답 오류 (${response.status}): ${errorText}`);
                 }
 
-                const result = await response.json();
+                const responseText = await response.text();
+                console.log('응답 텍스트:', responseText);  // 응답 텍스트 로깅
+
+                let result;
+                try {
+                    result = JSON.parse(responseText);
+                } catch (e) {
+                    console.error('JSON 파싱 오류:', e);
+                    throw new Error('서버 응답을 처리할 수 없습니다.');
+                }
+
                 console.log('응답 결과:', result);  // 디버깅 로그
 
                 if (result.success) {
