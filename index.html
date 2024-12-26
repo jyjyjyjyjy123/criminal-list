@@ -1072,6 +1072,37 @@
                 font-size: 0.9em;
             }
         }
+
+        /* 로딩 스피너 스타일 */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 로딩 오버레이 스타일 */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
@@ -1154,6 +1185,10 @@
     <div id="personModal" class="modal">
         <div class="modal-content">
             <span class="modal-close">&times;</span>
+            <div class="loading-overlay">
+                <div class="loading-spinner"></div>
+                <span>로딩 중...</span>
+            </div>
             <div class="modal-header">
                 <img id="modalImage" src="" alt="">
                 <div class="modal-header-info">
@@ -1283,21 +1318,6 @@
             { name: "추경호", role1: "내란주동자", role2: "대구 달성군", group: "내란의힘", row: 1 },
             { name: "권성동", role1: "내란동조자", role2: "강원 강릉시", group: "내란의힘", row: 1 },
             { name: "권영세", role1: "내란동조자", role2: "서울 용산구", group: "내란의힘", row: 1 },
-            { name: "김석기", role1: "내란동조자", role2: "경북 경주시", group: "내란의힘", row: 1 },
-            { name: "나경원", role1: "내란동조자", role2: "서울 동작구", group: "내란의힘", row: 1 },
-            { name: "유상범", role1: "내란동조자", role2: "강원 홍천군횡성군영월군평창군", group: "내란의힘", row: 1 },
-            { name: "유영하", role1: "내란동조자", role2: "대구 달서구갑", group: "내란의힘", row: 1 },
-            { name: "윤상현", role1: "내란동조자", role2: "인천 동구미추홀구을", group: "내란의힘", row: 1 },
-            { name: "윤한홍", role1: "내란동조자", role2: "경남 창원시마산회원구", group: "내란의힘", row: 1 },
-            { name: "최형두", role1: "내란동조자", role2: "경남 창원시마산회원구", group: "내란의힘", row: 1 },
-            { name: "강대식", role1: "내란동조자", role2: "대구ㄴ 동구군위군을", group: "내란의힘", row: 1 },
-            { name: "강명구", role1: "내란동조자", role2: "경북 구미시을", group: "내란의힘", row: 1 },
-            { name: "강민국", role1: "내란동조자", role2: "경남 진주시을", group: "내란의힘", row: 1 },
-            { name: "강선영", role1: "내란동조자", role2: "비례대표", group: "내란의힘", row: 1 },
-            { name: "강승규", role1: "내란동조자", role2: "충남 홍성군예산군", group: "내란의힘", row: 1 },
-            { name: "고동진", role1: "내란동조자", role2: "서울 강남구병", group: "내란의힘", row: 1 },
-            { name: "구자근", role1: "내란동조자", role2: "경북 구미시갑", group: "내란의힘", row: 1 },
-            { name: "권영진", role1: "내란동조자", role2: "대구 달서구병", group: "내란의힘", row: 1 },
             { name: "김건", role1: "내란동조자", role2: "비례대표", group: "내란의힘", row: 1 },
             { name: "김기웅", role1: "내란동조자", role2: "대구 중구남구", group: "내란의힘", row: 1 },
             { name: "김기현", role1: "내란동조자", role2: "울산 남구을", group: "내란의힘", row: 1 },
@@ -1943,15 +1963,7 @@
             const adminModal = document.getElementById('adminModal');
             const modalClose = modal.querySelector('.modal-close');
             const adminModalClose = adminModal.querySelector('.modal-close');
-            const modalActions = document.getElementById('modalActions');
-            const modalActionsView = document.getElementById('modalActionsView');
-            const adminLoginBtn = document.getElementById('adminLoginBtn');
             const saveBtn = document.getElementById('saveBtn');
-
-            // 관리자 로그인 버튼 클릭
-            adminLoginBtn.addEventListener('click', function() {
-                adminModal.style.display = 'block';
-            });
 
             // 모달 창 닫기
             modalClose.addEventListener('click', function() {
@@ -1969,23 +1981,6 @@
                 }
                 if (e.target === adminModal) {
                     adminModal.style.display = 'none';
-                }
-            });
-
-            // 저장 버튼 클릭 시
-            saveBtn.addEventListener('click', async function() {
-                if (!isAdmin) return;
-                
-                const modalName = document.getElementById('modalName').textContent;
-                const actions = modalActions.value;
-
-                const success = await updateActions(modalName, actions);
-                if (success) {
-                    alert('저장되었습니다.');
-                    modalActionsView.innerHTML = formatActions(actions);
-                    modal.style.display = 'none';
-                } else {
-                    alert('저장에 실패했습니다.');
                 }
             });
 
@@ -2066,10 +2061,10 @@
             domCache.modal.style.display = 'block';
 
             // 행적 데이터 로드
-            loadActionsData().then(actionsData => {
+            loadActionsData().then(data => {
                 // 현재 표시된 모달이 여전히 같은 사람인지 확인
                 if (domCache.modalName.textContent === currentPerson) {
-                    const personActions = actionsData[currentPerson] || '';
+                    const personActions = data[currentPerson] || '';
                     
                     if (isAdmin) {
                         domCache.modalActions.style.display = 'block';
@@ -2085,36 +2080,24 @@
         }
 
         // 페이지 로드시 초기화
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             initializeDOM();
             initializeModal();
-            
-            // Intersection Observer 설정
-            if ('IntersectionObserver' in window) {
-                const imageObserver = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const img = entry.target;
-                            if (img.dataset.src) {
-                                img.src = img.dataset.src;
-                                img.removeAttribute('data-src');
-                            }
-                            observer.unobserve(img);
-                        }
-                    });
-                }, {
-                    rootMargin: '50px 0px',
-                    threshold: 0.01
-                });
-
-                document.querySelectorAll('img[loading="lazy"]').forEach(img => {
-                    imageObserver.observe(img);
-                });
-            }
-
-            renderPeople();
             setupSearch();
             setupScrollTopButton();
+            setupModal();
+            
+            // 저장 버튼 이벤트 리스너
+            const saveBtn = document.getElementById('saveBtn');
+            if (saveBtn) {
+                saveBtn.addEventListener('click', function() {
+                    const name = document.getElementById('modalName').textContent;
+                    const actions = document.getElementById('modalActions').value;
+                    updateActions(name, actions);
+                });
+            }
+            
+            renderPeople();
         });
 
         // 구글 스프레드시트 API URL
@@ -2141,7 +2124,6 @@
             }
 
             try {
-                console.log('Saving actions:', { name, actions }); // 디버깅 로그
                 const response = await fetch(`${SHEET_URL}?name=${encodeURIComponent(name)}&actions=${encodeURIComponent(actions)}`, {
                     method: 'POST',
                     headers: {
@@ -2149,22 +2131,26 @@
                     }
                 });
                 
-                console.log('Response status:', response.status); // 디버깅 로그
-                
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 
                 const result = await response.json();
-                console.log('Response data:', result); // 디버깅 로그
                 
                 if (result.success) {
+                    // 캐시 업데이트
+                    if (actionsDataCache) {
+                        actionsDataCache[name] = actions;
+                    }
+                    
+                    // UI 업데이트
+                    document.getElementById('modalActions').style.display = 'none';
+                    document.getElementById('modalActionsView').style.display = 'block';
+                    document.getElementById('modalActionsView').innerHTML = formatActions(actions);
+                    document.getElementById('saveBtn').style.display = 'none';
+                    document.getElementById('adminLoginBtn').style.display = 'inline-block';
+                    
                     alert('저장되었습니다.');
-                    // 저장 후 모달 내용 업데이트
-                    loadActionsData().then(actionsData => {
-                        const updatedActions = actionsData[name] || '';
-                        document.getElementById('modalActions').value = updatedActions;
-                    });
                 } else {
                     alert('저장에 실패했습니다: ' + (result.message || '알 수 없는 오류'));
                 }
