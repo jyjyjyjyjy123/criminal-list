@@ -960,6 +960,41 @@
 
         .modal-footer {
             text-align: right;
+            padding: 10px;
+        }
+
+        .admin-btn, .edit-btn, .save-btn {
+            padding: 5px 15px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .admin-btn:hover, .edit-btn:hover, .save-btn:hover {
+            background-color: #c82333;
+        }
+
+        .modal-actions {
+            margin-top: 20px;
+            position: relative;
+            min-height: 100px;
+        }
+
+        #modalActionsView {
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 3px;
+            min-height: 50px;
+        }
+
+        #modalActions {
+            width: 100%;
+            min-height: 150px;
+            padding: 10px;
+            margin-bottom: 40px;
         }
 
         .modal-close {
@@ -1194,12 +1229,15 @@
                 </div>
             </div>
             <div class="modal-body">
-                <div id="modalActionsView"></div>
-                <textarea id="modalActions" placeholder="이 사람의 행적을 입력하세요..." style="display: none;"></textarea>
+                <div class="modal-actions">
+                    <div id="modalActionsView"></div>
+                    <textarea id="modalActions" placeholder="이 사람의 행적을 입력하세요..." style="display: none;"></textarea>
+                </div>
             </div>
             <div class="modal-footer">
                 <button id="adminLoginBtn" class="admin-btn">관리자 로그인</button>
-                <button id="saveBtn" class="save-btn" style="display: none;" onclick="saveModalActions()">저장</button>
+                <button id="editBtn" class="edit-btn" style="display: none;">수정</button>
+                <button id="saveBtn" class="save-btn" style="display: none;">저장</button>
             </div>
         </div>
     </div>
@@ -1212,7 +1250,7 @@
                 <h2>관리자 로그인</h2>
             </div>
             <div class="modal-body">
-                <input type="password" id="adminPassword" placeholder="관리자 비밀번호를 입력하세요" style="width: 100%; padding: 10px; margin: 10px 0;">
+                <input type="password" id="adminPassword" placeholder="관리자 비밀번호를 입력하세요" style="width: 100%; padding: 10px; margin: 10px 0;" onkeypress="if(event.key === 'Enter') checkAdminPassword()">
                 <button id="adminLoginSubmit" style="width: 100%; padding: 10px; margin: 10px 0;" onclick="checkAdminPassword()">로그인</button>
             </div>
         </div>
@@ -1246,7 +1284,7 @@
             apiKey: "AIzaSyCMN4o3bjh2tOLBs0VX4amemvthvGsWXS4",
             authDomain: "criminal-list.firebaseapp.com",
             projectId: "criminal-list",
-            storageBucket: "criminal-list.firebasestorage.app",
+            storageBucket: "criminal-list.appspot.com",
             messagingSenderId: "696329370561",
             appId: "1:696329370561:web:265d119f1d0b3199c6cd40",
             measurementId: "G-YVGDF0WFBQ",
@@ -1261,13 +1299,17 @@
         // 전역 변수로 Firebase 함수들 설정
         window.firebaseDB = {
             // 행적 저장
-            saveActions: async (name, actions) => {
+            saveActions: async (name, actions, group) => {
                 try {
                     const personRef = ref(database, `actions/${name}`);
-                    await set(personRef, actions);
+                    await set(personRef, {
+                        text: actions,
+                        group: group
+                    });
+                    console.log('Actions saved successfully for:', name);  // 디버깅용 로그
                     return true;
                 } catch (error) {
-                    console.error('Error saving actions:', error);
+                    console.error('Error saving actions:', error);  // 자세한 에러 로그
                     return false;
                 }
             },
@@ -1277,6 +1319,7 @@
                 const actionsRef = ref(database, 'actions');
                 onValue(actionsRef, (snapshot) => {
                     const data = snapshot.val() || {};
+                    console.log('Loaded actions:', data);  // 디버깅용 로그
                     callback(data);
                 });
             }
@@ -1347,7 +1390,7 @@
 
             // 대통령실
             // 1열: 핵심 인물
-            { name: "한덕수", role1: "내란수괴5", role2: "국무총리", group: "대통령실", row: 1 },
+            { name: "한덕수", role1: "내란주동자", role2: "국무총리", group: "대통령실", row: 1 },
             { name: "이상민", role1: "내란주동자", role2: "행안부장관", group: "대통령실", row: 1 },
             { name: "박성재", role1: "내란동조자", role2: "법무부장관", group: "대통령실", row: 1 },
             { name: "이완규", role1: "내란동조자", role2: "법제처장", group: "대통령실", row: 1 },
@@ -1364,10 +1407,10 @@
 
             // 3열: 국무위원
             { name: "윤재순", role1: "내란선동자", role2: "총무비서관", group: "대통령실", row: 3 },
-            { name: "김영호", role1: "내란방조자", role2: "통일부장관", group: "대통령실", row: 3 },
             { name: "송미령", role1: "내란방조자", role2: "농림축산식품부장관", group: "대통령실", row: 3 },
             { name: "조규홍", role1: "내란방조자", role2: "보건복지부장관", group: "대통령실", row: 3 },
             { name: "오영주", role1: "내란방조자", role2: "중기부장관", group: "대통령실", row: 3 },
+            { name: "김영호", role1: "내란방조자", role2: "통일부장관", group: "대통령실", row: 3 },
             { name: "최상목", role1: "내란방조자", role2: "경제부총리", group: "대통령실", row: 3 },
             { name: "조태열", role1: "내란방조자", role2: "외교부장관", group: "대통령실", row: 3 },
             
@@ -2038,6 +2081,7 @@
             const adminModalClose = adminModal.querySelector('.modal-close');
             const adminLoginBtn = document.getElementById('adminLoginBtn');
             const saveBtn = document.getElementById('saveBtn');
+            const editBtn = document.getElementById('editBtn');
 
             // 모달 창 닫기
             modalClose.onclick = function() {
@@ -2066,6 +2110,8 @@
             // 저장 버튼 클릭
             saveBtn.onclick = saveModalActions;
 
+            // 수정 버튼 클릭
+            editBtn.onclick = handleEditClick;
         }
 
         // 관리자 로그인 체크
@@ -2078,9 +2124,9 @@
                 document.getElementById('saveBtn').style.display = 'block';
                 document.getElementById('modalActions').style.display = 'block';
                 document.getElementById('modalActionsView').style.display = 'none';
-                alert('관리자로 로그인되었습니다.');
+                showCustomAlert('관리자로 로그인되었습니다.');
             } else {
-                alert('비밀번호가 올바르지 않습니다.');
+                showCustomAlert('비밀번호가 올바르지 않습니다.');
             }
         }
 
@@ -2159,19 +2205,43 @@
         async function saveModalActions() {
             const name = document.getElementById('modalName').textContent;
             const actions = document.getElementById('modalActions').value;
+            const personCard = document.querySelector(`[data-name="${name}"]`);
+            const group = personCard ? personCard.closest('.section').id : '';
             
-            if (await saveActions(name, actions)) {
-                alert('행적이 저장되었습니다.');
+            console.log('Saving actions for:', name, 'in group:', group);
+            
+            if (await firebaseDB.saveActions(name, actions, group)) {
+                showCustomAlert('행적이 저장되었습니다.');
                 // 저장 후 뷰 모드로 전환
                 document.getElementById('modalActions').style.display = 'none';
                 document.getElementById('modalActionsView').style.display = 'block';
                 document.getElementById('modalActionsView').innerHTML = formatActions(actions);
+                // 수정 버튼 표시
+                document.getElementById('editBtn').style.display = 'block';
+                // 모달창 닫기
+                document.getElementById('personModal').style.display = 'none';
             } else {
-                alert('행적 저장에 실패했습니다.');
+                showCustomAlert('행적 저장에 실패했습니다.');
             }
         }
 
-        // 페이지 초기화 코드 추가
+        // 수정 버튼 클릭 핸들러
+        function handleEditClick() {
+            const actionsText = document.getElementById('modalActionsView').innerText;
+            document.getElementById('modalActions').value = actionsText;
+            document.getElementById('modalActions').style.display = 'block';
+            document.getElementById('modalActionsView').style.display = 'none';
+            document.getElementById('editBtn').style.display = 'none';
+        }
+
+        // 엔터키 로그인
+        document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAdminPassword();
+            }
+        });
+        
+        // 페이지 초기화 코드
         document.addEventListener('DOMContentLoaded', async function() {
             initializeDOM();
             initializeModal();
@@ -2180,6 +2250,84 @@
             setupModal();
             renderPeople();
         });
+
+        // 커스텀 알림창 함수
+        function showCustomAlert(message, callback) {
+            const alertDiv = document.createElement('div');
+            alertDiv.style.position = 'fixed';
+            alertDiv.style.top = '20px';  // 상단에 위치하도록 변경
+            alertDiv.style.left = '50%';
+            alertDiv.style.transform = 'translateX(-50%)';  // Y축 변환 제거
+            alertDiv.style.backgroundColor = 'white';
+            alertDiv.style.padding = '15px 25px';
+            alertDiv.style.borderRadius = '5px';
+            alertDiv.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+            alertDiv.style.zIndex = '9999';
+            alertDiv.style.textAlign = 'center';
+            alertDiv.style.animation = 'slideDown 0.3s ease-out';  // 슬라이드 애니메이션 추가
+
+            // 애니메이션 스타일 추가
+            const styleSheet = document.createElement('style');
+            styleSheet.textContent = `
+                @keyframes slideDown {
+                    from { transform: translateX(-50%) translateY(-100%); }
+                    to { transform: translateX(-50%) translateY(0); }
+                }
+            `;
+            document.head.appendChild(styleSheet);
+
+            const messageP = document.createElement('p');
+            messageP.textContent = message;
+            messageP.style.margin = '0 0 10px 0';
+            messageP.style.fontSize = '14px';
+
+            const okButton = document.createElement('button');
+            okButton.textContent = '확인';
+            okButton.style.padding = '5px 15px';
+            okButton.style.backgroundColor = '#8b0000';
+            okButton.style.color = 'white';
+            okButton.style.border = 'none';
+            okButton.style.borderRadius = '3px';
+            okButton.style.cursor = 'pointer';
+            okButton.style.fontSize = '13px';
+
+            const handleOk = () => {
+                alertDiv.style.animation = 'slideUp 0.3s ease-out';
+                setTimeout(() => {
+                    document.body.removeChild(alertDiv);
+                    if (callback) callback();
+                }, 250);
+            };
+
+            // 슬라이드 업 애니메이션 추가
+            styleSheet.textContent += `
+                @keyframes slideUp {
+                    from { transform: translateX(-50%) translateY(0); }
+                    to { transform: translateX(-50%) translateY(-100%); }
+                }
+            `;
+
+            okButton.onclick = handleOk;
+            
+            // 엔터 키 이벤트 리스너 추가
+            const keyHandler = function(e) {
+                if (e.key === 'Enter' && document.body.contains(alertDiv)) {
+                    handleOk();
+                    document.removeEventListener('keydown', keyHandler);
+                }
+            };
+            document.addEventListener('keydown', keyHandler);
+
+            alertDiv.appendChild(messageP);
+            alertDiv.appendChild(okButton);
+            document.body.appendChild(alertDiv);
+            
+            // 버튼에 포커스
+            okButton.focus();
+
+            // 3초 후 자동으로 닫기
+            setTimeout(handleOk, 3000);
+        }
     </script>
 </body>
 </html>
