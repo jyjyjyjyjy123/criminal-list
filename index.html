@@ -1,13 +1,25 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta name="naver-site-verification" content="5f12187fe023b8cfc326daf4d484946eaf965074" /> 
-    <meta name="description" content="내란 범죄 혐의자 명단 - 내란 혐의자들의 정보를 제공합니다">
-    <meta name="keywords" content=" 계엄령, 내란, 탄핵, 윤석열, 김건희, 내란의 힘, 김용현, 노상원, 여인형, 추경호, 권성동, 나경원, 윤상현, 내란의 힘">
-    <meta name="robots" content="index, follow">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>내란 범죄혐의자 명단</title>
+    <meta name="naver-site-verification" content="5f12187fe023b8cfc326daf4d484946eaf965074" />
+    <meta name="description" content="내란범죄자들을 끝까지 추적하겠습니다.">
+    <meta name="keywords" content="내란, 내란음모, 내란선동, 계엄령, 윤석열, 김건희, 한동훈, 추경호, 이상민, 내란의힘, 군부, 경찰, 대통령실">
+    <meta name="author" content="내란범죄혐의자 명단">
+    <meta property="og:title" content="내란범죄혐의자 명단">
+    <meta property="og:description" content="내란범죄자들을 끝까지 추적하겠습니다.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.criminalyoon.com">
+    <meta property="og:image" content="https://www.criminalyoon.com/images/logo.png">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <meta name="naverbot" content="index, follow">
+    <meta name="title" content="내란범죄혐의자 명단">
+    <title>내란범죄혐의자 명단</title>
+    <script src="config.js"></script>
+    <script src="js/github.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/octokit@1.7.2/dist/octokit.min.js"></script>
     <style>
         /* 공통 스타일 */
         * {
@@ -65,7 +77,7 @@
         }
 
         #내란수괴-container .person-container:last-child {
-            margin-right: 25%;  /* 김건희 위치 조정 - 오른쪽 여백을 늘려서 왼쪽으로 이동 */
+            margin-right: 15% !important;  
         }
 
         /* 섹션 헤더 스타일 */
@@ -175,19 +187,6 @@
                 margin-bottom: 5px;
             }
 
-            #경찰-section {
-                margin-top: -15px;
-            }
-
-            #경찰-section img {
-                width: 35px;  
-                margin-bottom: 3px;
-            }
-
-            #경찰-container {
-                margin-top: -10px;
-            }
-
             #대통령실-container {
                 margin-top: -10px;
             }
@@ -217,35 +216,196 @@
         @media screen and (max-width: 768px) {
             body {
                 padding: 0;
+                margin: 0;
             }
             
             .container {
-                padding: 10px;
+                padding: 0;
+                margin: 0;
                 box-shadow: none;
+                max-width: 100%;
+                width: 100%;
             }
 
             h1 {
-                margin: -10px -10px 10px;
+                margin: 0 0 5px 0;
+                padding: 15px 5px;
+            }
+
+            .grid-container {
+                gap: 2px;
+                padding: 0;
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .person-card {
+                margin: 0;
+                width: 100%;
+            }
+
+            .person-card .image-container {
+                padding-top: 140%;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .person-card .image-container img { 
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .person-card .name {
+                font-size: 13px;
+                margin: 3px 0;
+                padding: 0;
+            }
+
+            .person-card .position {
+                font-size: 11px;
+                margin: 0;
+                padding: 0;
+            }
+
+            .section {
+                padding: 0;
+                margin-bottom: 20px;
             }
 
             .filters {
-                padding: 0 5px;
-                gap: 3px;
+                padding: 0;
+                display: flex;
+                width: 100%;
+                gap: 0;
             }
 
+            .filter-btn {
+                flex: 1;
+                font-size: 7px;
+                padding: 4px 0;
+                white-space: nowrap;
+                overflow: visible;
+                border: none;
+            }
+
+            .filter-btn[data-section="군부"] { width: 9%; }
+            .filter-btn[data-section="경찰"] { width: 9%; }
+            .filter-btn[data-section="대통령실"] { width: 28%; }
+            .filter-btn[data-section="내란의힘"] { width: 26%; }
+            .filter-btn[data-section="기타·극우미디어"] { width: 28%; }
+
+            .filter-btn:hover {
+                background: #8b0000;
+                color: white;
+            }
+
+            .filter-btn.active {
+                background: #8b0000;
+                color: white;
+            }
+
+            .people-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                padding: 0;
+                gap: 0;
+            }
+
+            .row {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                width: 100%;
+                gap: 0;
+                margin: 0;
+            }
+
+            .person-container {
+                width: calc(100% / 6) !important;
+                flex: 0 0 calc(100% / 6) !important;
+                margin: 0 0 5px 0 !important;
+                padding: 0;
+            }
+
+            .person-container img {
+                width: 110%;
+                height: auto;
+                aspect-ratio: 3/4;
+                object-fit: cover;
+                margin: 0 -5% !important;
+                border-radius: 0;
+            }
+
+            .person-name {
+                font-size: 8.2px !important;
+                font-weight: bold;
+                margin-top: 1px !important;
+                margin-bottom: 1px !important;
+                line-height: 1.1;
+            }
+
+            .person-role {
+                font-size: 6.1px !important;
+                margin: 0 !important;
+                padding: 0;
+                margin: 0 0 0.6px 0
+                line-height: 1.1;
+            }
+
+            .person-role2 {
+                font-size: 5.8px !important;
+                margin: 0 !important;
+                padding: 0;
+                line-height: 1.1;
+            }
+
+            .martial-law-group,
+            .martial-law-agree-group,
+            .row3-container {
+                margin-bottom: 20px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
             .martial-law-group::before,
             .martial-law-agree-group::before {
-                font-size: 12px;
-                padding: 0 8px;
-                top: -8px;
-                left: 15px;
+                font-size: 10px;
+                padding: 0 6px;
+                top: -7px;
+                left: 10px;
             }
 
             .martial-law-group,
             .martial-law-agree-group {
-                padding: 20px;
-                margin: 20px 0;
-                border-width: 2px;
+                padding: 15px;
+                margin: 15px 0;
+            }
+
+            .person-container {
+                width: calc(100% / 6) !important;
+                flex: 0 0 calc(100% / 6) !important;
+            }
+
+            .person-name {
+                font-size: 8.2px !important;
+                font-weight: bold;
+            }
+
+            .person-role {
+                font-size: 5.5px !important;
+                margin: 0.5px 0;
+            }
+
+            .person-role2 {
+                font-size: 4.5px !important;
+                margin-top: 0;
             }
         }
 
@@ -269,7 +429,7 @@
             cursor: pointer;
             border-radius: 5px;
             flex: 1 1 auto;
-            min-width: 0;
+            min-width: 65px;
             white-space: nowrap;
             font-size: 14px;
             transition: all 0.3s ease;
@@ -325,28 +485,29 @@
         /* 인물 카드 레이아웃 스타일 */
         .people-container {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            padding: 15px;
+            flex-direction: column;
+            align-items: center;
             width: 100%;
+            padding: 5px;
+            gap: 3px;
             box-sizing: border-box;
         }
 
         .row {
             display: flex;
-            flex-wrap: nowrap;
-            gap: 10px;
+            flex-wrap: wrap;
             justify-content: center;
             width: 100%;
+            gap: 3px;
             margin-bottom: 5px;
         }
 
         .person-container {
             position: relative;
-            width: calc((100% - 35px) / 8);
-            flex: 0 0 calc((100% - 35px) / 8);
-            margin-bottom: 10px;
+            width: calc((100% - 21px) / 8) !important;
+            flex: 0 0 calc((100% - 21px) / 8) !important;
+            margin: 0;
+            padding: 1px;
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -365,7 +526,7 @@
             aspect-ratio: 3/4;
             object-fit: cover;
             border-radius: 4px;
-            margin-bottom: 5px;
+            margin-bottom: 2px !important;
         }
 
         .person-name {
@@ -475,108 +636,6 @@
 
         /* 반응형 디자인 */
         @media screen and (max-width: 768px) {
-            .filters {
-                padding: 0 5px;
-                gap: 3px;
-            }
-
-            .filter-btn {
-                padding: 5px;
-                font-size: 11px;
-                border-width: 1px;
-            }
-
-            .people-container {
-                padding: 5px;
-                gap: 5px;  /* 2px에서 5px로 증가 */
-            }
-
-            .row {
-                gap: 5px;  /* 3px에서 5px로 증가 */
-            }
-
-            .person-container {
-                width: calc((100% - 35px) / 8) !important;
-                flex: 0 0 calc((100% - 35px) / 8) !important;
-                margin-bottom: 15px;  /* 세로 간격 추가 */
-            }
-
-            .person-container img {
-                width: 100% !important;
-                aspect-ratio: 3/4;
-                object-fit: cover;
-                margin-bottom: 1px !important;
-            }
-
-            .person-name {
-                font-size: 8px;
-                margin: 1.2px 0 0 0 !important;
-                padding: 0;
-                line-height: 1.3;
-            }
-
-            .person-role {
-                font-size: 5.5px;
-                margin: 1px 0 0 0 !important;
-                padding: 0;
-                line-height: 1.3;
-            }
-
-            .person-role2 {
-                font-size: 5px;
-                margin: 1px 0 0 0 !important;
-                padding: 0;
-                line-height: 1.3;
-            }
-        }
-
-        @media screen and (max-width: 480px) {
-            .filters {
-                gap: 2px;
-            }
-
-            .filter-btn {
-                padding: 3px 4px;
-                font-size: 9px;
-            }
-
-            .martial-law-group::before,
-            .martial-law-agree-group::before {
-                font-size: 10px;
-                padding: 0 6px;
-                top: -7px;
-                left: 10px;
-            }
-
-            .martial-law-group,
-            .martial-law-agree-group {
-                padding: 15px;
-                margin: 15px 0;
-            }
-
-            .person-container {
-                width: calc((100% - 35px) / 8) !important;
-                flex: 0 0 calc((100% - 35px) / 8) !important;
-            }
-
-            .person-name {
-                font-size: 8.2px;
-                font-weight: bold;
-            }
-
-            .person-role {
-                font-size: 5.5px;
-                margin: 0.5px 0;
-            }
-
-            .person-role2 {
-                font-size: 4.5px;
-                margin-top: 0;
-            }
-        }
-
-        /* 모바일 환경 스타일 */
-        @media screen and (max-width: 768px) {
             .section-logo {
                 max-width: 100px;
             }
@@ -596,24 +655,28 @@
 
             .people-container {
                 display: flex;
-                flex-wrap: wrap;
-                justify-content: flex-start;
-                gap: 5px;  /* 2px에서 5px로 증가 */
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
                 padding: 0;
+                gap: 0;
             }
 
             .person-card {
-                width: calc((100% - 35px) / 8);  /* 8명씩 배치, 간격 2px 고려 */
+                width: calc(100% / 8);  /* 8명씩 배치, 간격 1px 고려 */
                 margin: 0;
-                padding: 2px;
+                padding: 0;
                 border: none;
                 box-shadow: none;
             }
 
             .person-card img {
-                width: 100%;
+                width: 110%;
                 height: auto;
-                margin-bottom: 2px;
+                aspect-ratio: 3/4;
+                object-fit: cover;
+                margin: 0 -5% !important;
+                border-radius: 0;
             }
 
             .person-card .name {
@@ -643,12 +706,12 @@
             }
 
             .people-container {
-                gap: 1px;  /* 1px에서 3px로 증가 */
+                gap: 0;  /* 1px에서 0px로 감소 */
             }
 
             .person-card {
-                width: calc((100% - 21px) / 8);  /* 8명씩 배치, 간격 1px 고려 */
-                padding: 1px;
+                width: calc(100% / 8);  /* 8명씩 배치, 간격 1px 고려 */
+                padding: 0;
             }
 
             .person-card .name {
@@ -1001,21 +1064,26 @@
         .notice-close:hover {
             background-color: #6b0000;
         }
+
+        /* 모바일 화면에서 링크 텍스트 크기 조절 */
+        @media screen and (max-width: 768px) {
+            .notice-text a {
+                font-size: 0.9em;
+            }
+        }
     </style>
-    <script src="config.js"></script>
-    <script src="js/github-api.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>내란 범죄혐의자 명단</h1>
+        <h1>내란범죄혐의자 명단</h1>
         
         <!-- 필터 버튼 -->
         <div class="filters">
-            <button onclick="document.getElementById('군부-section').scrollIntoView({ behavior: 'smooth' })" class="filter-btn">군부</button>
-            <button onclick="document.getElementById('경찰-section').scrollIntoView({ behavior: 'smooth' })" class="filter-btn">경찰</button>
-            <button onclick="document.getElementById('대통령실-section').scrollIntoView({ behavior: 'smooth' })" class="filter-btn">대통령실</button>
-            <button onclick="document.getElementById('내란의힘-section').scrollIntoView({ behavior: 'smooth' })" class="filter-btn">내란의힘</button>
-            <button onclick="document.getElementById('기타·극우미디어-section').scrollIntoView({ behavior: 'smooth' })" class="filter-btn">기타·극우미디어</button>
+            <button onclick="document.getElementById('군부-section').scrollIntoView({ behavior: 'smooth' })" class="filter-btn" data-section="군부">군부</button>
+            <button onclick="document.getElementById('경찰-section').scrollIntoView({ behavior: 'smooth' })" class="filter-btn" data-section="경찰">경찰</button>
+            <button onclick="document.getElementById('대통령실-section').scrollIntoView({ behavior: 'smooth' })" class="filter-btn" data-section="대통령실">대통령실</button>
+            <button onclick="document.getElementById('내란의힘-section').scrollIntoView({ behavior: 'smooth' })" class="filter-btn" data-section="내란의힘">내란의힘</button>
+            <button onclick="document.getElementById('기타·극우미디어-section').scrollIntoView({ behavior: 'smooth' })" class="filter-btn" data-section="기타·극우미디어">기타·극우미디어</button>
         </div>
 
         <!-- 내란수괴 섹션 -->
@@ -1029,7 +1097,7 @@
         <!-- 군부 섹션 -->
         <div class="section" id="군부-section">
             <div class="section-header">
-                <img src="images/군부/군부.jpeg" alt="군부 로고" class="section-logo">
+                <img src="images/군부/군부.jpg" alt="군부 로고" class="section-logo" onerror="this.src='images/군부/군부.jpeg'">
                 <h2>군부</h2>
             </div>
             <div class="people-container" id="군부-container"></div>
@@ -1038,7 +1106,7 @@
         <!-- 경찰 섹션 -->
         <div class="section" id="경찰-section">
             <div class="section-header">
-                <img src="images/경찰/경찰.jpeg" alt="경찰 로고" class="section-logo">
+                <img src="images/경찰/경찰.jpg" alt="경찰 로고" class="section-logo" onerror="this.src='images/경찰/경찰.jpeg'">
                 <h2>경찰</h2>
             </div>
             <div class="people-container" id="경찰-container"></div>
@@ -1047,7 +1115,7 @@
         <!-- 대통령실 섹션 -->
         <div class="section" id="대통령실-section">
             <div class="section-header">
-                <img src="images/대통령실/대통령실.jpeg" alt="대통령실 로고" class="section-logo">
+                <img src="images/대통령실/대통령실.jpg" alt="대통령실 로고" class="section-logo" onerror="this.src='images/대통령실/대통령실.jpeg'">
                 <h2 style="margin-top: 10px;">대통령실</h2>
             </div>
             <div class="people-container" id="대통령실-container"></div>
@@ -1056,7 +1124,7 @@
         <!-- 내란의힘 섹션 -->
         <div class="section" id="내란의힘-section">
             <div class="section-header">
-                <img src="images/내란의힘/내란의힘.jpeg" alt="내란의힘 로고" class="section-logo">
+                <img src="images/내란의힘/내란의힘.jpg" alt="내란의힘 로고" class="section-logo" onerror="this.src='images/내란의힘/내란의힘.jpeg'">
                 <h2>내란의힘</h2>
             </div>
             <div class="people-container" id="내란의힘-container"></div>
@@ -1065,7 +1133,7 @@
         <!-- 기타·극우미디어 섹션 -->
         <div class="section" id="기타·극우미디어-section">
             <div class="section-header">
-                <img src="images/기타·극우미디어/기타·극우미디어.jpg" alt="기타·극우미디어 로고" class="section-logo">
+                <img src="images/기타·극우미디어/기타·극우미디어.jpg" alt="기타·극우미디어 로고" class="section-logo" onerror="this.src='images/기타·극우미디어/기타·극우미디어.jpeg'">
                 <h2>기타·극우미디어</h2>
             </div>
             <div class="people-container" id="기타·극우미디어-container"></div>
@@ -1129,7 +1197,9 @@
                 ❗2. 인물들의 행적을 함께 조사해주실 국민여러분들을 찾습니다.
                 ❗3. 누락된 범죄자들 제보해주시면 업데이트 시키겠습니다
                 ❗4. 범죄자들이 너무 많아 혼자 관리하기엔 힘이 듭니다. 많은 연락 부탁드리겠습니다.
-                🌟criminalyoon@gmail.com🌟
+                🌟<a href="mailto:criminalyoon@gmail.com" style="color: #0066cc; text-decoration: underline; transition: color 0.3s; font-size: 0.9em;" onmouseover="this.style.color='#0099ff'" onmouseout="this.style.color='#0066cc'">criminalyoon@gmail.com</a>🌟
+                🌟<a href="https://open.kakao.com/o/g6m4OK6g" style="color: #0066cc; text-decoration: underline; transition: color 0.3s; font-size: 0.75em; word-break: break-all;" onmouseover="this.style.color='#0099ff'" onmouseout="this.style.color='#0066cc'">https://open.kakao.com/o/g6m4OK6g</a>🌟
+                ❗독일에서 운영중이라 로딩속도가 조금 느립니다. 개선방법 찾아보겠습니다.
                 모바일용 디자인도 만들어보겠습니다. 우선 가로모드 부탁드립니다!
                 인물 클릭 시 자세한 행적을 볼 수 있습니다.</div>
             <button class="notice-close" onclick="closeNotice()">확인</button>
@@ -1140,42 +1210,53 @@
         const people = [ 
             
             // 내란수괴
-            { name: "윤석열", role1: "내란수괴1", role2: "시대의 로맨티스트", group: "내란수괴", row: 1, position: "center" },
-            { name: "김건희", role1: "대한민국 최고존엄", role2: "시대의 사기꾼", group: "내란수괴", row: 1, position: "right" },
+            { name: "윤석열", role1: "내란수괴1", role2: "시대의로맨티스트", group: "내란수괴", row: 1, position: "center" },
+            { name: "김건희", role1: "대한민국 최고존엄", role2: "시대의사기꾼", group: "내란수괴", row: 1, position: "right" },
 
             // 군 관계자
             { name: "김용현", role1: "내란수괴2", role2: "국방부장관", group: "군부", row: 1 },
-            { name: "노상원", role1: "내란수괴3", role2: "성범죄자,전정보사령관", group: "군부", row: 2 },
+            { name: "노상원", role1: "내란수괴3", role2: "성범죄자,전 정보사령관", group: "군부", row: 2 },
             { name: "여인형", role1: "내란수괴4", role2: "방첩사령관", group: "군부", row: 2 },
             { name: "박안수", role1: "내란주동자", role2: "계엄사령관", group: "군부", row: 3 }, 
             { name: "정진팔", role1: "내란주동자", role2: "계엄부사령관", group: "군부", row: 3 },
             { name: "문상호", role1: "내란주동자", role2: "정보사령관", group: "군부", row: 3 },
             { name: "이진우", role1: "내란주동자", role2: "수방사령관", group: "군부", row: 3 },
-            { name: "곽종근", role1: "내란주동자", role2: "특전사령관", group: "군부", row: 3 },
-            { name: "박종선", role1: "내란주동자", role2: "777사령관", group: "군부", row: 3 },
             { name: "구삼회", role1: "내란주동자", role2: "제2기갑여단장", group: "군부", row: 3 },
-            { name: "김대우", role1: "내란주동잔자", role2: "방첩사수사단장", group: "군부", row: 3 },
+            { name: "방정환", role1: "내란주동자", role2: "국방부정책기획차장", group: "군부", row: 3 },
+            { name: "김용군", role1: "내란주동자", role2: "전국방부수사단장", group: "군부", row: 3 },
+            { name: "곽종근", role1: "내란주동자(?)", role2: "특전사령관", group: "군부", row: 3 },
+            
+            { name: "김대우", role1: "내란주동자", role2: "방첩사수사단장", group: "군부", row: 4 },
             { name: "이경민", role1: "내란가담자", role2: "방첩사참모장", group: "군부", row: 4 },
             { name: "안무성", role1: "내란가담자", role2: "제9공수여단장", group: "군부", row: 4 },
             { name: "박성하", role1: "내란가담자", role2: "방첩사기획관리실장", group: "군부", row: 4 },
             { name: "나승민", role1: "내란가담자", role2: "방첩사신원보안실장", group: "군부", row: 4 },
             { name: "김철진", role1: "내란가담자", role2: "국방부군사보좌관", group: "군부", row: 4 },
             { name: "이상현", role1: "내란가담자", role2: "제1공수특전여단장", group: "군부", row: 4 },
+            { name: "김정근", role1: "내란가담자", role2: "제3공수특전여단장", group: "군부", row: 4 },
             { name: "조종래", role1: "내란가담자", role2: "육군정보참모부장", group: "군부", row: 4 },
-            { name: "김현태", role1: "내란가담자", role2: "707특임단장", group: "군부", row: 5 },
+            { name: "박종선", role1: "내란가담자(?)", role2: "777사령관", group: "군부", row: 4 },
+            { name: "김봉규", role1: "내란가담자", role2: "정보사대령", group: "군부", row: 4 },
+            { name: "정성욱", role1: "내란가담자", role2: "정보사대령", group: "군부", row: 4 },
+            { name: "고동희", role1: "내란가담자", role2: "정보사대령", group: "군부", row: 4 },
+
+            { name: "김현태", role1: "내란가담자(?)", role2: "707특임단장", group: "군부", row: 5 },
             { name: "김세운", role1: "부화내동자", role2: "작전항공단장", group: "군부", row: 5 },
             { name: "정성우", role1: "부화내동자", role2: "방첩사1처장", group: "군부", row: 5 },
 
             // 경찰
+            { name: "목현태", role1: "내란주동자", role2: "국회경비대장", group: "경찰", row: 1,},
             { name: "김봉식", role1: "내란주동자", role2: "서울경찰청장", group: "경찰", row: 1,},
             { name: "조지호", role1: "내란주동자", role2: "경찰청장", group: "경찰", row: 1,},
             { name: "강상문", role1: "내란주동자", role2: "영등포서장", group: "경찰", row: 1, },
-            { name: "목현태", role1: "내란주동자", role2: "국회경비대장", group: "경찰", row: 2,},
-            { name: "최창복", role1: "내란주동잔자", role2: "서울경비안전계장", group: "경찰", row: 2,},
+            { name: "최창복", role1: "내란주동자", role2: "서울경비안전계장", group: "경찰", row: 1,},
+            { name: "김준영", role1: "내란가담자", role2: "경기남부청장", group: "경찰", row: 2,},
+            { name: "문진영", role1: "내란가담자", role2: "과천서장", group: "경찰", row: 2,},
+            { name: "최영기", role1: "시위방해자", role2: "방배서장", group: "경찰", row: 3,},
 
-            // 행정부
+            // 대통령실
             // 1열: 핵심 인물
-            { name: "한덕수", role1: "내란동조자", role2: "국무총리", group: "대통령실", row: 1 },
+            { name: "한덕수", role1: "내란주동자", role2: "국무총리", group: "대통령실", row: 1 },
             { name: "이상민", role1: "내란주동자", role2: "행안부장관", group: "대통령실", row: 1 },
             { name: "박성재", role1: "내란동조자", role2: "법무부장관", group: "대통령실", row: 1 },
             { name: "이완규", role1: "내란동조자", role2: "법제처장", group: "대통령실", row: 1 },
@@ -1202,6 +1283,7 @@
             // 내란의힘
             { name: "추경호", role1: "내란주동자", role2: "대구 달성군", group: "내란의힘", row: 1 },
             { name: "권성동", role1: "내란동조자", role2: "강원 강릉시", group: "내란의힘", row: 1 },
+            { name: "권영세", role1: "내란동조자", role2: "서울 용산구", group: "내란의힘", row: 1 },
             { name: "김석기", role1: "내란동조자", role2: "경북 경주시", group: "내란의힘", row: 1 },
             { name: "나경원", role1: "내란동조자", role2: "서울 동작구", group: "내란의힘", row: 1 },
             { name: "유상범", role1: "내란동조자", role2: "강원 홍천군횡성군영월군평창군", group: "내란의힘", row: 1 },
@@ -1209,14 +1291,13 @@
             { name: "윤상현", role1: "내란동조자", role2: "인천 동구미추홀구을", group: "내란의힘", row: 1 },
             { name: "윤한홍", role1: "내란동조자", role2: "경남 창원시마산회원구", group: "내란의힘", row: 1 },
             { name: "최형두", role1: "내란동조자", role2: "경남 창원시마산회원구", group: "내란의힘", row: 1 },
-            { name: "강대식", role1: "내란동조자", role2: "대구 동구군위군을", group: "내란의힘", row: 1 },
+            { name: "강대식", role1: "내란동조자", role2: "대구ㄴ 동구군위군을", group: "내란의힘", row: 1 },
             { name: "강명구", role1: "내란동조자", role2: "경북 구미시을", group: "내란의힘", row: 1 },
             { name: "강민국", role1: "내란동조자", role2: "경남 진주시을", group: "내란의힘", row: 1 },
             { name: "강선영", role1: "내란동조자", role2: "비례대표", group: "내란의힘", row: 1 },
             { name: "강승규", role1: "내란동조자", role2: "충남 홍성군예산군", group: "내란의힘", row: 1 },
             { name: "고동진", role1: "내란동조자", role2: "서울 강남구병", group: "내란의힘", row: 1 },
             { name: "구자근", role1: "내란동조자", role2: "경북 구미시갑", group: "내란의힘", row: 1 },
-            { name: "권영세", role1: "내란동조자", role2: "서울 용산구", group: "내란의힘", row: 1 },
             { name: "권영진", role1: "내란동조자", role2: "대구 달서구병", group: "내란의힘", row: 1 },
             { name: "김건", role1: "내란동조자", role2: "비례대표", group: "내란의힘", row: 1 },
             { name: "김기웅", role1: "내란동조자", role2: "대구 중구남구", group: "내란의힘", row: 1 },
@@ -1232,7 +1313,7 @@
             { name: "김위상", role1: "내란동조자", role2: "비례대표", group: "내란의힘", row: 1 },
             { name: "김은혜", role1: "내란동조자", role2: "경기 성남시분당구을", group: "내란의힘", row: 1 },
             { name: "김장겸", role1: "내란동조자", role2: "비례대표", group: "내란의힘", row: 1 },
-            { name: "김정재", role1: "내란동조자", role2: "경북 포항시북구", group: "내란의힘", row: 1 },
+            { name: "김정재", role1: "내란동조자", role2: "경북 포항시", group: "내란의힘", row: 1 },
             { name: "김종양", role1: "내란동조자", role2: "경남 창원시의창구", group: "내란의힘", row: 1 },
             { name: "김태호", role1: "내란동조자", role2: "경남 양산시을", group: "내란의힘", row: 1 },
             { name: "김희정", role1: "내란동조자", role2: "부산 연제구", group: "내란의힘", row: 1 },
@@ -1307,176 +1388,125 @@
             { name: "주진우", role1: "내란동조자", role2: "부산 해운대구갑", group: "내란의힘", row: 2 },
             { name: "한지아", role1: "내란동조자", role2: "비례대표", group: "내란의힘", row : 2 },
 
-            { name: "한동훈", role1: "혼동훈", role2: "한미꾸라지", group: "내란의힘", row: 2 },
-            { name: "홍준표", role1: "내란선동자", role2: "대구시장", group: "내란의힘", row: 2 },
-            { name: "황교안", role1: "내란선동자", role2: "유튜버", group: "내란의힘", row: 2 },
-            { name: "선주헌", role1: "내란선동자", role2: "영월군의원 나", group: "내란의힘", row: 2 },
+            { name: "한동훈", role1: "혼동훈", role2: "한미꾸라지", group: "내란의힘", row: 3 },
+            { name: "홍준표", role1: "내란선동자", role2: "대구시장", group: "내란의힘", row: 3 },
+            { name: "황교안", role1: "내란선동자", role2: "유튜버", group: "내란의힘", row: 3 },
+
+            { name: "이종배B", role1: "내란선동자", role2: "서울비례대표", group: "내란의힘", row: 4 },
+            { name: "문성호", role1: "내란선동자", role2: "서울서대문2구:연희,홍제1,2동", group: "내란의힘", row: 4 },
+            { name: "이성배", role1: "내란선동자", role2: "서울송파4구:삼전,잠실본,2,3,7동", group: "내란의힘", row: 4 },
+            { name: "이경숙", role1: "내란선동자", role2: "서울도봉구1구:창1,4,5동", group: "내란의힘", row: 4 },
+            { name: "김규남", role1: "내란선동자", role2: "서울송파1구:풍납1,2,잠실4,6동", group: "내란의힘", row: 4 },
+            { name: "황철규", role1: "내란선동자", role2: "서울성동4구:응봉,성수1가1,2,성수2가1,3동", group: "내란의힘", row: 4 },
+            { name: "이희원", role1: "내란선동자", role2: "서울동작4구:흑석,사당1,2동", group: "내란의힘", row: 4 },
+            { name: "송경택", role1: "내란선동자", role2: "서울비례대표", group: "내란의힘", row: 4 },
+            { name: "박석", role1: "내란선동자", role2: "서울도봉3구:쌍문2,4,방학3동", group: "내란의힘", row: 4 },
+            { name: "김혜영", role1: "내란선동자", role2: "서울광진4구:자양3,4,화양동", group: "내란의힘", row: 4 },
+            { name: "강석주", role1: "내란선동자", role2: "서울강서2구:화곡3,가양1,2,방화3동", group: "내란의힘", row: 4 },
+            { name: "유만희", role1: "내란선동자", role2: "서울강남4구:일원본,1,개포3,수서,세곡동", group: "내란의힘", row: 4 },
+            { name: "김혜지", role1: "내란선동자", role2: "서울강동1구:고덕1,암사1,2,3동", group: "내란의힘", row: 4 },
+            { name: "이승복", role1: "내란선동자", role2: "서울양천4구:신월2,6,신정3,4동)", group: "내란의힘", row: 4 },
+            { name: "남궁역", role1: "내란선동자", role2: "서울동대문3구:전농1,2,답십리1동", group: "내란의힘", row: 4 },
+            { name: "신복자", role1: "내란선동자", role2: "서울동대문4구:답십리2,장안1,2동", group: "내란의힘", row: 4 },
+            { name: "신동원", role1: "내란선동자", role2: "서울노원1구:월계1,2,3동", group: "내란의힘", row: 4 },
+            { name: "황유정", role1: "내란선동자", role2: "서울비례대표", group: "내란의힘", row: 4 },
+            { name: "김영철", role1: "내란선동자", role2: "서울강동5구:성내1,2,3,둔촌1동,2동", group: "내란의힘", row: 4 },
+            { name: "박춘선", role1: "내란선동자", role2: "서울강동3구:강일,상일1,2,고덕2동", group: "내란의힘", row: 4 },
+            { name: "고광민", role1: "내란선동자", role2: "서울서초3구:서초1,3,방배2,3동", group: "내란의힘", row: 4 },
+            { name: "김원중", role1: "내란선동자", role2: "서울성북2구:정릉1,2,3,4,길음동", group: "내란의힘", row: 4 },
+            { name: "김춘곤", role1: "내란선동자", role2: "서울강서4구:등촌3,가양1,2,방화3동", group: "내란의힘", row: 4 },
+            { name: "서호연", role1: "내란선동자", role2: "서울구로3구:신도림,구로1,2,5동", group: "내란의힘", row: 4 },
+            { name: "선주헌", role1: "내란선동자", role2: "영월군의원 나", group: "내란의힘", row: 4 },
 
 
             // 기타·극우미디어
-            { name: "양태석", role1: "내란선동자", role2: "거제시의원 가선거구", group: "기타·극우미디어", row: 3 },
+            { name: "양태석", role1: "내란선동자", role2: "거제시가구 무소속", group: "기타·극우미디어", row: 3 },
             { name: "채일", role1: "내란선동자", role2: "국방부홍보원장", group: "기타·극우미디어", row: 3 },
             { name: "전원책", role1: "내란선동자", role2: "변호사", group: "기타·극우미디어", row: 3 },
             { name: "차강석", role1: "내란선동자", role2: "???", group: "기타·극우미디어", row: 3 },
             { name: "전광훈", role1: "내란선동자", role2: "全狂焄", group: "기타·극우미디어", row: 3 },
             { name: "정동수", role1: "내란선동자", role2: "인천사랑제일교회목사", group: "기타·극우미디어", row: 3 },
+            { name: "박인환", role1: "내란선동자", role2: "전건국대교수", group: "기타·극우미디어", row: 3 },
+            { name: "여옥대첩", role1: "내란선동자", role2: "팬카페", group: "기타·극우미디어", row: 3 },
             { name: "고성국", role1: "내란선동자", role2: "유튜버", group: "기타·극우미디어", row: 3 },
             { name: "공병호", role1: "내란선동자", role2: "유튜버", group: "기타·극우미디어", row: 3 },
             { name: "김세의", role1: "내란선동자", role2: "유튜버", group: "기타·극우미디어", row: 3 },
             { name: "이봉규", role1: "내란선동자", role2: "유튜버", group: "기타·극우미디어", row: 3 },
             { name: "장재언", role1: "내란선동자", role2: "유튜버", group: "기타·극우미디어", row: 3 }
-           
-        ];
 
-        // GitHub API 관련 함수들
-        async function updateGitHubFile(content, personName) {
-            const token = config.GITHUB_TOKEN;  
-            const owner = 'jyjyjyjyjy123';
-            const repo = 'criminal-list';
-            const path = 'data/actions.json';
+        
+        ];  // 여기를 수정
 
-            try {
-                // 1. 현재 파일 정보 가져오기
-                const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
-                    headers: {
-                        'Authorization': `token ${token}`,
-                    }
-                });
-                
-                let fileData = {};
-                let sha = '';
-                
-                if (response.ok) {
-                    const fileInfo = await response.json();
-                    try {
-                        const currentContent = atob(fileInfo.content);
-                        fileData = JSON.parse(currentContent);
-                        sha = fileInfo.sha;
-                    } catch (e) {
-                        console.error('Error parsing existing content:', e);
-                    }
+        // 이미지 캐시를 위한 맵
+        const imageCache = new Map();
+
+        // 이미지 사전 로드 함수
+        function preloadImage(src) {
+            return new Promise((resolve, reject) => {
+                if (imageCache.has(src)) {
+                    resolve(imageCache.get(src));
+                    return;
                 }
 
-                // 2. 데이터 업데이트
-                fileData[personName] = content;
-
-                // 3. 파일 업데이트
-                const updateResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        message: `Update ${personName}'s actions`,
-                        content: btoa(JSON.stringify(fileData, null, 2)),
-                        sha: sha
-                    })
-                });
-
-                if (!updateResponse.ok) {
-                    throw new Error('Failed to update file');
-                }
-
-                return true;
-            } catch (error) {
-                console.error('Error updating file:', error);
-                return false;
-            }
-        }
-
-        // 데이터 로드 함수
-        async function loadActionsData() {
-            const owner = 'jyjyjyjyjy123';
-            const repo = 'criminal-list';
-            const path = 'data/actions.json';
-
-            try {
-                const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`);
-                if (response.ok) {
-                    const fileInfo = await response.json();
-                    const content = atob(fileInfo.content);
-                    return JSON.parse(content);
-                }
-            } catch (error) {
-                console.error('Error loading actions:', error);
-            }
-            return {};
-        }
-
-        // 모달 관련 코드 수정
-        function openModal(person) {
-            const modal = document.getElementById('personModal');
-            const modalImage = document.getElementById('modalImage');
-            const modalName = document.getElementById('modalName');
-            const modalRole1 = document.getElementById('modalRole1');
-            const modalRole2 = document.getElementById('modalRole2');
-            const modalActionsView = document.getElementById('modalActionsView');
-            const modalActions = document.getElementById('modalActions');
-            
-            modalImage.src = `images/${person.group}/${person.name}.jpg`;
-            modalName.textContent = person.name;
-            modalRole1.textContent = person.role1;
-            modalRole2.textContent = person.role2;
-
-            // 데이터 로드
-            loadActionsData().then(actionsData => {
-                const actions = actionsData[person.name] || '';
-                modalActionsView.textContent = actions;
-                modalActions.value = actions;
+                const img = new Image();
+                img.onload = () => {
+                    imageCache.set(src, src);
+                    resolve(src);
+                };
+                img.onerror = () => reject(new Error(`Failed to load image: ${src}`));
+                img.src = src;
             });
-
-            modal.style.display = 'block';
         }
 
-        // 저장 버튼 이벤트 핸들러
-        document.getElementById('saveBtn').addEventListener('click', async function() {
-            const content = document.getElementById('modalActions').value;
-            const personName = document.getElementById('modalName').textContent;
+        // 모달 초기화 함수
+        function initializeModal() {
+            const modal = document.getElementById('personModal');
+            const modalContent = modal.querySelector('.modal-content');
+            const closeBtn = modal.querySelector('.modal-close');
             
-            const success = await updateGitHubFile(content, personName);
-            if (success) {
-                alert('저장되었습니다.');
-                document.getElementById('modalActionsView').textContent = content;
-            } else {
-                alert('저장 중 오류가 발생했습니다.');
+            // 모달 닫기 이벤트
+            closeBtn.onclick = function() {
+                modal.style.display = "none";
             }
-        });
+            
+            // 모달 외부 클릭시 닫기
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
 
-        // 관리자 로그인 처리
-        function checkAdminPassword() {
-            const password = document.getElementById('adminPassword').value;
-            if (password === '원하는_관리자_비밀번호') { // 원하는 비밀번호로 교체
-                isAdmin = true;
-                document.getElementById('adminModal').style.display = 'none';
-                document.getElementById('adminLoginBtn').style.display = 'none';
-                document.getElementById('saveBtn').style.display = 'block';
-                document.getElementById('modalActions').style.display = 'block';
-            } else {
-                alert('비밀번호가 올바르지 않습니다.');
+            // 모달 컨텐츠 클릭시 이벤트 전파 중단
+            modalContent.onclick = function(event) {
+                event.stopPropagation();
             }
         }
 
         // 카드 생성 함수
         function createPersonCard(person) {
-            const card = document.createElement('div');
-            card.className = 'person-container';
-            card.setAttribute('data-name', person.name.toLowerCase());
-            card.setAttribute('data-role1', person.role1.toLowerCase());
-            card.setAttribute('data-role2', person.role2.toLowerCase());
-            
-            // 이미지 생성
+            const personContainer = document.createElement('div');
+            personContainer.className = 'person-container';
+            personContainer.setAttribute('data-section', person.group);
+            personContainer.setAttribute('data-row', person.row);
+
             const img = document.createElement('img');
-            const groupFolder = person.group;
-            img.src = `images/${groupFolder}/${person.name}.jpeg`;
+            img.loading = 'lazy';  // 지연 로딩 적용
+            
+            // 이미지 경로를 미리 설정
+            const jpgPath = `images/${person.group}/${person.name}.jpg`;
+            const jpegPath = `images/${person.group}/${person.name}.jpeg`;
+            const unknownPath = `images/${person.group}/unknown.jpg`;
+            
+            // 기본 이미지 설정
+            img.src = jpgPath;
             img.alt = person.name;
             
-            // 이미지 로드 실패시 .jpg 확장자로 재시도, 그래도 실패하면 대체 이미지 사용
+            // 단일 onerror 핸들러로 수정
             img.onerror = function() {
-                if (this.src.endsWith('.jpeg')) {
-                    this.src = `images/${groupFolder}/${person.name}.jpg`;
+                if (this.src.endsWith('.jpg')) {
+                    this.src = jpegPath;
                 } else {
-                    this.src = `images/${groupFolder}/${groupFolder}.jpeg`;
+                    this.src = unknownPath;
                 }
             };
 
@@ -1494,17 +1524,57 @@
             role2.textContent = person.role2;
 
             // 요소들을 카드에 추가
-            card.appendChild(img);
-            card.appendChild(name);
-            card.appendChild(role1);
-            card.appendChild(role2);
+            personContainer.appendChild(img);
+            personContainer.appendChild(name);
+            personContainer.appendChild(role1);
+            personContainer.appendChild(role2);
 
-            // 클릭 이벤트 추가
-            card.addEventListener('click', function() {
-                openModal(person);
+            // 클릭 이벤트 최적화
+            personContainer.addEventListener('click', function() {
+                const modal = document.getElementById('personModal');
+                const modalImage = document.getElementById('modalImage');
+                const modalName = document.getElementById('modalName');
+                const modalRole1 = document.getElementById('modalRole1');
+                const modalRole2 = document.getElementById('modalRole2');
+                const modalActions = document.getElementById('modalActions');
+                const modalActionsView = document.getElementById('modalActionsView');
+
+                // 이전 데이터 초기화
+                modalActions.value = '';
+                modalActionsView.innerHTML = '';
+
+                // 모달 기본 정보 설정
+                modalImage.src = img.src;
+                modalName.textContent = person.name;
+                modalRole1.textContent = person.role1;
+                modalRole2.textContent = person.role2;
+                
+                // 현재 선택된 사람의 이름을 저장
+                const currentPerson = person.name;
+                
+                // 모달 표시
+                modal.style.display = 'block';
+
+                // 행적 데이터 로드
+                loadActionsData().then(actionsData => {
+                    // 현재 표시된 모달이 여전히 같은 사람인지 확인
+                    if (modalName.textContent === currentPerson) {
+                        const personActions = actionsData[currentPerson] || '';
+                        
+                        if (isAdmin) {
+                            modalActions.style.display = 'block';
+                            modalActionsView.style.display = 'none';
+                            modalActions.value = personActions;
+                        } else {
+                            modalActions.style.display = 'none';
+                            modalActionsView.style.display = 'block';
+                            modalActionsView.innerHTML = formatActions(personActions);
+                        }
+                    }
+                });
             });
 
-            return card;
+            return personContainer;
         }
 
         // 사람들 렌더링 함수
@@ -1546,10 +1616,21 @@
                         let martialLawPeople = [];
                         let martialLawAgreePeople = [];
                         let otherPeople = [];
+                        let row3People = [];
+                        let row4People = [];  // row4를 위한 배열 추가
                         let isInMartialLawGroup = false;
                         let isInMartialLawAgreeGroup = false;
                         
                         groupedPeople[group].forEach(person => {
+                            if (person.row === 3) {
+                                row3People.push(person);
+                                return;
+                            }
+                            if (person.row === 4) {  // row4 처리 추가
+                                row4People.push(person);
+                                return;
+                            }
+                            
                             if (person.name === '추경호') {
                                 isInMartialLawGroup = true;
                             } else if (person.name === '곽규택') {
@@ -1571,14 +1652,14 @@
                             }
                         });
                         
-                        // 계엄해제 불참자 그룹 먼저 렌더링
+                        // 계엄해제 불참자 그룹 렌더링
                         const martialLawGroup = document.createElement('div');
                         martialLawGroup.className = 'martial-law-group';
                         const martialLawContainer = document.createElement('div');
                         martialLawContainer.className = 'people-container';
                         martialLawGroup.appendChild(martialLawContainer);
                         
-                        // 8명씩 나누어 렌더링
+                        // 8명씩 나누기
                         for (let i = 0; i < martialLawPeople.length; i += 8) {
                             const rowDiv = document.createElement('div');
                             rowDiv.className = 'row';
@@ -1597,7 +1678,7 @@
                         martialLawAgreeContainer.className = 'people-container';
                         martialLawAgreeGroup.appendChild(martialLawAgreeContainer);
                         
-                        // 8명씩 나누어 렌더링
+                        // 8명씩 나누기
                         for (let i = 0; i < martialLawAgreePeople.length; i += 8) {
                             const rowDiv = document.createElement('div');
                             rowDiv.className = 'row';
@@ -1613,41 +1694,67 @@
                         otherPeople.forEach(person => {
                             container.appendChild(createPersonCard(person));
                         });
+                        
+                        // row3 인물들 8명씩 자동 정렬
+                        if (row3People.length > 0) {
+                            const row3Container = document.createElement('div');
+                            row3Container.className = 'row3-container';
+                            
+                            for (let i = 0; i < row3People.length; i += 8) {
+                                const rowDiv = document.createElement('div');
+                                rowDiv.className = 'row';
+                                const chunk = row3People.slice(i, i + 8);
+                                chunk.forEach(person => {
+                                    rowDiv.appendChild(createPersonCard(person));
+                                });
+                                row3Container.appendChild(rowDiv);
+                            }
+                            container.appendChild(row3Container);
+                        }
+                        
+                        // row4 인물들 8명씩 자동 정렬
+                        if (row4People.length > 0) {
+                            const row4Container = document.createElement('div');
+                            row4Container.className = 'row4-container';
+                            
+                            for (let i = 0; i < row4People.length; i += 8) {
+                                const rowDiv = document.createElement('div');
+                                rowDiv.className = 'row';
+                                const chunk = row4People.slice(i, i + 8);
+                                chunk.forEach(person => {
+                                    rowDiv.appendChild(createPersonCard(person));
+                                });
+                                row4Container.appendChild(rowDiv);
+                            }
+                            container.appendChild(row4Container);
+                        }
                     } else {
-                        // row 별로 정렬
+                        // row 값으로 그룹화
                         const rowGroups = {};
                         groupedPeople[group].forEach(person => {
-                            if (!rowGroups[person.row]) {
-                                rowGroups[person.row] = [];
+                            const row = person.row || 1; // row가 없으면 1로 처리
+                            if (!rowGroups[row]) {
+                                rowGroups[row] = [];
                             }
-                            rowGroups[person.row].push(person);
+                            rowGroups[row].push(person);
                         });
 
-                        // 각 row 렌더링
-                        Object.keys(rowGroups).sort().forEach(rowNum => {
-                            const people = rowGroups[rowNum];
-                            
-                            if (group === '기타·극우미디어') {
-                                // 8명씩 나누어 새로운 row 생성
-                                for (let i = 0; i < people.length; i += 8) {
+                        // row 순서대로 정렬
+                        Object.keys(rowGroups)
+                            .sort((a, b) => parseInt(a) - parseInt(b))
+                            .forEach(row => {
+                                const peopleInRow = rowGroups[row];
+                                // 8명씩 나누기
+                                for (let i = 0; i < peopleInRow.length; i += 8) {
                                     const rowDiv = document.createElement('div');
                                     rowDiv.className = 'row';
-                                    const chunk = people.slice(i, i + 8);
+                                    const chunk = peopleInRow.slice(i, i + 8);
                                     chunk.forEach(person => {
                                         rowDiv.appendChild(createPersonCard(person));
                                     });
                                     container.appendChild(rowDiv);
                                 }
-                            } else {
-                                // 다른 섹션은 기존 방식대로 처리
-                                const rowDiv = document.createElement('div');
-                                rowDiv.className = 'row';
-                                people.forEach(person => {
-                                    rowDiv.appendChild(createPersonCard(person));
-                                });
-                                container.appendChild(rowDiv);
-                            }
-                        });
+                            });
                     }
                 }
             });
@@ -1817,107 +1924,232 @@
             saveBtn.addEventListener('click', async function() {
                 if (!isAdmin) return;
                 
-                const content = document.getElementById('modalActions').value;
-                const personName = document.getElementById('modalName').textContent;
-                
-                const success = await updateGitHubFile(content, personName);
+                const modalName = document.getElementById('modalName').textContent;
+                const actions = modalActions.value;
+
+                const success = await updateActions(modalName, actions);
                 if (success) {
                     alert('저장되었습니다.');
-                    document.getElementById('modalActionsView').textContent = content;
-                } else {
-                    alert('저장 중 오류가 발생했습니다.');
-                }
-            });
-
-            // 관리자 로그인 처리
-            function checkAdminPassword() {
-                const password = document.getElementById('adminPassword').value;
-                if (password === '원하는_관리자_비밀번호') { // 원하는 비밀번호로 교체
-                    isAdmin = true;
-                    document.getElementById('adminModal').style.display = 'none';
-                    document.getElementById('adminLoginBtn').style.display = 'none';
-                    document.getElementById('saveBtn').style.display = 'block';
-                    document.getElementById('modalActions').style.display = 'block';
-                } else {
-                    alert('비밀번호가 올바르지 않습니다.');
-                }
-            }
-
-            // 행적 텍스트 포맷팅
-            function formatActions(actions) {
-                if (!actions || actions.trim() === '') {
-                    return '<p class="pending-message">곧 업데이트 하겠습니다..</p>';
-                }
-                return `<p class="actions-text">${actions.replace(/\n/g, '<br>')}</p>`;
-            }
-
-            // 관리자 모드 관련 변수
-            let isAdmin = false;
-            const ADMIN_PASSWORD = '03122024'; 
-
-            // GitHub API 초기화
-            let githubAPI;
-            
-            async function initGitHubAPI() {
-                const token = config.GITHUB_TOKEN;
-                githubAPI = new GitHubAPI(token);
-            }
-
-            // 관리자 모드에서 데이터 저장
-            async function saveChanges() {
-                if (!isAdmin) return;
-                
-                const success = await githubAPI.updatePeople(people);
-                if (success) {
-                    alert('변경사항이 저장되었습니다.');
+                    modalActionsView.innerHTML = formatActions(actions);
+                    modal.style.display = 'none';
                 } else {
                     alert('저장에 실패했습니다.');
                 }
-            }
+            });
 
-            // 기존 checkAdminPassword 함수 수정
-            function checkAdminPassword() {
-                const passwordInput = document.getElementById('adminPassword');
-                if (passwordInput.value === ADMIN_PASSWORD) {
-                    isAdmin = true;
-                    document.getElementById('adminModal').style.display = 'none';
-                    
-                    // 저장 버튼 추가
-                    const saveButton = document.createElement('button');
-                    saveButton.textContent = '변경사항 저장';
-                    saveButton.onclick = saveChanges;
-                    saveButton.className = 'bottom-button';
-                    document.querySelector('.bottom-controls').appendChild(saveButton);
-                    
-                    // GitHub API 초기화
-                    initGitHubAPI();
-                } else {
-                    alert('비밀번호가 올바르지 않습니다.');
+            // 저장된 행적 불러오기
+            const savedActions = JSON.parse(localStorage.getItem('personActions') || '{}');
+            people.forEach(person => {
+                if (savedActions[person.name]) {
+                    person.actions = savedActions[person.name];
                 }
-            }
-
-            // 공지사항 관련 함수
-            function showNotice() {
-                document.getElementById('noticeModal').style.display = 'block';
-            }
-
-            function closeNotice() {
-                document.getElementById('noticeModal').style.display = 'none';
-            }
-
-            // 페이지 로드시 공지사항 표시
-            window.onload = function() {
-                showNotice();
-            };
-
-            // 페이지 로드시 실행
-            document.addEventListener('DOMContentLoaded', function() {
-                renderPeople();
-                setupSearch();
-                setupScrollTopButton();
-                setupModal();
             });
         }
+
+        // 관리자 비밀번호 확인
+        function checkAdminPassword() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                isAdmin = true;
+                document.getElementById('adminModal').style.display = 'none';
+                document.getElementById('adminLoginBtn').style.display = 'none';
+                document.getElementById('saveBtn').style.display = 'inline-block';
+                document.getElementById('modalActions').style.display = 'block';
+            } else {
+                alert('비밀번호가 올바르지 않습니다.');
+            }
+        }
+
+        // 행적 텍스트 포맷팅
+        function formatActions(actions) {
+            if (!actions || actions.trim() === '') {
+                return '<p class="pending-message">곧 업데이트 하겠습니다..</p>';
+            }
+            return `<p class="actions-text">${actions.replace(/\n/g, '<br>')}</p>`;
+        }
+
+        // 관리자 모드 관련 변수
+        let isAdmin = false;
+        const ADMIN_PASSWORD = '03122024'; 
+
+        // 이미지 캐시와 DOM 요소 캐시
+        const domCache = {
+            modal: null,
+            modalImage: null,
+            modalName: null,
+            modalRole1: null,
+            modalRole2: null,
+            modalActions: null,
+            modalActionsView: null
+        };
+
+        // DOM 요소 초기화
+        function initializeDOM() {
+            domCache.modal = document.getElementById('personModal');
+            domCache.modalImage = document.getElementById('modalImage');
+            domCache.modalName = document.getElementById('modalName');
+            domCache.modalRole1 = document.getElementById('modalRole1');
+            domCache.modalRole2 = document.getElementById('modalRole2');
+            domCache.modalActions = document.getElementById('modalActions');
+            domCache.modalActionsView = document.getElementById('modalActionsView');
+        }
+
+        // 모달 클릭 이벤트 핸들러
+        function handleModalClick(person, img) {
+            // 이전 데이터 초기화
+            domCache.modalActions.value = '';
+            domCache.modalActionsView.innerHTML = '';
+            
+            // 모달 기본 정보 설정
+            domCache.modalImage.src = img.src;
+            domCache.modalName.textContent = person.name;
+            domCache.modalRole1.textContent = person.role1;
+            domCache.modalRole2.textContent = person.role2;
+            
+            // 현재 선택된 사람의 이름을 저장
+            const currentPerson = person.name;
+            
+            // 모달 표시
+            domCache.modal.style.display = 'block';
+
+            // 행적 데이터 로드
+            loadActionsData().then(actionsData => {
+                // 현재 표시된 모달이 여전히 같은 사람인지 확인
+                if (domCache.modalName.textContent === currentPerson) {
+                    const personActions = actionsData[currentPerson] || '';
+                    
+                    if (isAdmin) {
+                        domCache.modalActions.style.display = 'block';
+                        domCache.modalActionsView.style.display = 'none';
+                        domCache.modalActions.value = personActions;
+                    } else {
+                        domCache.modalActions.style.display = 'none';
+                        domCache.modalActionsView.style.display = 'block';
+                        domCache.modalActionsView.innerHTML = formatActions(personActions);
+                    }
+                }
+            });
+        }
+
+        // 페이지 로드시 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDOM();
+            initializeModal();
+            
+            // Intersection Observer 설정
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            if (img.dataset.src) {
+                                img.src = img.dataset.src;
+                                img.removeAttribute('data-src');
+                            }
+                            observer.unobserve(img);
+                        }
+                    });
+                }, {
+                    rootMargin: '50px 0px',
+                    threshold: 0.01
+                });
+
+                document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+                    imageObserver.observe(img);
+                });
+            }
+
+            renderPeople();
+            setupSearch();
+            setupScrollTopButton();
+        });
+
+        // 구글 스프레드시트 API URL
+        const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzeIQ10JSjCGgxifdpWf8A5kouTj2ElAxfGiLJAeDsEEM9la4_qdHI-xOj4C60XchHH/exec';
+        
+        // 행적 데이터 가져오기
+        async function loadActionsData() {
+            try {
+                const response = await fetch(SHEET_URL);
+                if (!response.ok) throw new Error('Failed to load data');
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error loading actions:', error);
+                return {};
+            }
+        }
+        
+        // 행적 데이터 저장하기
+        async function updateActions(name, actions) {
+            try {
+                const response = await fetch(`${SHEET_URL}?name=${encodeURIComponent(name)}&actions=${encodeURIComponent(actions)}`, {
+                    method: 'POST'
+                });
+                if (!response.ok) throw new Error('Failed to save data');
+                return true;
+            } catch (error) {
+                console.error('Error saving actions:', error);
+                return false;
+            }
+        }
+
+        // 행적 데이터 캐시
+        let actionsDataCache = null;
+        let lastFetchTime = 0;
+        const CACHE_DURATION = 5 * 60 * 1000; // 5분
+
+        // 행적 데이터 로드 함수 최적화
+        async function loadActionsData() {
+            const now = Date.now();
+            
+            // 캐시된 데이터가 있고 유효기간이 지나지 않았다면 캐시 사용
+            if (actionsDataCache && (now - lastFetchTime < CACHE_DURATION)) {
+                return actionsDataCache;
+            }
+
+            try {
+                const response = await fetch(SHEET_URL);
+                const data = await response.json();
+                
+                // 데이터 캐시 업데이트
+                actionsDataCache = data;
+                lastFetchTime = now;
+                
+                return data;
+            } catch (error) {
+                console.error('행적 데이터 로드 실패:', error);
+                return actionsDataCache || {}; // 에러 시 캐시된 데이터 반환
+            }
+        }
+        
+        // 행적 데이터 저장하기
+        async function updateActions(name, actions) {
+            try {
+                const response = await fetch(`${SHEET_URL}?name=${encodeURIComponent(name)}&actions=${encodeURIComponent(actions)}`, {
+                    method: 'POST'
+                });
+                if (!response.ok) throw new Error('Failed to save data');
+                return true;
+            } catch (error) {
+                console.error('Error saving actions:', error);
+                return false;
+            }
+        }
+
+        // 공지사항 관련 함수
+        function showNotice() {
+            document.getElementById('noticeModal').style.display = 'block';
+        }
+
+        function closeNotice() {
+            document.getElementById('noticeModal').style.display = 'none';
+        }
+
+        // 페이지 로드시 공지사항 표시
+        window.onload = function() {
+            showNotice();
+        };
     </script>
 </body>
 </html>
