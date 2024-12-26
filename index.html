@@ -20,6 +20,7 @@
     <script src="config.js"></script>
     <script src="js/github.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/octokit@1.7.2/dist/octokit.min.js"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
     <style>
         /* 공통 스타일 */
         * {
@@ -1414,7 +1415,6 @@
             { name: "김원중", role1: "내란동조자", role2: "서울성북2구:정릉1,2,3,4,길음동", group: "내란의힘", row: 4 },
             { name: "김춘곤", role1: "내란동조자", role2: "서울강서4구:등촌3,가양1,2,방화3동", group: "내란의힘", row: 4 },
             { name: "서호연", role1: "내란동조자", role2: "서울구로3구:신도림,구로1,2,5동", group: "내란의힘", row: 4 },
-            { name: "선주헌", role1: "내란동조자", role2: "영월군의원 나", group: "내란의힘", row: 4 },
 
 
             // 기타·극우미디어
@@ -2141,15 +2141,23 @@
             }
 
             try {
+                console.log('Saving actions:', { name, actions }); // 디버깅 로그
                 const response = await fetch(`${SHEET_URL}?name=${encodeURIComponent(name)}&actions=${encodeURIComponent(actions)}`, {
-                    method: 'POST'
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    }
                 });
+                
+                console.log('Response status:', response.status); // 디버깅 로그
                 
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 
                 const result = await response.json();
+                console.log('Response data:', result); // 디버깅 로그
+                
                 if (result.success) {
                     alert('저장되었습니다.');
                     // 저장 후 모달 내용 업데이트
@@ -2158,11 +2166,11 @@
                         document.getElementById('modalActions').value = updatedActions;
                     });
                 } else {
-                    alert('저장에 실패했습니다.');
+                    alert('저장에 실패했습니다: ' + (result.message || '알 수 없는 오류'));
                 }
             } catch (error) {
-                console.error('Error:', error);
-                alert('저장 중 오류가 발생했습니다.');
+                console.error('Error saving actions:', error);
+                alert('저장 중 오류가 발생했습니다: ' + error.message);
             }
         }
         
