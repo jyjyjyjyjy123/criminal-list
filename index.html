@@ -1490,29 +1490,28 @@
             personContainer.setAttribute('data-row', person.row);
 
             const img = document.createElement('img');
-            img.loading = 'lazy';  // 지연 로딩 적용
-            
-            // 이미지 경로를 미리 설정
-            const webpPath = `images/${person.group}/${person.name}.webp`;
-            const jpgPath = `images/${person.group}/${person.name}.jpg`;
-            const jpegPath = `images/${person.group}/${person.name}.jpeg`;
-            const unknownWebpPath = `images/${person.group}/unknown.webp`;
-            
-            // WebP 이미지를 우선적으로 사용
-            img.src = webpPath;
             img.alt = person.name;
             
-            // 단일 onerror 핸들러로 수정
-            img.onerror = function() {
-                if (this.src.endsWith('.webp')) {
-                    this.src = jpgPath;
-                } else if (this.src.endsWith('.jpg')) {
-                    this.src = jpegPath;
-                } else {
-                    this.src = unknownWebpPath;
+            // 이미지 로딩 로직 개선
+            const tryLoadImage = (formats) => {
+                if (formats.length === 0) {
+                    img.src = 'images/unknown.webp'; // 모든 형식 실패시 기본 이미지
+                    return;
                 }
+                
+                const format = formats[0];
+                const imagePath = `images/${person.group}/${person.name}.${format}`;
+                
+                img.onerror = () => {
+                    // 현재 형식 실패시 다음 형식 시도
+                    tryLoadImage(formats.slice(1));
+                };
+                img.src = imagePath;
             };
-
+            
+            // 이미지 형식 우선순위
+            tryLoadImage(['webp', 'jpg', 'jpeg', 'png']);
+            
             // 이름과 역할 정보
             const name = document.createElement('div');
             name.className = 'person-name';
