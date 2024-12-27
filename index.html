@@ -89,37 +89,86 @@
         .section-logo {
             max-width: 150px;
             width: 100%;
-            transition: transform 0.3s ease;
-        }
-
-        .section-logo:hover {
-            transform: scale(1.03);
+            display: block;
+            margin: 0 auto;
         }
 
         #군부-section .section-logo {
             max-width: 400px;
+            margin: 35px auto 5px;
         }
 
         #경찰-section .section-logo {
             max-width: 170px;
-            margin: 40px 5px 10px 0px;
+            margin: 35px auto 5px;
         }
 
         #대통령실-section .section-logo {
             max-width: 300px;
-            margin: 40px 0px 10px 0px;
+            margin: 35px auto 5px;
         }
 
         #내란의힘-section .section-logo {
             max-width: 150px;
-            margin: 10px 5px 1px 0px;
+            margin: 10px auto 0;
         }
 
         #기타·극우미디어-section .section-logo {
             max-width: 180px;
-            margin: 20px 0px 5px 0px;
+            margin: 15px auto 5px;
         }
 
+        @media screen and (max-width: 768px) {
+            .section-logo {
+                max-width: 120px;
+            }
+
+            #군부-section .section-logo {
+                max-width: 150px;
+                margin: 25px auto 5px;
+            }
+
+            #내란의힘-section .section-logo {
+                max-width: 55px;
+                margin: 10px auto 3px;
+            }
+
+            #경찰-section .section-logo {
+                max-width: 70px;
+                margin: 25px auto 0;
+            }
+
+            #대통령실-section .section-logo {
+                max-width: 100px;
+                margin: 25px auto 0;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .section-logo {
+                max-width: 120px;
+            }
+
+            #군부-section .section-logo {
+                max-width: 150px;
+                margin: 25px auto 5px;
+            }
+
+            #내란의힘-section .section-logo {
+                max-width: 55px;
+                margin: 10px auto 5px;  /* 여백 동일하게 적용 */
+            }
+
+            #경찰-section .section-logo {
+                max-width: 70px;
+                margin: 25px auto 0;
+            }
+
+            #대통령실-section .section-logo {
+                max-width: 100px;
+                margin: 25px auto 0;
+            }
+        }
 
         /* 섹션 제목 스타일 */
         #내란수괴-section h2,
@@ -652,10 +701,22 @@
 
             #군부-section .section-logo {
                 max-width: 150px;
+                margin: 25px auto 5px;
             }
 
             #내란의힘-section .section-logo {
-                max-width: 40px;
+                max-width: 55px;
+                margin: 10px auto 3px;
+            }
+
+            #경찰-section .section-logo {
+                max-width: 70px;
+                margin: 25px auto 0;
+            }
+
+            #대통령실-section .section-logo {
+                max-width: 100px;
+                margin: 25px auto 0;
             }
 
             .section {
@@ -709,10 +770,22 @@
 
             #군부-section .section-logo {
                 max-width: 150px;
+                margin: 25px auto 5px;
             }
 
             #내란의힘-section .section-logo {
-                max-width: 40px;
+                max-width: 55px;
+                margin: 10px auto 5px;  /* 여백 동일하게 적용 */
+            }
+
+            #경찰-section .section-logo {
+                max-width: 70px;
+                margin: 25px auto 0;
+            }
+
+            #대통령실-section .section-logo {
+                max-width: 100px;
+                margin: 25px auto 0;
             }
 
             .people-container {
@@ -752,7 +825,7 @@
         .search-container {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 25px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             transition: all 0.3s ease;
             width: 200px;
             overflow: hidden;
@@ -2285,9 +2358,8 @@
                 .then((snapshot) => {
                     const data = snapshot.val();
                     if (data && data.text) {
-                        const text = data.text.toString();
-                        modalActions.value = text;
-                        modalActionsView.innerHTML = formatActions(text);
+                        modalActions.value = data.text.toString();
+                        modalActionsView.innerHTML = formatActions(data.text);
                     }
                 })
                 .catch((error) => {
