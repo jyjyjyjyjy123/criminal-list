@@ -1777,6 +1777,7 @@
             personContainer.className = 'person-container';
             personContainer.setAttribute('data-section', person.group);
             personContainer.setAttribute('data-row', person.row);
+            personContainer.setAttribute('data-name', person.name);  // data-name 속성 추가
 
             const img = document.createElement('img');
             img.alt = person.name;
@@ -2113,9 +2114,6 @@
                     if (text) {
                         modalActions.value = text;
                         modalActionsView.innerHTML = formatActions(text);
-                    } else {
-                        modalActions.value = '';
-                        modalActionsView.innerHTML = formatActions('');
                     }
                 })
                 .catch((error) => {
@@ -2188,6 +2186,26 @@
                 }, 3000);
             }
 
+            // 검색 실행 함수
+            function executeSearch(searchTerm) {
+                searchTerm = searchTerm.trim().toLowerCase();
+                if (!searchTerm) return null;
+
+                // 카드 찾기
+                const allCards = document.querySelectorAll('.person-container');
+                let foundCard = null;
+
+                allCards.forEach(card => {
+                    const name = card.getAttribute('data-name').toLowerCase();
+                    if (name.includes(searchTerm)) {
+                        foundCard = card;
+                        return;
+                    }
+                });
+
+                return foundCard;
+            }
+
             // 실시간 검색 결과 표시
             searchInput.addEventListener('input', function() {
                 const searchTerm = this.value.trim().toLowerCase();
@@ -2198,26 +2216,18 @@
                 }
 
                 // people 배열에서 검색
-                const matchingPeople = [];
-                Object.keys(people).forEach(category => {
-                    people[category].forEach(person => {
-                        if (person.name.toLowerCase().includes(searchTerm) ||
-                            person.role1.toLowerCase().includes(searchTerm) ||
-                            person.role2.toLowerCase().includes(searchTerm)) {
-                            matchingPeople.push({
-                                ...person,
-                                category: category
-                            });
-                        }
-                    });
-                });
+                const matchingPeople = people.filter(person => 
+                    person.name.toLowerCase().includes(searchTerm) ||
+                    person.role1.toLowerCase().includes(searchTerm) ||
+                    person.role2.toLowerCase().includes(searchTerm)
+                );
 
                 if (matchingPeople.length > 0) {
                     searchResults.innerHTML = matchingPeople.map(person => `
                         <div class="search-result-item" data-name="${person.name}">
                             <div class="search-result-name">${person.name}</div>
                             <div class="search-result-role">
-                                <span class="search-result-category">${person.category}</span>
+                                <span class="search-result-category">${person.group}</span>
                                 ${person.role1}${person.role2 ? ` | ${person.role2}` : ''}
                             </div>
                         </div>
@@ -2228,27 +2238,31 @@
                 }
             });
 
+            // 엔터키 검색
+            searchInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const card = executeSearch(this.value);
+                    if (card) {
+                        searchResults.style.display = 'none';
+                        searchInput.value = '';
+                        scrollToCard(card);
+                    }
+                }
+            });
+
             // 검색 결과 클릭 이벤트
             searchResults.addEventListener('click', function(e) {
                 const resultItem = e.target.closest('.search-result-item');
                 if (!resultItem) return;
 
                 const name = resultItem.dataset.name;
-                const matchingCard = document.querySelector(`.person-container[data-name="${name.toLowerCase()}"]`);
+                const card = executeSearch(name);
                 
-                searchInput.value = '';
-                searchResults.style.display = 'none';
-                scrollToCard(matchingCard);
-            });
-
-            // 엔터키 검색
-            searchInput.addEventListener('keyup', function(e) {
-                if (e.key === 'Enter') {
-                    const searchTerm = this.value.trim().toLowerCase();
-                    const matchingCard = document.querySelector(`.person-container[data-name*="${searchTerm}"]`);
-                    
+                if (card) {
                     searchResults.style.display = 'none';
-                    scrollToCard(matchingCard);
+                    searchInput.value = '';
+                    scrollToCard(card);
                 }
             });
 
