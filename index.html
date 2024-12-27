@@ -290,12 +290,6 @@
                 border: none;
             }
 
-            .filter-btn[data-section="군부"] { width: 9%; }
-            .filter-btn[data-section="경찰"] { width: 9%; }
-            .filter-btn[data-section="대통령실"] { width: 28%; }
-            .filter-btn[data-section="내란의힘"] { width: 26%; }
-            .filter-btn[data-section="기타·극우미디어"] { width: 28%; }
-
             .filter-btn:hover {
                 background: #8b0000;
                 color: white;
@@ -861,10 +855,6 @@
             border-bottom: none;
         }
 
-        .search-result-item:hover {
-            background: rgba(139, 0, 0, 0.1);
-        }
-
         .search-result-name {
             font-weight: bold;
             color: #8b0000;
@@ -1236,7 +1226,6 @@
             </div>
             <div class="modal-footer">
                 <button id="adminLoginBtn" class="admin-btn">관리자 로그인</button>
-                <button id="editBtn" class="edit-btn" style="display: none;">수정</button>
                 <button id="saveBtn" class="save-btn" style="display: none;">저장</button>
             </div>
         </div>
@@ -1274,11 +1263,10 @@
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
+    <script>
         // Firebase 구성
         const firebaseConfig = {
             apiKey: "AIzaSyCMN4o3bjh2tOLBs0VX4amemvthvGsWXS4",
@@ -1292,34 +1280,34 @@
         };
 
         // Firebase 초기화
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const database = getDatabase(app);
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
         // 전역 변수로 Firebase 함수들 설정
         window.firebaseDB = {
             // 행적 저장
             saveActions: async (name, actions, group) => {
                 try {
-                    const personRef = ref(database, `actions/${name}`);
-                    await set(personRef, {
+                    const personRef = db.ref('actions/' + name);
+                    await personRef.set({
                         text: actions,
-                        group: group
+                        group: group,
+                        timestamp: Date.now()
                     });
-                    console.log('Actions saved successfully for:', name);  // 디버깅용 로그
+                    console.log('Actions saved successfully for:', name);
                     return true;
                 } catch (error) {
-                    console.error('Error saving actions:', error);  // 자세한 에러 로그
+                    console.error('Error saving actions:', error);
                     return false;
                 }
             },
             
             // 행적 불러오기
             loadAllActions: (callback) => {
-                const actionsRef = ref(database, 'actions');
-                onValue(actionsRef, (snapshot) => {
+                const actionsRef = db.ref('actions');
+                actionsRef.on('value', (snapshot) => {
                     const data = snapshot.val() || {};
-                    console.log('Loaded actions:', data);  // 디버깅용 로그
+                    console.log('Loaded actions:', data);
                     callback(data);
                 });
             }
@@ -1332,11 +1320,6 @@
                     resolve(data);
                 });
             });
-        };
-
-        // 행적 저장 함수 수정
-        window.saveActions = async (name, actions) => {
-            return await firebaseDB.saveActions(name, actions);
         };
     </script>
 
@@ -1418,24 +1401,8 @@
                       { name: "추경호", role1: "내란주동자", role2: "대구 달성군", group: "내란의힘", row: 1 },
             { name: "권성동", role1: "내란동조자", role2: "강원 강릉시", group: "내란의힘", row: 1 },
             { name: "권영세", role1: "내란동조자", role2: "서울 용산구", group: "내란의힘", row: 1 },
-            { name: "김석기", role1: "내란동조자", role2: "경북 경주시", group: "내란의힘", row: 1 },
-            { name: "나경원", role1: "내란동조자", role2: "서울 동작구", group: "내란의힘", row: 1 },
-            { name: "유상범", role1: "내란동조자", role2: "강원 홍천군횡성군영월군평창군", group: "내란의힘", row: 1 },
-            { name: "유영하", role1: "내란동조자", role2: "대구 달서구갑", group: "내란의힘", row: 1 },
-            { name: "윤상현", role1: "내란동조자", role2: "인천 동구미추홀구을", group: "내란의힘", row: 1 },
-            { name: "윤한홍", role1: "내란동조자", role2: "경남 창원시마산회원구", group: "내란의힘", row: 1 },
-            { name: "최형두", role1: "내란동조자", role2: "경남 창원시마산회원구", group: "내란의힘", row: 1 },
-            { name: "강대식", role1: "내란동조자", role2: "대구 동구군위군을", group: "내란의힘", row: 1 },
-            { name: "강명구", role1: "내란동조자", role2: "경북 구미시을", group: "내란의힘", row: 1 },
-            { name: "강민국", role1: "내란동조자", role2: "경남 진주시을", group: "내란의힘", row: 1 },
-            { name: "강선영", role1: "내란동조자", role2: "비례대표", group: "내란의힘", row: 1 },
-            { name: "강승규", role1: "내란동조자", role2: "충남 홍성군예산군", group: "내란의힘", row: 1 },
-            { name: "고동진", role1: "내란동조자", role2: "서울 강남구병", group: "내란의힘", row: 1 },
-            { name: "구자근", role1: "내란동조자", role2: "경북 구미시갑", group: "내란의힘", row: 1 },
-            { name: "권영진", role1: "내란동조자", role2: "대구 달서구병", group: "내란의힘", row: 1 },
-            { name: "김건", role1: "내란동조자", role2: "비례대표", group: "내란의힘", row: 1 },
+            { name: "김건", role1: "내란동조자", role2: "부산 해운대구을", group: "내란의힘", row: 1 },
             { name: "김기웅", role1: "내란동조자", role2: "대구 중구남구", group: "내란의힘", row: 1 },
-            { name: "김기현", role1: "내란동조자", role2: "울산 남구을", group: "내란의힘", row: 1 },
             { name: "김대식", role1: "내란동조자", role2: "부산 사상구", group: "내란의힘", row: 1 },
             { name: "김도읍", role1: "내란동조자", role2: "부산 강서구", group: "내란의힘", row: 1 },
             { name: "김미애", role1: "내란동조자", role2: "부산 해운대구을", group: "내란의힘", row: 1 },
@@ -2095,7 +2062,6 @@
             const adminModalClose = adminModal.querySelector('.modal-close');
             const adminLoginBtn = document.getElementById('adminLoginBtn');
             const saveBtn = document.getElementById('saveBtn');
-            const editBtn = document.getElementById('editBtn');
 
             // 모달 창 닫기
             modalClose.onclick = function() {
@@ -2124,8 +2090,6 @@
             // 저장 버튼 클릭
             saveBtn.onclick = saveModalActions;
 
-            // 수정 버튼 클릭
-            editBtn.onclick = handleEditClick;
         }
 
         // 관리자 로그인 체크
@@ -2146,10 +2110,17 @@
 
         // 행적 텍스트 포맷팅
         function formatActions(actions) {
-            if (!actions || actions.trim() === '') {
+            if (!actions) {
                 return '<p class="pending-message">곧 업데이트 하겠습니다..</p>';
             }
-            return `<p class="actions-text">${actions.replace(/\n/g, '<br>')}</p>`;
+            if (typeof actions === 'object' && actions.text) {
+                actions = actions.text;
+            }
+            actions = String(actions).trim();
+            if (actions === '') {
+                return '<p class="pending-message">곧 업데이트 하겠습니다..</p>';
+            }
+            return `<p class="actions-text">${String(actions).split('\n').map(line => line.trim()).join('<br>')}</p>`;
         }
 
         // 관리자 모드 관련 변수
@@ -2180,74 +2151,67 @@
 
         // 모달 클릭 이벤트 핸들러
         function handleModalClick(person, img) {
-            // 이전 데이터 초기화
-            domCache.modalActions.value = '';
-            domCache.modalActionsView.innerHTML = '';
-            
-            // 모달 기본 정보 설정
-            domCache.modalImage.src = img.src;
-            domCache.modalName.textContent = person.name;
-            domCache.modalRole1.textContent = person.role1;
-            domCache.modalRole2.textContent = person.role2;
-            
-            // 현재 선택된 사람의 이름을 저장
-            const currentPerson = person.name;
-            
-            // 모달 표시
-            domCache.modal.style.display = 'block';
+            const modal = document.getElementById('personModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalName = document.getElementById('modalName');
+            const modalRole1 = document.getElementById('modalRole1');
+            const modalRole2 = document.getElementById('modalRole2');
+            const modalActions = document.getElementById('modalActions');
+            const modalActionsView = document.getElementById('modalActionsView');
+            const loadingOverlay = document.querySelector('.loading-overlay');
 
-            // 행적 데이터 로드
-            loadActionsData().then(data => {
-                // 현재 표시된 모달이 여전히 같은 사람인지 확인
-                if (domCache.modalName.textContent === currentPerson) {
-                    const personActions = data[currentPerson] || '';
-                    
-                    if (isAdmin) {
-                        domCache.modalActions.style.display = 'block';
-                        domCache.modalActionsView.style.display = 'none';
-                        domCache.modalActions.value = personActions;
-                    } else {
-                        domCache.modalActions.style.display = 'none';
-                        domCache.modalActionsView.style.display = 'block';
-                        domCache.modalActionsView.innerHTML = formatActions(personActions);
+            // 모달 내용 설정
+            modalImage.src = img;
+            modalName.textContent = person.name;
+            modalRole1.textContent = person.role1;
+            modalRole2.textContent = person.role2;
+
+            // 초기값 설정
+            modalActions.value = '';
+            modalActionsView.innerHTML = formatActions('');
+
+            // 로딩 오버레이 표시
+            loadingOverlay.style.display = 'flex';
+
+            // Firebase에서 행적 데이터 불러오기
+            const actionsRef = db.ref('actions/' + person.name);
+            actionsRef.once('value')
+                .then((snapshot) => {
+                    const data = snapshot.val();
+                    if (data && data.text) {
+                        const text = data.text.toString();
+                        modalActions.value = text;
+                        modalActionsView.innerHTML = formatActions(text);
                     }
-                }
-            });
-        }
+                })
+                .catch((error) => {
+                    console.error('Error loading actions:', error);
+                    modalActions.value = '';
+                    modalActionsView.innerHTML = formatActions('');
+                })
+                .finally(() => {
+                    loadingOverlay.style.display = 'none';
+                });
 
-        // 행적 저장 함수
-        async function saveModalActions() {
-            const name = document.getElementById('modalName').textContent;
-            const actions = document.getElementById('modalActions').value;
-            const personCard = document.querySelector(`[data-name="${name}"]`);
-            const group = personCard ? personCard.closest('.section').id : '';
+            // 관리자 모드에 따라 버튼 표시/숨김
+            const adminLoginBtn = document.getElementById('adminLoginBtn');
+            const saveBtn = document.getElementById('saveBtn');
             
-            console.log('Saving actions for:', name, 'in group:', group);
-            
-            if (await firebaseDB.saveActions(name, actions, group)) {
-                showCustomAlert('행적이 저장되었습니다.');
-                // 저장 후 뷰 모드로 전환
-                document.getElementById('modalActions').style.display = 'none';
-                document.getElementById('modalActionsView').style.display = 'block';
-                document.getElementById('modalActionsView').innerHTML = formatActions(actions);
-                // 수정 버튼 표시
-                document.getElementById('editBtn').style.display = 'block';
-                // 모달창 닫기
-                document.getElementById('personModal').style.display = 'none';
+            if (isAdmin) {
+                adminLoginBtn.style.display = 'none';
+                saveBtn.style.display = 'inline-block';
+                modalActions.style.display = 'block';
+                modalActionsView.style.display = 'none';
             } else {
-                showCustomAlert('행적 저장에 실패했습니다.');
+                adminLoginBtn.style.display = 'inline-block';
+                saveBtn.style.display = 'none';
+                modalActions.style.display = 'none';
+                modalActionsView.style.display = 'block';
             }
-        }
 
-        // 수정 버튼 클릭 핸들러
-        function handleEditClick() {
-            const actionsText = document.getElementById('modalActionsView').innerText;
-            document.getElementById('modalActions').value = actionsText;
-            document.getElementById('modalActions').style.display = 'block';
-            document.getElementById('modalActionsView').style.display = 'none';
-            document.getElementById('editBtn').style.display = 'none';
+            modal.style.display = 'block';
         }
-
+        
         // 엔터키 로그인
         document.getElementById('adminPassword').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
@@ -2352,9 +2316,38 @@
             
             // 버튼에 포커스
             okButton.focus();
+        }
 
-            // 3초 후 자동으로 닫기
-            setTimeout(handleOk, 3000);
+        // 행적 저장 함수
+        function saveModalActions() {
+            const name = document.getElementById('modalName').textContent;
+            const text = document.getElementById('modalActions').value.trim();
+            
+            if (!text) {
+                showCustomAlert('내용을 입력해주세요.');
+                return;
+            }
+            
+            console.log('Attempting to save actions for:', name);
+            
+            // Firebase에 텍스트만 저장
+            db.ref('actions/' + name).set(text, (error) => {
+                if (error) {
+                    console.error('Error saving actions:', error);
+                    showCustomAlert('행적 저장에 실패했습니다. 다시 시도해주세요.');
+                } else {
+                    console.log('Data saved successfully');
+                    showCustomAlert('행적이 저장되었습니다.');
+                    
+                    // 저장 성공 후 즉시 UI 업데이트
+                    const modalActions = document.getElementById('modalActions');
+                    const modalActionsView = document.getElementById('modalActionsView');
+                    
+                    modalActions.style.display = 'none';
+                    modalActionsView.style.display = 'block';
+                    modalActionsView.innerHTML = formatActions(text);
+                }
+            });
         }
     </script>
 </body>
