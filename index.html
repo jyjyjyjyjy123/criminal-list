@@ -2470,32 +2470,32 @@
             // 모달 창 닫기
             if (modalClose) {
                 modalClose.onclick = function() {
-                    personModal.style.display = 'none';
+                    personModal.style.display = "none";
                 }
             }
 
             if (adminModalClose) {
                 adminModalClose.onclick = function() {
-                    adminModal.style.display = 'none';
+                    adminModal.style.display = "none";
                 }
             }
 
             if (adminManageModalClose) {
                 adminManageModalClose.onclick = function() {
-                    adminManageModal.style.display = 'none';
+                    adminManageModal.style.display = "none";
                 }
             }
 
             // 모달 창 외부 클릭시 닫기
             window.onclick = function(event) {
                 if (event.target === personModal) {
-                    personModal.style.display = 'none';
+                    personModal.style.display = "none";
                 }
                 if (event.target === adminModal) {
-                    adminModal.style.display = 'none';
+                    adminModal.style.display = "none";
                 }
                 if (event.target === adminManageModal) {
-                    adminManageModal.style.display = 'none';
+                    adminManageModal.style.display = "none";
                 }
             }
 
@@ -2548,7 +2548,6 @@
                 if (isApprovedAdmin) {
                     isAdmin = true;
                     document.getElementById('adminModal').style.display = 'none';
-                    document.getElementById('signupModal').style.display = 'none';  // 수정
                     document.getElementById('adminLoginBtn').style.display = 'none';
                     document.getElementById('saveBtn').style.display = 'block';
                     document.getElementById('logoutBtn').style.display = 'block';
@@ -3113,16 +3112,13 @@
 
             try {
                 // 이미 등록된 이메일인지 확인
-                try {
-                    const methods = await firebase.auth().fetchSignInMethodsForEmail(email);
-                    if (methods && methods.length > 0) {
-                        showCustomAlert('이미 등록된 이메일입니다.');
-                        return;
-                    }
-                } catch (error) {
-                    if (error.code !== 'auth/invalid-email') {
-                        throw error;
-                    }
+                const adminRequestsRef = firebase.database().ref('adminRequests');
+                const query = adminRequestsRef.orderByChild('email').equalTo(email);
+                const snapshot = await query.once('value');
+
+                if (snapshot.exists()) {
+                    showCustomAlert('해당 이메일은 현재 승인 요청 중인 이메일 주소입니다.');
+                    return;
                 }
 
                 // 비밀번호 해시화 (임시로 base64 인코딩 사용)
@@ -3141,8 +3137,7 @@
                 showCustomAlert('관리자 등록이 신청되었습니다. 승인이 완료될 때까지 기다려주세요.');
                 
                 // 모달 닫기
-                document.getElementById('adminModal').style.display = 'none';
-                document.getElementById('signupModal').style.display = 'none';  // 수정
+                document.getElementById('signupModal').style.display = 'none';
                 
                 // 입력 필드 초기화
                 document.getElementById('signupEmail').value = '';
@@ -3150,29 +3145,9 @@
                 document.getElementById('signupPasswordConfirm').value = '';
                 document.getElementById('signupNickname').value = '';
                 
-                // 로그아웃 처리
-                await firebase.auth().signOut();
-                
             } catch (error) {
                 console.error('Error registering admin:', error);
-                let errorMessage;
-                switch (error.code) {
-                    case 'auth/email-already-in-use':
-                        errorMessage = '이미 등록된 이메일입니다.';
-                        break;
-                    case 'auth/invalid-email':
-                        errorMessage = '유효하지 않은 이메일 주소입니다.';
-                        break;
-                    case 'auth/operation-not-allowed':
-                        errorMessage = '이메일/비밀번호 인증이 비활성화되어 있습니다.';
-                        break;
-                    case 'auth/weak-password':
-                        errorMessage = '비밀번호가 너무 약합니다.';
-                        break;
-                    default:
-                        errorMessage = '등록 중 오류가 발생했습니다: ' + error.message;
-                }
-                showCustomAlert(errorMessage);
+                showCustomAlert('등록 중 오류가 발생했습니다: ' + error.message);
             }
         }
     </script>
