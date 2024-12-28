@@ -3111,39 +3111,48 @@
             }
 
             try {
-                // 이미 등록된 이메일인지 확인
-                const adminRequestsRef = firebase.database().ref('adminRequests');
-                const query = adminRequestsRef.orderByChild('email').equalTo(email);
-                const snapshot = await query.once('value');
+                // Firebase Authentication으로 임시 로그인하여 이메일 중복 체크
+                await firebase.auth().signInAnonymously();
+                
+                try {
+                    // 이미 등록된 이메일인지 확인
+                    const adminRequestsRef = firebase.database().ref('adminRequests');
+                    const query = adminRequestsRef.orderByChild('email').equalTo(email);
+                    const snapshot = await query.once('value');
 
-                if (snapshot.exists()) {
-                    showCustomAlert('해당 이메일은 현재 승인 요청 중인 이메일 주소입니다.');
-                    return;
+                    if (snapshot.exists()) {
+                        showCustomAlert('해당 이메일은 현재 승인 요청 중인 이메일 주소입니다.');
+                        return;
+                    }
+
+                    // 비밀번호 해시화 (임시로 base64 인코딩 사용)
+                    const hashedPassword = btoa(password);
+
+                    // Realtime Database에 관리자 신청 정보 저장
+                    const requestRef = firebase.database().ref('adminRequests').push();
+                    await requestRef.set({
+                        email: email,
+                        password: hashedPassword,
+                        nickname: nickname,
+                        status: 'pending',
+                        requestedAt: firebase.database.ServerValue.TIMESTAMP
+                    });
+
+                    showCustomAlert('관리자 등록이 신청되었습니다. 승인이 완료될 때까지 기다려주세요.');
+                    
+                    // 모달 닫기
+                    document.getElementById('signupModal').style.display = 'none';
+                    
+                    // 입력 필드 초기화
+                    document.getElementById('signupEmail').value = '';
+                    document.getElementById('signupPassword').value = '';
+                    document.getElementById('signupPasswordConfirm').value = '';
+                    document.getElementById('signupNickname').value = '';
+                    
+                } finally {
+                    // 임시 로그인 세션 종료
+                    await firebase.auth().signOut();
                 }
-
-                // 비밀번호 해시화 (임시로 base64 인코딩 사용)
-                const hashedPassword = btoa(password);
-
-                // Realtime Database에 관리자 신청 정보 저장
-                const requestRef = firebase.database().ref('adminRequests').push();
-                await requestRef.set({
-                    email: email,
-                    password: hashedPassword,
-                    nickname: nickname,
-                    status: 'pending',
-                    requestedAt: firebase.database.ServerValue.TIMESTAMP
-                });
-
-                showCustomAlert('관리자 등록이 신청되었습니다. 승인이 완료될 때까지 기다려주세요.');
-                
-                // 모달 닫기
-                document.getElementById('signupModal').style.display = 'none';
-                
-                // 입력 필드 초기화
-                document.getElementById('signupEmail').value = '';
-                document.getElementById('signupPassword').value = '';
-                document.getElementById('signupPasswordConfirm').value = '';
-                document.getElementById('signupNickname').value = '';
                 
             } catch (error) {
                 console.error('Error registering admin:', error);
