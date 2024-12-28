@@ -17,6 +17,7 @@
     <meta name="naverbot" content="index, follow">
     <meta name="title" content="내란범죄혐의자 명단">
     <title>내란범죄혐의자 명단</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <style>
         /* 공통 스타일 */
         * {
@@ -1436,8 +1437,12 @@
                 <input type="password" id="signupPassword" placeholder="비밀번호" style="width: 100%; padding: 10px; margin: 10px 0;" required>
                 <input type="password" id="signupPasswordConfirm" placeholder="비밀번호 확인" style="width: 100%; padding: 10px; margin: 10px 0;" required>
                 <input type="text" id="signupNickname" placeholder="닉네임" style="width: 100%; padding: 10px; margin: 10px 0;" required>
+                <div class="g-recaptcha" data-sitekey="6LeNw6cqAAAAAGawupLhufGtmfxGfN9ltBKQxH8l"></div>
+                <div id="verificationSection" style="display: none;">
+                    <input type="text" id="verificationCode" placeholder="인증 코드 입력">
+                    <button onclick="verifyCode()">인증 코드 확인</button>
                 </div>
-                <button onclick="requestAdminSignup()" style="width: 100%; padding: 10px; margin: 10px 0;">신청하기</button>
+                <button onclick="requestAdminSignup()">신청하기</button>
             </div>
         </div>
     </div>
@@ -2547,6 +2552,7 @@
                 if (isApprovedAdmin) {
                     isAdmin = true;
                     document.getElementById('adminModal').style.display = 'none';
+                    document.getElementById('signupModal').style.display = 'none';  // 수정
                     document.getElementById('adminLoginBtn').style.display = 'none';
                     document.getElementById('saveBtn').style.display = 'block';
                     document.getElementById('logoutBtn').style.display = 'block';
@@ -3110,6 +3116,23 @@
             }
 
             try {
+                // reCAPTCHA 응답 가져오기
+                const recaptchaResponse = grecaptcha.getResponse();
+                if (!recaptchaResponse) {
+                    showCustomAlert('로봇이 아님을 인증해주세요.');
+                    return;
+                }
+
+                // reCAPTCHA 토큰 검증
+                const verifyRecaptcha = firebase.functions().httpsCallable('verifyRecaptcha');
+                const recaptchaResult = await verifyRecaptcha({ token: recaptchaResponse });
+                
+                if (!recaptchaResult.data.success) {
+                    showCustomAlert('보안 검증에 실패했습니다. 다시 시도해주세요.');
+                    grecaptcha.reset();
+                    return;
+                }
+
                 // 이미 등록된 이메일인지 확인
                 try {
                     const methods = await firebase.auth().fetchSignInMethodsForEmail(email);
@@ -3140,6 +3163,7 @@
                 
                 // 모달 닫기
                 document.getElementById('adminModal').style.display = 'none';
+                document.getElementById('signupModal').style.display = 'none';  // 수정
                 
                 // 입력 필드 초기화
                 document.getElementById('signupEmail').value = '';
