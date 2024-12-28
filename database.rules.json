@@ -1,0 +1,20 @@
+{
+  "rules": {
+    "admins": {
+      ".read": "auth.token.email === 'criminalyoon@gmail.com'",
+      ".write": "auth.token.email === 'criminalyoon@gmail.com'"
+    },
+    "adminRequests": {
+      ".read": "auth.token.email === 'criminalyoon@gmail.com'",
+      ".write": "auth.token.email === 'criminalyoon@gmail.com' || !data.exists()"
+    },
+    "actions": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+    "connections": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}
