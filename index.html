@@ -757,121 +757,60 @@
             }
         }
 
-        /* 반응형 디자인 */
-        @media screen and (max-width: 768px) {
-            .section-logo {
-                max-width: 120px;
-            }
-
-            #군부-section .section-logo {
-                max-width: 150px;
-                margin: 25px auto 5px;
-            }
-
-            #내란의힘-section .section-logo {
-                max-width: 55px;
-                margin: 10px auto 3px;
-            }
-
-            #경찰-section .section-logo {
-                max-width: 70px;
-                margin: 25px auto 0;
-            }
-
-            #대통령실-section .section-logo {
-                max-width: 100px;
-                margin: 25px auto 0;
-            }
-
-            .section {
-                margin-bottom: 30px;
-                padding: 0 5px;
-            }
-
-            .people-container {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                width: 100%;
-                padding: 0;
-                gap: 0;
-            }
-
-            .person-card {
-                width: calc(100% / 8);  /* 8명씩 배치, 간격 1px 고려 */
-                margin: 0;
-                padding: 0;
-                border: none;
-                box-shadow: none;
-            }
-
-            .person-card img {
-                width: 110%;
-                height: auto;
-                aspect-ratio: 3/4;
-                object-fit: cover;
-                margin: 0 -5% !important;
-                border-radius: 0;
-            }
-
-            .person-card .name {
-                font-size: 10px;
-                margin: 2px 0;
-                line-height: 1.2;
-            }
-
-            .person-card .role {
-                font-size: 9px;
-                margin: 1px 0;
-                line-height: 1.1;
-            }
+        /* 관리자 목록 스타일 */
+        .admin-list {
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
         }
 
-        @media screen and (max-width: 480px) {
-            .section-logo {
-                max-width: 120px;
-            }
-
-            #군부-section .section-logo {
-                max-width: 150px;
-                margin: 25px auto 5px;
-            }
-
-            #내란의힘-section .section-logo {
-                max-width: 55px;
-                margin: 10px auto 5px;  /* 여백 동일하게 적용 */
-            }
-
-            #경찰-section .section-logo {
-                max-width: 70px;
-                margin: 25px auto 0;
-            }
-
-            #대통령실-section .section-logo {
-                max-width: 100px;
-                margin: 25px auto 0;
-            }
-
-            .people-container {
-                gap: 0;  /* 1px에서 0px로 감소 */
-            }
-
-            .person-card {
-                width: calc(100% / 8);  /* 8명씩 배치, 간격 1px 고려 */
-                padding: 0;
-            }
-
-            .person-card .name {
-                font-size: 9px;
-            }
-
-            .person-card .role {
-                font-size: 8px;
-            }
+        .admin-list h3 {
+            margin-bottom: 10px;
+            color: #8b0000;
         }
 
-        #내란의힘-section .people-container {
-            justify-content: center !important;
+        .admin-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #f9f9f9;
+            border-radius: 3px;
+        }
+
+        .admin-list-item span {
+            margin-right: 10px;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .button-container button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .button-container button:first-child {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .button-container button:last-child {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #666;
+            padding: 20px;
+            font-style: italic;
         }
 
         /* 하단 컨트롤 스타일 */
@@ -1291,6 +1230,7 @@
             cursor: pointer;
             padding: 14px 16px;
             transition: 0.3s;
+            font-size: 16px;
         }
 
         .tab button:hover {
@@ -1298,7 +1238,8 @@
         }
 
         .tab button.active {
-            background-color: #ccc;
+            background-color: #8b0000;
+            color: white;
         }
 
         .tabcontent {
@@ -1306,6 +1247,10 @@
             padding: 6px 12px;
             border: 1px solid #ccc;
             border-top: none;
+        }
+
+        .tabcontent.active {
+            display: block;
         }
 
         /* 관리자 목록 스타일 */
@@ -1347,7 +1292,6 @@
             color: white;
         }
     </style>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body onload="onload()">
     <div class="container">
@@ -1492,8 +1436,6 @@
                 <input type="password" id="signupPassword" placeholder="비밀번호" style="width: 100%; padding: 10px; margin: 10px 0;" required>
                 <input type="password" id="signupPasswordConfirm" placeholder="비밀번호 확인" style="width: 100%; padding: 10px; margin: 10px 0;" required>
                 <input type="text" id="signupNickname" placeholder="닉네임" style="width: 100%; padding: 10px; margin: 10px 0;" required>
-                <div style="margin: 10px 0; display: flex; justify-content: center;">
-                    <div class="g-recaptcha" data-sitekey="6LeNw6cqAAAAAGawupLhufGtmfxGfN9ltBKQxH8l"></div>
                 </div>
                 <button onclick="requestAdminSignup()" style="width: 100%; padding: 10px; margin: 10px 0;">신청하기</button>
             </div>
@@ -1508,17 +1450,23 @@
                 <h2>관리자 승인 관리</h2>
             </div>
             <div class="modal-body">
-                <div class="admin-tabs">
-                    <button class="tab-btn active" onclick="openTab(event, 'pending')">승인 대기</button>
-                    <button class="tab-btn" onclick="openTab(event, 'approved')">승인된 관리자</button>
+                <div class="tab">
+                    <button class="tablinks active" onclick="openTab(event, 'pendingAdmins')">승인 대기 중</button>
+                    <button class="tablinks" onclick="openTab(event, 'approvedAdmins')">승인된 관리자</button>
                 </div>
-                <div id="pendingAdmins" class="tabcontent">
-                    <h3>승인 대기 중인 관리자</h3>
-                    <div id="pendingAdminsList"></div>
+
+                <div id="pendingAdmins" class="tabcontent" style="display: block;">
+                    <div id="pendingList" class="admin-list">
+                        <h3>승인 대기 중인 요청</h3>
+                        <!-- 여기에 승인 대기 중인 요청들이 동적으로 추가됩니다 -->
+                    </div>
                 </div>
+
                 <div id="approvedAdmins" class="tabcontent" style="display: none;">
-                    <h3>승인된 관리자 목록</h3>
-                    <div id="approvedAdminsList"></div>
+                    <div id="approvedList" class="admin-list">
+                        <h3>승인된 관리자</h3>
+                        <!-- 여기에 승인된 관리자들이 동적으로 추가됩니다 -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -2343,6 +2291,25 @@
             modal.style.display = 'block';
         }
 
+        // 탭 열기 함수
+        function openTab(evt, tabName) {
+            // 모든 탭 컨텐츠를 숨김
+            const tabcontent = document.getElementsByClassName("tabcontent");
+            for (let i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // 모든 탭 버튼의 active 클래스 제거
+            const tablinks = document.getElementsByClassName("tablinks");
+            for (let i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // 선택된 탭의 컨텐츠를 보이게 하고 버튼을 활성화
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
         // 검색 기능
         function setupSearch() {
             const searchInput = document.getElementById('searchInput');
@@ -2625,9 +2592,28 @@
 
         // 관리자 권한 확인 함수
         async function checkAdminPermission(uid) {
-            const adminRef = db.ref('admins/' + uid);
-            const snapshot = await adminRef.get();
-            return snapshot.exists();
+            try {
+                // superAdmin 체크
+                if (currentUser && currentUser.email === 'criminalyoon@gmail.com') {
+                    return true;
+                }
+
+                // 관리자 신청 상태 확인
+                const requestRef = db.ref('adminRequests/' + uid);
+                const snapshot = await requestRef.get();
+                const request = snapshot.val();
+
+                if (!request || request.status !== 'approved') {
+                    return false;
+                }
+
+                // 승인된 관리자 목록에 있는지 확인
+                const adminRef = db.ref('admins/' + uid);
+                return (await adminRef.get()).exists();
+            } catch (error) {
+                console.error('Error checking admin permission:', error);
+                return false;
+            }
         }
 
         // 행적 텍스트 포맷팅
@@ -2673,7 +2659,7 @@
             const modalImage = document.getElementById('modalImage');
             const modalName = document.getElementById('modalName');
             const modalRole1 = document.getElementById('modalRole1');
-            const modalRole2 = document.getElementById('modalRole2');
+            const modalRole2 = document.getElementById('modalRole2');ㄴ
             const modalActions = document.getElementById('modalActions');
             const modalActionsView = document.getElementById('modalActionsView');
             const loadingOverlay = document.querySelector('.loading-overlay');
@@ -2944,126 +2930,162 @@
             }
         }
 
-        // 관리자 관리 관련 함수들
-        function openTab(evt, tabName) {
-            const tabcontent = document.getElementsByClassName("tabcontent");
-            for (let i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-
-            const tablinks = document.getElementsByClassName("tablinks");
-            for (let i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-
-            document.getElementById(tabName).style.display = "block";
-            evt.currentTarget.className += " active";
-            
-            // 탭이 변경될 때마다 관리자 목록 새로고침
-            loadAdminLists();
-        }
-
-        // 관리자 목록 로드
+        // 관리자 승인 관리 관련 함수들
         async function loadAdminLists() {
-            try {
-                const db = firebase.firestore();
-                
-                // 승인 대기 중인 관리자 로드
-                const pendingSnapshot = await db.collection('adminRequests')
-                    .where('status', '==', 'pending')
-                    .get();
-                
-                const pendingList = document.getElementById('pendingAdminsList');
-                pendingList.innerHTML = '';
-                
-                pendingSnapshot.forEach(doc => {
-                    const data = doc.data();
-                    const adminItem = document.createElement('div');
-                    adminItem.className = 'admin-item';
-                    adminItem.innerHTML = `
-                        <div class="admin-info">
-                            <div>이메일: ${data.email}</div>
-                            <div>UID: ${data.uid}</div>
-                            <div>요청일: ${data.requestedAt ? new Date(data.requestedAt.toDate()).toLocaleString() : '알 수 없음'}</div>
-                        </div>
-                        <div class="admin-actions">
-                            <button class="approve-btn" onclick="approveAdmin('${doc.id}')">승인</button>
-                            <button class="reject-btn" onclick="rejectAdmin('${doc.id}')">거절</button>
-                        </div>
-                    `;
-                    pendingList.appendChild(adminItem);
-                });
-                
-                // 승인된 관리자 로드
-                const approvedSnapshot = await db.collection('adminRequests')
-                    .where('status', '==', 'approved')
-                    .get();
-                
-                const approvedList = document.getElementById('approvedAdminsList');
-                approvedList.innerHTML = '';
-                
-                approvedSnapshot.forEach(doc => {
-                    const data = doc.data();
-                    const adminItem = document.createElement('div');
-                    adminItem.className = 'admin-item';
-                    adminItem.innerHTML = `
-                        <div class="admin-info">
-                            <div>이메일: ${data.email}</div>
-                            <div>UID: ${data.uid}</div>
-                            <div>승인일: ${data.approvedAt ? new Date(data.approvedAt.toDate()).toLocaleString() : '알 수 없음'}</div>
-                        </div>
-                    `;
-                    approvedList.appendChild(adminItem);
-                });
-            } catch (error) {
-                console.error('Error loading admin lists:', error);
-                showCustomAlert('관리자 목록을 불러오는 중 오류가 발생했습니다.');
+            console.log('Loading admin lists...');
+            const requestsRef = firebase.database().ref('adminRequests');
+            const snapshot = await requestsRef.once('value');
+            const requests = snapshot.val() || {};
+            console.log('Loaded requests:', requests);
+
+            // 승인 대기 중인 요청 목록
+            const pendingList = document.getElementById('pendingList');
+            if (!pendingList) {
+                console.error('pendingList element not found');
+                return;
             }
+            pendingList.innerHTML = '';
+            
+            // 승인된 관리자 목록
+            const approvedList = document.getElementById('approvedList');
+            if (!approvedList) {
+                console.error('approvedList element not found');
+                return;
+            }
+            approvedList.innerHTML = '';
+
+            let hasPending = false;
+            let hasApproved = false;
+
+            Object.entries(requests).forEach(([requestId, request]) => {
+                console.log('Processing request:', requestId, request);
+                
+                const listItem = document.createElement('div');
+                listItem.className = 'admin-list-item';
+                
+                const emailSpan = document.createElement('span');
+                emailSpan.textContent = request.email;
+                listItem.appendChild(emailSpan);
+
+                const nicknameSpan = document.createElement('span');
+                nicknameSpan.textContent = request.nickname || '';
+                listItem.appendChild(nicknameSpan);
+
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'button-container';
+
+                if (request.status === 'pending') {
+                    hasPending = true;
+                    // 승인 대기 중인 요청
+                    const approveBtn = document.createElement('button');
+                    approveBtn.textContent = '승인';
+                    approveBtn.onclick = () => approveAdmin(requestId);
+                    buttonContainer.appendChild(approveBtn);
+
+                    const rejectBtn = document.createElement('button');
+                    rejectBtn.textContent = '거절';
+                    rejectBtn.onclick = () => rejectAdmin(requestId);
+                    buttonContainer.appendChild(rejectBtn);
+
+                    listItem.appendChild(buttonContainer);
+                    pendingList.appendChild(listItem);
+                } else if (request.status === 'approved') {
+                    hasApproved = true;
+                    // 이미 승인된 관리자
+                    const statusSpan = document.createElement('span');
+                    statusSpan.textContent = '승인됨';
+                    buttonContainer.appendChild(statusSpan);
+
+                    listItem.appendChild(buttonContainer);
+                    approvedList.appendChild(listItem);
+                }
+            });
+
+            // 목록이 비어있을 때 메시지 표시
+            if (!hasPending) {
+                pendingList.innerHTML += '<div class="empty-message">승인 대기 중인 요청이 없습니다.</div>';
+            }
+            if (!hasApproved) {
+                approvedList.innerHTML += '<div class="empty-message">승인된 관리자가 없습니다.</div>';
+            }
+
         }
 
         // 관리자 승인
         async function approveAdmin(requestId) {
             try {
-                const db = firebase.firestore();
-                await db.collection('adminRequests').doc(requestId).update({
+                const requestRef = firebase.database().ref('adminRequests/' + requestId);
+                
+                // 요청 상태 확인
+                const snapshot = await requestRef.once('value');
+                const request = snapshot.val();
+                
+                if (!request) {
+                    throw new Error('관리자 요청을 찾을 수 없습니다.');
+                }
+
+                if (request.status === 'approved') {
+                    throw new Error('이미 승인된 관리자입니다.');
+                }
+                
+                // 관리자 요청 상태 업데이트
+                await requestRef.update({
                     status: 'approved',
-                    approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    approvedAt: firebase.database.ServerValue.TIMESTAMP,
                     approvedBy: currentUser.uid
                 });
+                
+                // 승인된 관리자 목록에 추가
+                await firebase.database().ref('admins/' + requestId).set(true);
                 
                 showCustomAlert('관리자가 승인되었습니다.');
                 loadAdminLists();
             } catch (error) {
                 console.error('Error approving admin:', error);
-                showCustomAlert('관리자 승인 중 오류가 발생했습니다.');
+                showCustomAlert('관리자 승인 중 오류가 발생했습니다: ' + error.message);
             }
         }
 
         // 관리자 거절
         async function rejectAdmin(requestId) {
             try {
-                const db = firebase.firestore();
-                await db.collection('adminRequests').doc(requestId).update({
+                const requestRef = firebase.database().ref('adminRequests/' + requestId);
+                
+                // 요청 상태 확인
+                const snapshot = await requestRef.once('value');
+                const request = snapshot.val();
+                
+                if (!request) {
+                    throw new Error('관리자 요청을 찾을 수 없습니다.');
+                }
+
+                if (request.status === 'rejected') {
+                    throw new Error('이미 거절된 관리자입니다.');
+                }
+
+                // 관리자 요청 상태 업데이트
+                await requestRef.update({
                     status: 'rejected',
-                    rejectedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    rejectedAt: firebase.database.ServerValue.TIMESTAMP,
                     rejectedBy: currentUser.uid
                 });
                 
-                showCustomAlert('관리자가 거절되었습니다.');
+                // admins 목록에서 제거
+                await firebase.database().ref('admins/' + requestId).remove();
+                
+                showCustomAlert('관리자 신청이 거절되었습니다.');
                 loadAdminLists();
             } catch (error) {
                 console.error('Error rejecting admin:', error);
-                showCustomAlert('관리자 거절 중 오류가 발생했습니다.');
+                showCustomAlert('관리자 거절 중 오류가 발생했습니다: ' + error.message);
             }
         }
-    </script>
 
-    <script>
         // 관리자 등록 신청 모달 관련 함수들
         function showSignupModal() {
             const modal = document.getElementById('signupModal');
             modal.style.display = 'block';
-            document.getElementById('adminLoginModal').style.display = 'none';  // 로그인 모달 닫기
+            document.getElementById('adminModal').style.display = 'none';  // 로그인 모달 닫기
         }
 
         function closeSignupModal() {
@@ -3076,7 +3098,6 @@
             const password = document.getElementById('signupPassword').value;
             const passwordConfirm = document.getElementById('signupPasswordConfirm').value;
             const nickname = document.getElementById('signupNickname').value;
-            const recaptchaResponse = grecaptcha.getResponse();
 
             if (!email || !password || !passwordConfirm || !nickname) {
                 showCustomAlert('모든 필드를 입력해주세요.');
@@ -3088,38 +3109,53 @@
                 return;
             }
 
-            if (!recaptchaResponse) {
-                showCustomAlert('자동가입방지를 확인해주세요.');
-                return;
-            }
-
             try {
-                // Firebase Authentication으로 계정 생성
-                const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
-                const user = userCredential.user;
+                // 이미 등록된 이메일인지 확인
+                try {
+                    const methods = await firebase.auth().fetchSignInMethodsForEmail(email);
+                    if (methods && methods.length > 0) {
+                        showCustomAlert('이미 등록된 이메일입니다.');
+                        return;
+                    }
+                } catch (error) {
+                    if (error.code !== 'auth/invalid-email') {
+                        throw error;
+                    }
+                }
 
-                // Firestore에 관리자 신청 정보 저장
-                const db = firebase.firestore();
-                await db.collection('adminRequests').doc(user.uid).set({
+                // 비밀번호 해시화 (임시로 base64 인코딩 사용)
+                const hashedPassword = btoa(password);
+
+                // Realtime Database에 관리자 신청 정보 저장
+                const requestRef = firebase.database().ref('adminRequests').push();
+                await requestRef.set({
                     email: email,
+                    password: hashedPassword,
                     nickname: nickname,
-                    uid: user.uid,
                     status: 'pending',
-                    recaptchaResponse: recaptchaResponse,
-                    requestedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    requestedAt: firebase.database.ServerValue.TIMESTAMP
                 });
 
-                showCustomAlert('관리자 등록이 신청되었습니다. 승인을 기다려주세요.');
-                closeSignupModal();
-
+                showCustomAlert('관리자 등록이 신청되었습니다. 승인이 완료될 때까지 기다려주세요.');
+                
+                // 모달 닫기
+                document.getElementById('adminModal').style.display = 'none';
+                
+                // 입력 필드 초기화
+                document.getElementById('signupEmail').value = '';
+                document.getElementById('signupPassword').value = '';
+                document.getElementById('signupPasswordConfirm').value = '';
+                document.getElementById('signupNickname').value = '';
+                
                 // 로그아웃 처리
                 await firebase.auth().signOut();
+                
             } catch (error) {
                 console.error('Error registering admin:', error);
                 let errorMessage;
                 switch (error.code) {
                     case 'auth/email-already-in-use':
-                        errorMessage = '이미 등록된 이메일입니다. 다른 이메일을 사용해주세요.';
+                        errorMessage = '이미 등록된 이메일입니다.';
                         break;
                     case 'auth/invalid-email':
                         errorMessage = '유효하지 않은 이메일 주소입니다.';
@@ -3128,7 +3164,7 @@
                         errorMessage = '이메일/비밀번호 인증이 비활성화되어 있습니다.';
                         break;
                     case 'auth/weak-password':
-                        errorMessage = '비밀번호가 너무 약합니다. 더 강력한 비밀번호를 사용해주세요.';
+                        errorMessage = '비밀번호가 너무 약합니다.';
                         break;
                     default:
                         errorMessage = '등록 중 오류가 발생했습니다: ' + error.message;
@@ -3147,6 +3183,16 @@
             // 입력 필드 초기화
             document.getElementById('adminEmail').value = '';
             document.getElementById('adminPassword').value = '';
+        }
+    </script>
+
+    <script>
+        // 관리자 승인 관리 모달 닫기 함수
+        function closeAdminManageModal() {
+            const modal = document.getElementById('adminManageModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
         }
     </script>
 </body>
