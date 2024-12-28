@@ -104,12 +104,12 @@
 
         #경찰-section .section-logo {
             max-width: 170px;
-            margin: 35px auto 5px;
+            margin: 35px auto 0;
         }
 
         #대통령실-section .section-logo {
             max-width: 300px;
-            margin: 35px auto 5px;
+            margin: 35px auto 0;
         }
 
         #내란의힘-section .section-logo {
@@ -146,6 +146,49 @@
                 max-width: 100px;
                 margin: 25px auto 0;
             }
+
+            .section {
+                margin-bottom: 30px;
+                padding: 0 5px;
+            }
+
+            .people-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                padding: 0;
+                gap: 0;
+            }
+
+            .person-card {
+                width: calc(100% / 8);  /* 8명씩 배치, 간격 1px 고려 */
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+            }
+
+            .person-card img {
+                width: 110%;
+                height: auto;
+                aspect-ratio: 3/4;
+                object-fit: cover;
+                margin: 0 -5% !important;
+                border-radius: 0;
+            }
+
+            .person-card .name {
+                font-size: 10px;
+                margin: 2px 0;
+                line-height: 1.2;
+            }
+
+            .person-card .role {
+                font-size: 9px;
+                margin: 1px 0;
+                line-height: 1.1;
+            }
         }
 
         @media screen and (max-width: 480px) {
@@ -171,6 +214,23 @@
             #대통령실-section .section-logo {
                 max-width: 100px;
                 margin: 25px auto 0;
+            }
+
+            .people-container {
+                gap: 0;  /* 1px에서 0px로 감소 */
+            }
+
+            .person-card {
+                width: calc(100% / 8);  /* 8명씩 배치, 간격 1px 고려 */
+                padding: 0;
+            }
+
+            .person-card .name {
+                font-size: 9px;
+            }
+
+            .person-card .role {
+                font-size: 8px;
             }
         }
 
@@ -914,74 +974,7 @@
             }
         }
 
-        @keyframes highlight {
-            0% { transform: scale(1); box-shadow: 0 0 0 rgba(139, 0, 0, 0); }
-            50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(139, 0, 0, 0.3); }
-            100% { transform: scale(1); box-shadow: 0 0 0 rgba(139, 0, 0, 0); }
-        }
-
-        /* 검색 결과 스타일 */
-        .search-container {
-            position: relative;
-        }
-
-        .search-results {
-            position: absolute;
-            bottom: 100%;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.98);
-            border-radius: 15px;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
-            margin-bottom: 10px;
-            max-height: 300px;
-            overflow-y: auto;
-            display: none;
-            z-index: 1000;
-        }
-
-        .search-result-item {
-            padding: 10px 15px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .search-result-item:last-child {
-            border-bottom: none;
-        }
-
-        .search-result-name {
-            font-weight: bold;
-            color: #8b0000;
-        }
-
-        .search-result-role {
-            font-size: 0.9em;
-            color: #666;
-            margin-top: 3px;
-        }
-
-        /* 스크롤바 스타일 */
-        .search-results::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .search-results::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
-
-        .search-results::-webkit-scrollbar-thumb {
-            background: #8b0000;
-            border-radius: 4px;
-        }
-
-        .search-results::-webkit-scrollbar-thumb:hover {
-            background: #6b0000;
-        }
-
-        /* 모달 스타일 */
+        /* 모달 창 */
         .modal {
             display: none;
             position: fixed;
@@ -1220,7 +1213,141 @@
             align-items: center;
             z-index: 1000;
         }
+
+        /* 관리자 승인 관리 모달 스타일 */
+        .admin-tabs {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        
+        .tab-btn.active {
+            border-bottom: 2px solid #8b0000;
+            color: #8b0000;
+        }
+        
+        .tab-content {
+            margin-top: 20px;
+        }
+        
+        .admin-item {
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-item .info {
+            flex-grow: 1;
+        }
+        
+        .admin-item .actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .approve-btn, .reject-btn, .remove-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .approve-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .reject-btn, .remove-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        /* 탭 스타일 */
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            margin-bottom: 20px;
+        }
+
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+        }
+
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        .tab button.active {
+            background-color: #ccc;
+        }
+
+        .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+        }
+
+        /* 관리자 목록 스타일 */
+        .admin-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .admin-item:last-child {
+            border-bottom: none;
+        }
+
+        .admin-info {
+            flex-grow: 1;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .approve-btn, .reject-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .approve-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .reject-btn {
+            background-color: #f44336;
+            color: white;
+        }
     </style>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body onload="onload()">
     <div class="container">
@@ -1321,8 +1448,16 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="adminLoginBtn" class="admin-btn">관리자 로그인</button>
-                <button id="saveBtn" class="save-btn" style="display: none;">저장</button>
+                <div class="admin-buttons" style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center;">
+                    <div class="left-buttons" style="display: flex; gap: 10px;">
+                        <button id="adminManageBtn" class="admin-btn" style="display: none;">관리자 관리</button>
+                        <button id="logoutBtn" class="admin-btn" style="display: none; background-color: #666;">로그아웃</button>
+                    </div>
+                    <div class="right-buttons">
+                        <button id="saveBtn" class="save-btn" style="display: none;">저장</button>
+                        <button id="adminLoginBtn" class="admin-btn">관리자 로그인</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1330,13 +1465,61 @@
     <!-- 관리자 로그인 모달 -->
     <div id="adminModal" class="modal">
         <div class="modal-content" style="max-width: 400px;">
-            <span class="modal-close">&times;</span>
+            <span class="modal-close" onclick="closeAdminLoginModal()">&times;</span>
             <div class="modal-header">
                 <h2>관리자 로그인</h2>
             </div>
             <div class="modal-body">
-                <input type="password" id="adminPassword" placeholder="관리자 비밀번호를 입력하세요" style="width: 100%; padding: 10px; margin: 10px 0;" onkeypress="if(event.key === 'Enter') checkAdminPassword()">
-                <button id="adminLoginSubmit" style="width: 100%; padding: 10px; margin: 10px 0;" onclick="checkAdminPassword()">로그인</button>
+                <input type="email" id="adminEmail" placeholder="이메일" style="width: 100%; padding: 10px; margin: 10px 0;" required>
+                <input type="password" id="adminPassword" placeholder="비밀번호" style="width: 100%; padding: 10px; margin: 10px 0;" required>
+                <button id="adminLoginSubmit" style="width: 100%; padding: 10px; margin: 10px 0;" onclick="loginAdmin()">로그인</button>
+                <div style="text-align: center; margin-top: 10px;">
+                    <a href="#" onclick="showSignupModal()" style="color: #666; text-decoration: underline;">관리자 등록 신청</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 관리자 등록 신청 모달 -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="modal-close" onclick="closeSignupModal()">&times;</span>
+            <div class="modal-header">
+                <h2>관리자 등록 신청</h2>
+            </div>
+            <div class="modal-body">
+                <input type="email" id="signupEmail" placeholder="이메일" style="width: 100%; padding: 10px; margin: 10px 0;" required>
+                <input type="password" id="signupPassword" placeholder="비밀번호" style="width: 100%; padding: 10px; margin: 10px 0;" required>
+                <input type="password" id="signupPasswordConfirm" placeholder="비밀번호 확인" style="width: 100%; padding: 10px; margin: 10px 0;" required>
+                <input type="text" id="signupNickname" placeholder="닉네임" style="width: 100%; padding: 10px; margin: 10px 0;" required>
+                <div style="margin: 10px 0; display: flex; justify-content: center;">
+                    <div class="g-recaptcha" data-sitekey="6LeNw6cqAAAAAGawupLhufGtmfxGfN9ltBKQxH8l"></div>
+                </div>
+                <button onclick="requestAdminSignup()" style="width: 100%; padding: 10px; margin: 10px 0;">신청하기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 관리자 승인 관리 모달 -->
+    <div id="adminManageModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <span class="modal-close" onclick="closeAdminManageModal()">&times;</span>
+            <div class="modal-header">
+                <h2>관리자 승인 관리</h2>
+            </div>
+            <div class="modal-body">
+                <div class="admin-tabs">
+                    <button class="tab-btn active" onclick="openTab(event, 'pending')">승인 대기</button>
+                    <button class="tab-btn" onclick="openTab(event, 'approved')">승인된 관리자</button>
+                </div>
+                <div id="pendingAdmins" class="tabcontent">
+                    <h3>승인 대기 중인 관리자</h3>
+                    <div id="pendingAdminsList"></div>
+                </div>
+                <div id="approvedAdmins" class="tabcontent" style="display: none;">
+                    <h3>승인된 관리자 목록</h3>
+                    <div id="approvedAdminsList"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -1350,8 +1533,8 @@
                 ❗2. 인물들의 행적을 함께 조사해주실 국민여러분들을 찾습니다.
                 ❗3. 누락된 범죄자들 제보해주시면 업데이트 시키겠습니다
                 ❗4. 범죄자들이 너무 많아 혼자 관리하기엔 힘이 듭니다. 많은 연락 부탁드리겠습니다.
-                🌟<a href="mailto:criminalyoon@gmail.com" style="color: #0066cc; text-decoration: underline; transition: color 0.3s; font-size: 0.9em;" onmouseover="this.style.color='#0099ff'" onmouseout="this.style.color='#0066cc'">criminalyoon@gmail.com</a>🌟
-                🌟<a href="https://open.kakao.com/o/g6m4OK6g" style="color: #0066cc; text-decoration: underline; transition: color 0.3s; font-size: 0.75em; word-break: break-all;" onmouseover="this.style.color='#0099ff'" onmouseout="this.style.color='#0066cc'">https://open.kakao.com/o/g6m4OK6g</a>🌟
+                🌟<a href="mailto:criminalyoon@gmail.com" style="color: #0066cc; text-decoration: underline;">criminalyoon@gmail.com</a>🌟
+                🌟<a href="https://open.kakao.com/o/g6m4OK6g" style="color: #0066cc; text-decoration: underline;">https://open.kakao.com/o/g6m4OK6g</a>🌟
                 ❗독일에서 운영중이라 로딩속도가 조금 느립니다. 개선방법 찾아보겠습니다.
                 모바일용 디자인도 만들어보겠습니다. 우선 가로모드 부탁드립니다!
                 인물 클릭 시 자세한 행적을 볼 수 있습니다.</div>
@@ -1361,6 +1544,8 @@
 
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
     <script>
         // Firebase 구성
@@ -1378,6 +1563,8 @@
         // Firebase 초기화
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        const auth = firebase.auth();
+        const firestore = firebase.firestore();
 
         // 연결 상태 관리 설정
         const connectedRef = db.ref('.info/connected');
@@ -1513,12 +1700,13 @@
             { name: "조태열", role1: "내란방조자", role2: "외교부장관", group: "대통령실", row: 3 },
             
             // 내란의힘
+
             { name: "추경호", role1: "내란주동자", role2: "대구 달성군", group: "내란의힘", row: 1 },
-            { name: "권영세", role1: "내란동조자", role2: "서울 용산구", group: "내란의힘", row: 1 },
-            { name: "권성동", role1: "내란동조자", role2: "강원 강릉시", group: "내란의힘", row: 1 },
+            { name: "권영세", role1: "내란동조자", role2: "서울 용산구", group: "내란의힘", row: 1 },	            
+	        { name: "권성동", role1: "내란동조자", role2: "강원 강릉시", group: "내란의힘", row: 1 },
             { name: "김석기", role1: "내란동조자", role2: "경북 경주시", group: "내란의힘", row: 1 },
             { name: "나경원", role1: "내란동조자", role2: "서울 동작구", group: "내란의힘", row: 1 },
-            { name: "유상범", role1: "내란동조자", role2: "강원 홍천군횡성군영월군평창군", group: "내란의힘", row: 1 },
+            { name: "유상범", role1: "내란동조자", role2: "강원 홍천시횡성군영월군평창군", group: "내란의힘", row: 1 },
             { name: "유영하", role1: "내란동조자", role2: "대구 달서구갑", group: "내란의힘", row: 1 },
             { name: "윤상현", role1: "내란동조자", role2: "인천 동구미추홀구을", group: "내란의힘", row: 1 },
             { name: "윤한홍", role1: "내란동조자", role2: "경남 창원시마산회원구", group: "내란의힘", row: 1 },
@@ -2106,8 +2294,19 @@
             // 로딩 오버레이 표시
             loadingOverlay.style.display = 'flex';
 
-            // Firebase에서 행적 데이터 불러오기
+            // 캐시 키 설정
+            const cacheKey = `actions_${sectionId}`;
+            const cacheTimestampKey = `actions_timestamp_${sectionId}`;
+            
+            // Firebase에서 해당 섹션의 데이터만 로드
             const actionsRef = db.ref('section-actions/' + sectionId);
+
+            // 이전 리스너가 있다면 제거
+            if (window.currentActionsRef) {
+                window.currentActionsRef.off();
+                window.currentActionsRef = null;
+            }
+
             actionsRef.once('value')
                 .then((snapshot) => {
                     const text = snapshot.val();
@@ -2287,56 +2486,148 @@
 
         // 모달 창 기능
         function setupModal() {
-            const modal = document.getElementById('personModal');
+            const personModal = document.getElementById('personModal');
             const adminModal = document.getElementById('adminModal');
-            const modalClose = modal.querySelector('.modal-close');
-            const adminModalClose = adminModal.querySelector('.modal-close');
-            const adminLoginBtn = document.getElementById('adminLoginBtn');
-            const saveBtn = document.getElementById('saveBtn');
-
-            // 모달 창 닫기
-            modalClose.onclick = function() {
-                modal.style.display = "none";
+            const adminManageModal = document.getElementById('adminManageModal');
+            
+            if (!personModal || !adminModal || !adminManageModal) {
+                console.error('Required modal elements not found');
+                return;
             }
 
-            adminModalClose.onclick = function() {
-                adminModal.style.display = "none";
+            const modalClose = personModal.querySelector('.close');
+            const adminModalClose = adminModal.querySelector('.close');
+            const adminManageModalClose = adminManageModal.querySelector('.close');
+
+            // 모달 창 닫기
+            if (modalClose) {
+                modalClose.onclick = function() {
+                    personModal.style.display = 'none';
+                }
+            }
+
+            if (adminModalClose) {
+                adminModalClose.onclick = function() {
+                    adminModal.style.display = 'none';
+                }
+            }
+
+            if (adminManageModalClose) {
+                adminManageModalClose.onclick = function() {
+                    adminManageModal.style.display = 'none';
+                }
             }
 
             // 모달 창 외부 클릭시 닫기
             window.onclick = function(event) {
-                if (event.target === modal) {
-                    modal.style.display = "none";
+                if (event.target === personModal) {
+                    personModal.style.display = 'none';
                 }
                 if (event.target === adminModal) {
-                    adminModal.style.display = "none";
+                    adminModal.style.display = 'none';
+                }
+                if (event.target === adminManageModal) {
+                    adminManageModal.style.display = 'none';
                 }
             }
 
-            // 관리자 로그인 버튼 클릭
-            adminLoginBtn.onclick = function() {
-                adminModal.style.display = 'block';
+            // 관리자 버튼 설정
+            const adminLoginBtn = document.getElementById('adminLoginBtn');
+            const saveBtn = document.getElementById('saveBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const adminManageBtn = document.getElementById('adminManageBtn');
+
+            if (adminLoginBtn) {
+                adminLoginBtn.onclick = function() {
+                    adminModal.style.display = 'block';
+                }
             }
 
-            // 저장 버튼 클릭
-            saveBtn.onclick = saveModalActions;
+            if (saveBtn) {
+                saveBtn.onclick = saveModalActions;
+            }
 
+            if (logoutBtn) {
+                logoutBtn.onclick = logoutAdmin;
+            }
+
+            if (adminManageBtn) {
+                adminManageBtn.onclick = function() {
+                    adminManageModal.style.display = 'block';
+                    loadAdminLists(); // 관리자 목록 로드
+                }
+            }
         }
 
         // 관리자 로그인 체크
-        function checkAdminPassword() {
+        let isAdmin = false;
+        let currentUser = null;
+
+        // 관리자 로그인 함수
+        async function loginAdmin() {
+            const email = document.getElementById('adminEmail').value;
             const password = document.getElementById('adminPassword').value;
-            if (password === '03122024') {
-                isAdmin = true;
-                document.getElementById('adminModal').style.display = 'none';
-                document.getElementById('adminLoginBtn').style.display = 'none';
-                document.getElementById('saveBtn').style.display = 'block';
-                document.getElementById('modalActions').style.display = 'block';
-                document.getElementById('modalActionsView').style.display = 'none';
-                showCustomAlert('관리자로 로그인되었습니다.');
-            } else {
-                showCustomAlert('비밀번호가 올바르지 않습니다.');
+
+            try {
+                // Firebase 이메일/비밀번호 인증
+                const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+                currentUser = userCredential.user;
+                console.log('Your UID:', currentUser.uid); // UID 출력
+
+                // 관리자 권한 확인
+                const isApprovedAdmin = await checkAdminPermission(currentUser.uid);
+                
+                if (isApprovedAdmin) {
+                    isAdmin = true;
+                    document.getElementById('adminModal').style.display = 'none';
+                    document.getElementById('adminLoginBtn').style.display = 'none';
+                    document.getElementById('saveBtn').style.display = 'block';
+                    document.getElementById('logoutBtn').style.display = 'block';
+                    document.getElementById('adminManageBtn').style.display = 'block';
+                    showCustomAlert('관리자로 로그인되었습니다. UID: ' + currentUser.uid);
+                } else {
+                    throw new Error('승인된 관리자가 아닙니다.');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showCustomAlert('로그인 실패: ' + error.message);
+                isAdmin = false;
             }
+        }
+
+        // 엔터키 로그인
+        document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                loginAdmin();
+            }
+        });
+
+        // 페이지 로드 시 Firebase 인증 상태 확인
+        firebase.auth().onAuthStateChanged(async (user) => {
+            if (user) {
+                currentUser = user;
+                const isApprovedAdmin = await checkAdminPermission(user.uid);
+                isAdmin = isApprovedAdmin;
+                if (isAdmin) {
+                    document.getElementById('adminLoginBtn').style.display = 'none';
+                    document.getElementById('saveBtn').style.display = 'block';
+                    document.getElementById('logoutBtn').style.display = 'block';
+                    document.getElementById('adminManageBtn').style.display = 'block';
+                }
+            } else {
+                isAdmin = false;
+                document.getElementById('adminLoginBtn').style.display = 'block';
+                document.getElementById('saveBtn').style.display = 'none';
+                document.getElementById('logoutBtn').style.display = 'none';
+                document.getElementById('adminManageBtn').style.display = 'none';
+            }
+        });
+
+        // 관리자 권한 확인 함수
+        async function checkAdminPermission(uid) {
+            const adminRef = db.ref('admins/' + uid);
+            const snapshot = await adminRef.get();
+            return snapshot.exists();
         }
 
         // 행적 텍스트 포맷팅
@@ -2353,10 +2644,6 @@
             }
             return `<p class="actions-text">${String(actions).split('\n').map(line => line.trim()).join('<br>')}</p>`;
         }
-
-        // 관리자 모드 관련 변수
-        let isAdmin = false;
-        const ADMIN_PASSWORD = '03122024'; 
 
         // 이미지 캐시와 DOM 요소 캐시
         const domCache = {
@@ -2391,6 +2678,12 @@
             const modalActionsView = document.getElementById('modalActionsView');
             const loadingOverlay = document.querySelector('.loading-overlay');
 
+            // 이전 리스너가 있다면 제거
+            if (window.currentActionsRef) {
+                window.currentActionsRef.off();
+                window.currentActionsRef = null;
+            }
+
             // 모달 내용 설정
             modalImage.src = img;
             modalName.textContent = person.name;
@@ -2404,37 +2697,87 @@
             // 로딩 오버레이 표시
             loadingOverlay.style.display = 'flex';
 
-            // Firebase에서 행적 데이터 불러오기
+            // 캐시 키 설정
+            const cacheKey = `actions_${person.name}`;
+            const cacheTimestampKey = `actions_timestamp_${person.name}`;
+            
+            // Firebase에서 해당 인물의 데이터만 로드
             const actionsRef = db.ref('actions/' + person.name);
-            actionsRef.once('value')
-                .then((snapshot) => {
-                    const data = snapshot.val();
-                    if (data && data.text) {
-                        modalActions.value = data.text.toString();
+
+            if (!isAdmin) {
+                // 캐시 확인을 위한 lastUpdate와 데이터 로드를 하나의 연결로 통합
+                actionsRef.once('value')
+                    .then((snapshot) => {
+                        const data = snapshot.val();
+                        const serverLastUpdate = data.lastUpdate || 0;
+                        const cachedData = localStorage.getItem(cacheKey);
+                        const cachedLastUpdate = localStorage.getItem(cacheTimestampKey);
+
+                        // 캐시된 데이터가 있고, 서버의 마지막 업데이트보다 최신인 경우
+                        if (cachedData && cachedLastUpdate && parseInt(cachedLastUpdate) >= serverLastUpdate) {
+                            const cached = JSON.parse(cachedData);
+                            modalActions.value = cached.text || '';
+                            modalActionsView.innerHTML = formatActions(cached.text);
+                        } else {
+                            // 서버 데이터 사용
+                            modalActions.value = data.text || '';
+                            modalActionsView.innerHTML = formatActions(data.text);
+                            
+                            // 새로운 데이터와 타임스탬프 캐시
+                            localStorage.setItem(cacheKey, JSON.stringify(data));
+                            localStorage.setItem(cacheTimestampKey, serverLastUpdate.toString());
+                        }
+                        loadingOverlay.style.display = 'none';
+                    });
+            } else {
+                // 전역 연결 관리
+                if (!window.globalConnectionRef) {
+                    window.globalConnectionRef = actionsRef;
+                    actionsRef.on('value', (snapshot) => {
+                        const data = snapshot.val();
+                        modalActions.value = data.text || '';
                         modalActionsView.innerHTML = formatActions(data.text);
+                        loadingOverlay.style.display = 'none';
+                    });
+                } else if (window.globalConnectionRef.toString() !== actionsRef.toString()) {
+                    // 다른 인물의 데이터를 보려고 할 때
+                    window.globalConnectionRef.off();  // 이전 연결 제거
+                    window.globalConnectionRef = actionsRef;
+                    actionsRef.on('value', (snapshot) => {
+                        const data = snapshot.val();
+                        modalActions.value = data.text || '';
+                        modalActionsView.innerHTML = formatActions(data.text);
+                        loadingOverlay.style.display = 'none';
+                    });
+                }
+
+                // 모달이 닫힐 때 확실하게 리스너 제거
+                const closeListener = () => {
+                    if (window.currentActionsRef) {
+                        window.currentActionsRef.off();
+                        window.currentActionsRef = null;
                     }
-                })
-                .catch((error) => {
-                    console.error('Error loading actions:', error);
-                    modalActions.value = '';
-                    modalActionsView.innerHTML = formatActions('');
-                })
-                .finally(() => {
-                    loadingOverlay.style.display = 'none';
-                });
+                    modal.removeEventListener('hidden.modal', closeListener);
+                };
+                modal.addEventListener('hidden.modal', closeListener, { once: true });
+            }
 
             // 관리자 모드에 따라 버튼 표시/숨김
             const adminLoginBtn = document.getElementById('adminLoginBtn');
             const saveBtn = document.getElementById('saveBtn');
-            
+            const logoutBtn = document.getElementById('logoutBtn');
+
             if (isAdmin) {
                 adminLoginBtn.style.display = 'none';
                 saveBtn.style.display = 'inline-block';
+                logoutBtn.style.display = 'inline-block';
                 modalActions.style.display = 'block';
                 modalActionsView.style.display = 'none';
             } else {
                 adminLoginBtn.style.display = 'inline-block';
+                adminLoginBtn.style.float = 'right';
                 saveBtn.style.display = 'none';
+                logoutBtn.style.display = 'none';
                 modalActions.style.display = 'none';
                 modalActionsView.style.display = 'block';
             }
@@ -2445,7 +2788,7 @@
         // 엔터키 로그인
         document.getElementById('adminPassword').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
-                checkAdminPassword();
+                loginAdmin();
             }
         });
         
@@ -2484,7 +2827,7 @@
             alertDiv.style.backgroundColor = 'white';
             alertDiv.style.padding = '15px 25px';
             alertDiv.style.borderRadius = '5px';
-            alertDiv.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+            alertDiv.style.boxShadow = '0 4px 6px rgba(0,0,0,0.15)';
             alertDiv.style.zIndex = '9999';
             alertDiv.style.textAlign = 'center';
             alertDiv.style.animation = 'slideDown 0.3s ease-out';  // 슬라이드 애니메이션 추가
@@ -2561,8 +2904,11 @@
             
             console.log('Attempting to save actions for:', name);
             
-            // Firebase에 텍스트만 저장
-            db.ref('actions/' + name).set(text, (error) => {
+            // Firebase에 텍스트와 업데이트 시간 저장
+            db.ref('actions/' + name).set({
+                text: text,
+                lastUpdate: Date.now()
+            }, (error) => {
                 if (error) {
                     console.error('Error saving actions:', error);
                     showCustomAlert('행적 저장에 실패했습니다. 다시 시도해주세요.');
@@ -2579,6 +2925,228 @@
                     modalActionsView.innerHTML = formatActions(text);
                 }
             });
+        }
+
+        // 로그아웃 함수
+        async function logoutAdmin() {
+            try {
+                await firebase.auth().signOut();
+                isAdmin = false;
+                currentUser = null;
+                document.getElementById('adminLoginBtn').style.display = 'block';
+                document.getElementById('saveBtn').style.display = 'none';
+                document.getElementById('logoutBtn').style.display = 'none';
+                document.getElementById('adminManageBtn').style.display = 'none';
+                showCustomAlert('로그아웃되었습니다.');
+            } catch (error) {
+                console.error('Logout error:', error);
+                showCustomAlert('로그아웃 중 오류가 발생했습니다.');
+            }
+        }
+
+        // 관리자 관리 관련 함수들
+        function openTab(evt, tabName) {
+            const tabcontent = document.getElementsByClassName("tabcontent");
+            for (let i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            const tablinks = document.getElementsByClassName("tablinks");
+            for (let i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+            
+            // 탭이 변경될 때마다 관리자 목록 새로고침
+            loadAdminLists();
+        }
+
+        // 관리자 목록 로드
+        async function loadAdminLists() {
+            try {
+                const db = firebase.firestore();
+                
+                // 승인 대기 중인 관리자 로드
+                const pendingSnapshot = await db.collection('adminRequests')
+                    .where('status', '==', 'pending')
+                    .get();
+                
+                const pendingList = document.getElementById('pendingAdminsList');
+                pendingList.innerHTML = '';
+                
+                pendingSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    const adminItem = document.createElement('div');
+                    adminItem.className = 'admin-item';
+                    adminItem.innerHTML = `
+                        <div class="admin-info">
+                            <div>이메일: ${data.email}</div>
+                            <div>UID: ${data.uid}</div>
+                            <div>요청일: ${data.requestedAt ? new Date(data.requestedAt.toDate()).toLocaleString() : '알 수 없음'}</div>
+                        </div>
+                        <div class="admin-actions">
+                            <button class="approve-btn" onclick="approveAdmin('${doc.id}')">승인</button>
+                            <button class="reject-btn" onclick="rejectAdmin('${doc.id}')">거절</button>
+                        </div>
+                    `;
+                    pendingList.appendChild(adminItem);
+                });
+                
+                // 승인된 관리자 로드
+                const approvedSnapshot = await db.collection('adminRequests')
+                    .where('status', '==', 'approved')
+                    .get();
+                
+                const approvedList = document.getElementById('approvedAdminsList');
+                approvedList.innerHTML = '';
+                
+                approvedSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    const adminItem = document.createElement('div');
+                    adminItem.className = 'admin-item';
+                    adminItem.innerHTML = `
+                        <div class="admin-info">
+                            <div>이메일: ${data.email}</div>
+                            <div>UID: ${data.uid}</div>
+                            <div>승인일: ${data.approvedAt ? new Date(data.approvedAt.toDate()).toLocaleString() : '알 수 없음'}</div>
+                        </div>
+                    `;
+                    approvedList.appendChild(adminItem);
+                });
+            } catch (error) {
+                console.error('Error loading admin lists:', error);
+                showCustomAlert('관리자 목록을 불러오는 중 오류가 발생했습니다.');
+            }
+        }
+
+        // 관리자 승인
+        async function approveAdmin(requestId) {
+            try {
+                const db = firebase.firestore();
+                await db.collection('adminRequests').doc(requestId).update({
+                    status: 'approved',
+                    approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    approvedBy: currentUser.uid
+                });
+                
+                showCustomAlert('관리자가 승인되었습니다.');
+                loadAdminLists();
+            } catch (error) {
+                console.error('Error approving admin:', error);
+                showCustomAlert('관리자 승인 중 오류가 발생했습니다.');
+            }
+        }
+
+        // 관리자 거절
+        async function rejectAdmin(requestId) {
+            try {
+                const db = firebase.firestore();
+                await db.collection('adminRequests').doc(requestId).update({
+                    status: 'rejected',
+                    rejectedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    rejectedBy: currentUser.uid
+                });
+                
+                showCustomAlert('관리자가 거절되었습니다.');
+                loadAdminLists();
+            } catch (error) {
+                console.error('Error rejecting admin:', error);
+                showCustomAlert('관리자 거절 중 오류가 발생했습니다.');
+            }
+        }
+    </script>
+
+    <script>
+        // 관리자 등록 신청 모달 관련 함수들
+        function showSignupModal() {
+            const modal = document.getElementById('signupModal');
+            modal.style.display = 'block';
+            document.getElementById('adminLoginModal').style.display = 'none';  // 로그인 모달 닫기
+        }
+
+        function closeSignupModal() {
+            const modal = document.getElementById('signupModal');
+            modal.style.display = 'none';
+        }
+
+        async function requestAdminSignup() {
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const passwordConfirm = document.getElementById('signupPasswordConfirm').value;
+            const nickname = document.getElementById('signupNickname').value;
+            const recaptchaResponse = grecaptcha.getResponse();
+
+            if (!email || !password || !passwordConfirm || !nickname) {
+                showCustomAlert('모든 필드를 입력해주세요.');
+                return;
+            }
+
+            if (password !== passwordConfirm) {
+                showCustomAlert('비밀번호가 일치하지 않습니다.');
+                return;
+            }
+
+            if (!recaptchaResponse) {
+                showCustomAlert('자동가입방지를 확인해주세요.');
+                return;
+            }
+
+            try {
+                // Firebase Authentication으로 계정 생성
+                const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+
+                // Firestore에 관리자 신청 정보 저장
+                const db = firebase.firestore();
+                await db.collection('adminRequests').doc(user.uid).set({
+                    email: email,
+                    nickname: nickname,
+                    uid: user.uid,
+                    status: 'pending',
+                    recaptchaResponse: recaptchaResponse,
+                    requestedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                showCustomAlert('관리자 등록이 신청되었습니다. 승인을 기다려주세요.');
+                closeSignupModal();
+
+                // 로그아웃 처리
+                await firebase.auth().signOut();
+            } catch (error) {
+                console.error('Error registering admin:', error);
+                let errorMessage;
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = '이미 등록된 이메일입니다. 다른 이메일을 사용해주세요.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = '유효하지 않은 이메일 주소입니다.';
+                        break;
+                    case 'auth/operation-not-allowed':
+                        errorMessage = '이메일/비밀번호 인증이 비활성화되어 있습니다.';
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = '비밀번호가 너무 약합니다. 더 강력한 비밀번호를 사용해주세요.';
+                        break;
+                    default:
+                        errorMessage = '등록 중 오류가 발생했습니다: ' + error.message;
+                }
+                showCustomAlert(errorMessage);
+            }
+        }
+    </script>
+
+    <script>
+        // 관리자 로그인 모달 닫기 함수
+        function closeAdminLoginModal() {
+            const modal = document.getElementById('adminModal');
+            modal.style.display = 'none';
+            
+            // 입력 필드 초기화
+            document.getElementById('adminEmail').value = '';
+            document.getElementById('adminPassword').value = '';
         }
     </script>
 </body>
