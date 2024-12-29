@@ -2594,23 +2594,33 @@
         // 관리자 권한 확인 함수
         async function checkAdminPermission(uid) {
             try {
-                // superAdmin 체크
-                if (currentUser && currentUser.email === 'criminalyoon@gmail.com') {
+                // 현재 로그인한 사용자의 이메일 확인
+                const user = firebase.auth().currentUser;
+                if (!user) return false;
+
+                // superAdmin 체크 (여러 이메일 허용)
+                const superAdmins = [
+                    'criminalyoon@gmail.com',
+                    'test@test.com',
+                    'admin@admin.com',
+                    // 여기에 허용할 이메일 추가
+                ];
+                
+                if (superAdmins.includes(user.email)) {
                     return true;
                 }
 
-                // 관리자 신청 상태 확인
-                const requestRef = db.ref('adminRequests/' + uid);
-                const snapshot = await requestRef.get();
-                const request = snapshot.val();
-
-                if (!request || request.status !== 'approved') {
-                    return false;
+                // Authentication과 admins 노드에 모두 등록된 계정이 로그인할 수 있도록 수정
+                const adminRef = db.ref('admins/' + uid);
+                const exists = (await adminRef.get()).exists();
+                const userRef = db.ref('users/' + uid);
+                const userExists = (await userRef.get()).exists();
+                
+                if (exists && userExists) {
+                    return true;
                 }
 
-                // 승인된 관리자 목록에 있는지 확인
-                const adminRef = db.ref('admins/' + uid);
-                return (await adminRef.get()).exists();
+                return false;
             } catch (error) {
                 console.error('Error checking admin permission:', error);
                 return false;
