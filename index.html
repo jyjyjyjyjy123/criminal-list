@@ -1570,6 +1570,7 @@
                     // 특정 인물의 데이터만 불러오기
                     const snapshot = await db.ref(`actions/${personName}`).once('value');
                     const data = snapshot.val() || {};
+                    console.log(`데이터 로드 (${personName}):`, data); // 디버깅 로그
                     return { [personName]: data };
                 }
                 return {};
@@ -2015,7 +2016,7 @@
                         if (isAdmin) {
                             modalActions.style.display = 'block';
                             modalActionsView.style.display = 'none';
-                            modalActions.value = personActions;
+                            modalActions.value = typeof personActions === 'object' ? personActions.text || '' : personActions;
                         } else {
                             modalActions.style.display = 'none';
                             modalActionsView.style.display = 'block';
@@ -2290,6 +2291,7 @@
                 modalActionsView.style.display = 'none';
             } else {
                 adminLoginBtn.style.display = 'inline-block';
+                adminLoginBtn.style.float = 'right';
                 saveBtn.style.display = 'none';
                 modalActions.style.display = 'none';
                 modalActionsView.style.display = 'block';
@@ -2564,10 +2566,25 @@
                     // 현재 모달창의 UI를 즉시 업데이트
                     const modalActions = document.getElementById('modalActions');
                     const modalActionsView = document.getElementById('modalActionsView');
+                    const currentName = document.getElementById('modalName').textContent;
                     
-                    if (modalActions && modalActionsView) {
-                        modalActions.style.display = 'block';
-                        modalActionsView.style.display = 'none';
+                    if (modalActions && modalActionsView && currentName) {
+                        // 현재 표시된 인물의 데이터 로드
+                        const actionsRef = db.ref('actions/' + currentName);
+                        actionsRef.once('value')
+                            .then((snapshot) => {
+                                const data = snapshot.val();
+                                console.log('로그인 후 데이터 로드:', data);
+                                
+                                // 데이터를 입력창에 표시
+                                modalActions.value = data && data.text ? data.text : '';
+                                if (!data || !data.text) {
+                                    modalActions.placeholder = '이 사람의 행적을 입력하세요...';
+                                }
+                                
+                                modalActions.style.display = 'block';
+                                modalActionsView.style.display = 'none';
+                            });
                     }
                     
                     showCustomAlert('관리자로 로그인되었습니다.');
@@ -2626,16 +2643,29 @@
 
         // 행적 텍스트 포맷팅
         function formatActions(actions) {
+            console.log('formatActions 입력값:', actions); // 디버깅 로그
+            
             if (!actions || Object.keys(actions).length === 0) {
                 return "Coming soon...";
             }
-            if (typeof actions === 'object' && actions.text) {
-                actions = actions.text;
+            
+            // actions가 객체이고 text 속성이 있는 경우
+            if (typeof actions === 'object') {
+                console.log('객체 형태의 actions:', actions); // 디버깅 로그
+                if (actions.text) {
+                    actions = actions.text;
+                } else if (actions.actions) {
+                    actions = actions.actions;
+                }
             }
+            
             actions = String(actions).trim();
+            console.log('최종 처리된 actions:', actions); // 디버깅 로그
+            
             if (actions === '') {
                 return "Coming soon...";
             }
+            
             return `<p class="actions-text">${String(actions).split('\n').map(line => line.trim()).join('<br>')}</p>`;
         }
 
@@ -2703,7 +2733,7 @@
                 actionsRef.once('value')
                     .then((snapshot) => {
                         const data = snapshot.val();
-                        const serverLastUpdate = data.lastUpdate || 0;
+                        const serverLastUpdate = data ? data.lastUpdate || 0 : 0;
                         const cachedData = localStorage.getItem(cacheKey);
                         const cachedLastUpdate = localStorage.getItem(cacheTimestampKey);
 
@@ -2711,50 +2741,48 @@
                         if (cachedData && cachedLastUpdate && parseInt(cachedLastUpdate) >= serverLastUpdate) {
                             const cached = JSON.parse(cachedData);
                             modalActions.value = cached.text || '';
-                            modalActionsView.innerHTML = formatActions(cached.text);
+                            modalActionsView.innerHTML = formatActions(cached);
                         } else {
                             // 서버 데이터 사용
-                            modalActions.value = data.text || '';
-                            modalActionsView.innerHTML = formatActions(data.text);
+                            modalActions.value = data ? data.text || '' : '';
+                            modalActionsView.innerHTML = formatActions(data);
                             
                             // 새로운 데이터와 타임스탬프 캐시
-                            localStorage.setItem(cacheKey, JSON.stringify(data));
-                            localStorage.setItem(cacheTimestampKey, serverLastUpdate.toString());
+                            if (data) {
+                                localStorage.setItem(cacheKey, JSON.stringify(data));
+                                localStorage.setItem(cacheTimestampKey, serverLastUpdate.toString());
+                            }
                         }
                         loadingOverlay.style.display = 'none';
                     });
             } else {
-                // 전역 연결 관리
-                if (!window.globalConnectionRef) {
-                    window.globalConnectionRef = actionsRef;
-                    actionsRef.on('value', (snapshot) => {
+                // 관리자 모드도 동일한 방식으로 데이터 로드
+                actionsRef.once('value')
+                    .then((snapshot) => {
                         const data = snapshot.val();
-                        modalActions.value = data.text || '';
-                        modalActionsView.innerHTML = formatActions(data.text);
+                        console.log('관리자 모드 데이터 로드:', data);
+                        
+                        // 데이터를 입력창에 표시
+                        modalActions.value = data && data.text ? data.text : '';
+                        if (!data || !data.text) {
+                            modalActions.placeholder = '이 사람의 행적을 입력하세요...';
+                        }
+                        
+                        modalActions.style.display = 'block';
+                        modalActionsView.style.display = 'none';
                         loadingOverlay.style.display = 'none';
                     });
-                } else if (window.globalConnectionRef.toString() !== actionsRef.toString()) {
-                    // 다른 인물의 데이터를 보려고 할 때
-                    window.globalConnectionRef.off();  // 이전 연결 제거
-                    window.globalConnectionRef = actionsRef;
-                    actionsRef.on('value', (snapshot) => {
-                        const data = snapshot.val();
-                        modalActions.value = data.text || '';
-                        modalActionsView.innerHTML = formatActions(data.text);
-                        loadingOverlay.style.display = 'none';
-                    });
-                }
-
-                // 모달이 닫힐 때 확실하게 리스너 제거
-                const closeListener = () => {
-                    if (window.currentActionsRef) {
-                        window.currentActionsRef.off();
-                        window.currentActionsRef = null;
-                    }
-                    modal.removeEventListener('hidden.modal', closeListener);
-                };
-                modal.addEventListener('hidden.modal', closeListener, { once: true });
             }
+
+            // 모달이 닫힐 때 확실하게 리스너 제거
+            const closeListener = () => {
+                if (window.currentActionsRef) {
+                    window.currentActionsRef.off();
+                    window.currentActionsRef = null;
+                }
+                modal.removeEventListener('hidden.modal', closeListener);
+            };
+            modal.addEventListener('hidden.modal', closeListener, { once: true });
 
             // 관리자 모드에 따라 버튼 표시/숨김
             const adminLoginBtn = document.getElementById('adminLoginBtn');
