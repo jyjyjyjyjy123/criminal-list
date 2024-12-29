@@ -1416,7 +1416,7 @@
             <div class="modal-body">
                 <input type="email" id="adminEmail" placeholder="이메일" style="width: 100%; padding: 10px; margin: 10px 0;" required>
                 <input type="password" id="adminPassword" placeholder="비밀번호" style="width: 100%; padding: 10px; margin: 10px 0;" required>
-                <button id="adminLoginSubmit" style="width: 100%; padding: 10px; margin: 10px 0;" onclick="loginAdmin()">로그인</button>
+                <button id="adminLoginSubmit" style="width: 100%; padding: 10px; margin: 10px 0;">로그인</button>
                 <div style="text-align: center; margin-top: 10px;">
                     <a href="#" onclick="showSignupModal()" style="color: #666; text-decoration: underline;">관리자 등록 신청</a>
                 </div>
@@ -1473,7 +1473,7 @@
         </div>
     </div>
 
-    <!-- 공지사항 모달 -->
+    <!-- 공지사항 모달 -->ㄴ
     <div id="noticeModal" class="notice-modal">
         <div class="notice-content">
             <h2 class="notice-title">공지사항</h2>
@@ -1484,7 +1484,6 @@
                 ❗4. 범죄자들이 너무 많아 혼자 관리하기엔 힘이 듭니다. 많은 연락 부탁드리겠습니다.
                 🌟<a href="mailto:criminalyoon@gmail.com" style="color: #0066cc; text-decoration: underline;">criminalyoon@gmail.com</a>🌟
                 🌟<a href="https://open.kakao.com/o/g6m4OK6g" style="color: #0066cc; text-decoration: underline;">https://open.kakao.com/o/g6m4OK6g</a>🌟
-                ❗독일에서 운영중이라 로딩속도가 조금 느립니다. 개선방법 찾아보겠습니다.
                 모바일용 디자인도 만들어보겠습니다. 우선 가로모드 부탁드립니다!
                 인물 클릭 시 자세한 행적을 볼 수 있습니다.</div>
             <button class="notice-close" onclick="closeNotice()">확인</button>
@@ -2406,7 +2405,7 @@
             });
 
             // 엔터키 검색
-            searchInput.addEventListener('keydown', function(e) {
+            searchInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     e.preventDefault();
                     const card = executeSearch(this.value);
@@ -2506,24 +2505,24 @@
             const adminManageBtn = document.getElementById('adminManageBtn');
 
             if (adminLoginBtn) {
-                adminLoginBtn.onclick = function() {
+                adminLoginBtn.addEventListener('click', function() {
                     adminModal.style.display = 'block';
-                }
+                })
             }
 
             if (saveBtn) {
-                saveBtn.onclick = saveModalActions;
+                saveBtn.addEventListener('click', saveModalActions);
             }
 
             if (logoutBtn) {
-                logoutBtn.onclick = logoutAdmin;
+                logoutBtn.addEventListener('click', logoutAdmin);
             }
 
             if (adminManageBtn) {
-                adminManageBtn.onclick = function() {
+                adminManageBtn.addEventListener('click', function() {
                     adminManageModal.style.display = 'block';
                     loadAdminLists(); // 관리자 목록 로드
-                }
+                })
             }
         }
 
@@ -2536,36 +2535,51 @@
             const email = document.getElementById('adminEmail').value;
             const password = document.getElementById('adminPassword').value;
 
+            if (!email || !password) {
+                showCustomAlert('이메일과 비밀번호를 입력해주세요.');
+                return;
+            }
+
             try {
-                // Firebase 이메일/비밀번호 인증
                 const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
                 currentUser = userCredential.user;
-                console.log('Your UID:', currentUser.uid); // UID 출력
 
-                // 관리자 권한 확인
-                const isApprovedAdmin = await checkAdminPermission(currentUser.uid);
+                const isAdminCheck = await checkAdminPermission(currentUser.uid);
                 
-                if (isApprovedAdmin) {
-                    isAdmin = true;
+                if (isAdminCheck) {
+                    window.isAdmin = true;  // 전역 변수로 설정
                     document.getElementById('adminModal').style.display = 'none';
                     document.getElementById('adminLoginBtn').style.display = 'none';
-                    document.getElementById('saveBtn').style.display = 'block';
                     document.getElementById('logoutBtn').style.display = 'block';
+                    document.getElementById('saveBtn').style.display = 'block';
                     document.getElementById('adminManageBtn').style.display = 'block';
-                    showCustomAlert('관리자로 로그인되었습니다. UID: ' + currentUser.uid);
+                    
+                    // 현재 모달창의 UI를 즉시 업데이트
+                    const modalActions = document.getElementById('modalActions');
+                    const modalActionsView = document.getElementById('modalActionsView');
+                    
+                    if (modalActions && modalActionsView) {
+                        modalActions.style.display = 'block';
+                        modalActionsView.style.display = 'none';
+                    }
+                    
+                    showCustomAlert('관리자로 로그인되었습니다.');
                 } else {
-                    throw new Error('승인된 관리자가 아닙니다.');
+                    await firebase.auth().signOut();
+                    showCustomAlert('관리자 권한이 없습니다.');
                 }
             } catch (error) {
-                console.error('Login error:', error);
-                showCustomAlert('로그인 실패: ' + error.message);
-                isAdmin = false;
+                showCustomAlert('로그인 중 오류가 발생했습니다.');
             }
         }
+
+        // 로그인 버튼 이벤트 리스너 설정
+        document.getElementById('adminLoginSubmit').addEventListener('click', loginAdmin);
 
         // 엔터키 로그인
         document.getElementById('adminPassword').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
+                e.preventDefault(); // 기본 이벤트 방지
                 loginAdmin();
             }
         });
@@ -2594,33 +2608,9 @@
         // 관리자 권한 확인 함수
         async function checkAdminPermission(uid) {
             try {
-                // 현재 로그인한 사용자의 이메일 확인
-                const user = firebase.auth().currentUser;
-                if (!user) return false;
-
-                // superAdmin 체크 (여러 이메일 허용)
-                const superAdmins = [
-                    'criminalyoon@gmail.com',
-                    'test@test.com',
-                    'admin@admin.com',
-                    // 여기에 허용할 이메일 추가
-                ];
-                
-                if (superAdmins.includes(user.email)) {
-                    return true;
-                }
-
-                // Authentication과 admins 노드에 모두 등록된 계정이 로그인할 수 있도록 수정
                 const adminRef = db.ref('admins/' + uid);
                 const exists = (await adminRef.get()).exists();
-                const userRef = db.ref('users/' + uid);
-                const userExists = (await userRef.get()).exists();
-                
-                if (exists && userExists) {
-                    return true;
-                }
-
-                return false;
+                return exists;
             } catch (error) {
                 console.error('Error checking admin permission:', error);
                 return false;
@@ -2781,14 +2771,7 @@
 
             modal.style.display = 'block';
         }
-        
-        // 엔터키 로그인
-        document.getElementById('adminPassword').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                loginAdmin();
-            }
-        });
-        
+
         // 페이지 초기화 코드
         document.addEventListener('DOMContentLoaded', async function() {
             // 공지사항 모달 표시
@@ -3103,7 +3086,7 @@
         async function requestAdminSignup() {
             const email = document.getElementById('signupEmail').value;
             const password = document.getElementById('signupPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
+            const confirmPassword = document.getElementById('signupPasswordConfirm').value;
             const nickname = document.getElementById('signupNickname').value;
 
             if (!email || !password || !confirmPassword || !nickname) {
