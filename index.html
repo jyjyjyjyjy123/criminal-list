@@ -1564,12 +1564,19 @@
         };
 
         // 기존 함수를 Firebase 버전으로 대체
-        window.loadActionsData = () => {
-            return new Promise((resolve) => {
-                firebaseDB.loadAllActions(data => {
-                    resolve(data);
-                });
-            });
+        window.loadActionsData = async (personName) => {
+            try {
+                if (personName) {
+                    // 특정 인물의 데이터만 불러오기
+                    const snapshot = await db.ref(`actions/${personName}`).once('value');
+                    const data = snapshot.val() || {};
+                    return { [personName]: data };
+                }
+                return {};
+            } catch (error) {
+                console.error('데이터 로딩 에러:', error);
+                return {};
+            }
         };
     </script>
 
@@ -2000,7 +2007,7 @@
                 modal.style.display = 'block';
 
                 // 행적 데이터 로드
-                loadActionsData().then(actionsData => {
+                loadActionsData(person.name).then(actionsData => {
                     // 현재 표시된 모달이 여전히 같은 사람인지 확인
                     if (modalName.textContent === currentPerson) {
                         const personActions = actionsData[currentPerson] || '';
@@ -2619,15 +2626,15 @@
 
         // 행적 텍스트 포맷팅
         function formatActions(actions) {
-            if (!actions) {
-                return '<p class="pending-message">곧 업데이트 하겠습니다..</p>';
+            if (!actions || Object.keys(actions).length === 0) {
+                return "Coming soon...";
             }
             if (typeof actions === 'object' && actions.text) {
                 actions = actions.text;
             }
             actions = String(actions).trim();
             if (actions === '') {
-                return '<p class="pending-message">곧 업데이트 하겠습니다..</p>';
+                return "Coming soon...";
             }
             return `<p class="actions-text">${String(actions).split('\n').map(line => line.trim()).join('<br>')}</p>`;
         }
