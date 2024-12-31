@@ -17,6 +17,121 @@
     <meta name="naverbot" content="index, follow">
     <meta name="title" content="내란범죄혐의자 명단">
     <title>내란범죄혐의자 명단</title>
+    <style>
+        /* 공통 스타일 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;  
+            margin: 0;
+            padding: 0;
+            color: #333;    
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            background-color: #8b0000;
+            padding: 20px;
+            margin: -20px -20px 20px;
+            font-size: 28px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* 섹션 스타일 */
+        .section {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            text-align: center;
+        }
+
+        /* 내란수괴 섹션 특별 스타일 */
+        #내란수괴-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            width: 100%;
+            position: relative;
+        }
+
+        #내란수괴-container .person-container:first-child {
+            margin: 0 auto;  /* 윤석열 중앙 배치 */
+        }
+
+        #내란수괴-container .person-container:last-child {
+            margin-right: 15% !important;  
+        }
+
+        /* 섹션 헤더 스타일 */
+        .section-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        /* 섹션 로고 스타일 */
+        .section-logo {
+            max-width: 150px;
+            width: 100%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .section-logo:hover {
+            transform: scale(1.03);
+        }
+
+        #군부-section .section-logo {
+            max-width: 400px;
+            margin: 35px auto 5px;
+        }
+
+        #경찰-section .section-logo {
+            max-width: 170px;
+            margin: 35px auto 0;
+        }
+
+        #대통령실-section .section-logo {
+            max-width: 300px;
+            margin: 35px auto 0;
+        }
+
+        #내란의힘-section .section-logo {
+            max-width: 150px;
+            margin: 10px auto 0;
+        }
+
+        #기타·극우미디어-section .section-logo {
+            max-width: 180px;
+            margin: 15px auto 5px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .section-logo {
+                max-width: 120px;
+            }
+
+            #군부-section .section-logo {
+                max-width: 150px;
+                margin: 25px auto 5px;
+            }
+
             #내란의힘-section .section-logo {
                 max-width: 55px;
                 margin: 10px auto 3px;
@@ -1547,8 +1662,8 @@
             // 내란의힘
 
             { name: "추경호", role1: "내란주동자", role2: "대구 달성군", group: "내란의힘", row: 1 },
-            { name: "권성동", role1: "내란동조자", role2: "강원 강릉시", group: "내란의힘", row: 1 },
-            { name: "권영세", role1: "내란동조자", role2: "서울 용산구", group: "내란의힘", row: 1 },	          
+            { name: "권영세", role1: "내란동조자", role2: "서울 용산구", group: "내란의힘", row: 1 },	            
+	        { name: "권성동", role1: "내란동조자", role2: "강원 강릉시", group: "내란의힘", row: 1 },
             { name: "김석기", role1: "내란동조자", role2: "경북 경주시", group: "내란의힘", row: 1 },
             { name: "나경원", role1: "내란동조자", role2: "서울 동작구", group: "내란의힘", row: 1 },
             { name: "유상범", role1: "내란동조자", role2: "강원 홍천시횡성군영월군평창군", group: "내란의힘", row: 1 },
