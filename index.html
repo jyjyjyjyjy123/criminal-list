@@ -16,14 +16,13 @@
     <meta property="og:url" content="https://www.criminalyoon.com" />
     <meta property="og:image" content="https://www.criminalyoon.com/assets/images/wanted.png" />
     <meta name="robots" content="index, follow" />
-    s
     <meta name="googlebot" content="index, follow" />
     <meta name="naverbot" content="index, follow" />
     <meta name="title" content="내란범죄혐의자 명단" />
     <title>내란범죄혐의자 명단</title>
     <link rel="stylesheet" href="assets/css/index.css" />
   </head>
-  <body onload="onload()">
+  <body>
     <div class="container">
       <h1>내란범죄혐의자 명단</h1>
 
@@ -277,33 +276,23 @@
       <div class="notice-content">
         <h2 class="notice-title">공지사항</h2>
         <div class="notice-text">
-          <div class="event-summary">
-            <p class="text">
-              무안공항 참사 유가족들께 깊은 위로와 애도를 전하며, 슬픔을 함께하고 계실 국민 여러분께도 진심 어린 위로를
-              전합니다.
-            </p>
-            <p class="admin-info">-CriminalYoon 운영진</p>
+          <div class="notice-poster">
+            <img
+              src="/assets/images/wanted.jpg"
+              alt="wanted 내란수괴 윤석열, 대통령 경호처장 박종준, 대통령 경호차장 김성훈"
+            />
           </div>
           <ol class="notice-list">
             <li>백엔드 개발자분들을 찾고 있습니다. 연락 부탁드립니다.</li>
-            <li>
-              '자유와 정의를 실천하는 교수들의 모임' 123명에 대해 조사 중입니다.<br />사진 누락 인물 제보 부탁드립니다.
-            </li>
             <li>인물들의 행적을 함께 조사해주실 국민여러분들을 찾습니다.</li>
-            <li>누락된 범죄자들 제보해주시면 업데이트 시키겠습니다.</li>
-            <li>
-              사이트 공유로 많은 분들께 내란범죄자들을 기억시켜주세요.<br />
-              🌟<a href="mailto:criminalyoon@gmail.com" style="color: #0066cc; text-decoration: underline"
-                >criminalyoon@gmail.com</a
-              >🌟 <br />
-              🌟<a href="https://open.kakao.com/o/g6m4OK6g" style="color: #0066cc; text-decoration: underline"
-                >https://open.kakao.com/o/g6m4OK6g</a
-              >🌟
-            </li>
           </ol>
           <p>
-            모바일용 디자인 개발중입니다.<br />
-            인물 클릭 시 행적을 볼 수 있습니다.
+            🌟<a href="mailto:criminalyoon@gmail.com" style="color: #0066cc; text-decoration: underline"
+              >criminalyoon@gmail.com</a
+            >🌟 <br />
+            🌟<a href="https://open.kakao.com/o/g6m4OK6g" style="color: #0066cc; text-decoration: underline"
+              >https://open.kakao.com/o/g6m4OK6g</a
+            >🌟
           </p>
         </div>
         <button class="notice-close" onclick="closeNotice()">확인</button>
@@ -1960,12 +1949,12 @@
       // 공지사항 모달 관련 함수
       function showNotice() {
         const modal = document.getElementById('noticeModal');
-        modal.style.display = 'block';
+        modal.classList.add('is-show');
       }
 
       function closeNotice() {
         const modal = document.getElementById('noticeModal');
-        modal.style.display = 'none';
+        modal.classList.remove('is-show');
       }
 
       // 커스텀 알림창 함수
