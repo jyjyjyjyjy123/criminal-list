@@ -14,1299 +14,14 @@
     <meta property="og:description" content="내란범죄자들을 끝까지 추적하겠습니다." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.criminalyoon.com" />
-    <meta property="og:image" content="https://www.criminalyoon.com/images/logo.png" />
-    <meta name="robots" content="index, follow" />s
+    <meta property="og:image" content="https://www.criminalyoon.com/assets/images/wanted.png" />
+    <meta name="robots" content="index, follow" />
+    s
     <meta name="googlebot" content="index, follow" />
     <meta name="naverbot" content="index, follow" />
     <meta name="title" content="내란범죄혐의자 명단" />
     <title>내란범죄혐의자 명단</title>
-    <style>
-      /* 공통 스타일 */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f5f5f5;
-        margin: 0;
-        padding: 0;
-        color: #333;
-      }
-
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        background-color: #fff;
-        padding: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        width: 100%;
-      }
-
-      h1 {
-        text-align: center;
-        color: white;
-        background-color: #8b0000;
-        padding: 20px;
-        margin: -20px -20px 20px;
-        font-size: 28px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      }
-
-      /* 섹션 스타일 */
-      .section {
-        margin-bottom: 40px;
-        padding-bottom: 20px;
-        text-align: center;
-      }
-
-      /* 내란수괴 섹션 특별 스타일 */
-      #내란수괴-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px 0;
-        width: 100%;
-        position: relative;
-      }
-
-      #내란수괴-container .person-container:first-child {
-        margin: 0 auto; /* 윤석열 중앙 배치 */
-      }
-
-      #내란수괴-container .person-container:last-child {
-        margin-right: 15% !important;
-      }
-
-      /* 섹션 헤더 스타일 */
-      .section-header {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 20px;
-      }
-
-      /* 섹션 로고 스타일 */
-      .section-logo {
-        max-width: 150px;
-        width: 100%;
-        display: block;
-        margin: 0 auto;
-      }
-
-      .section-logo:hover {
-        transform: scale(1.03);
-      }
-
-      #군부-section .section-logo {
-        max-width: 400px;
-        margin: 35px auto 5px;
-      }
-
-      #경찰-section .section-logo {
-        max-width: 170px;
-        margin: 35px auto 0;
-      }
-
-      #대통령실-section .section-logo {
-        max-width: 300px;
-        margin: 35px auto 0;
-      }
-
-      #내란의힘-section .section-logo {
-        max-width: 150px;
-        margin: 10px auto 0;
-      }
-
-      #기타·극우미디어-section .section-logo {
-        max-width: 180px;
-        margin: 15px auto 5px;
-      }
-
-      @media screen and (max-width: 768px) {
-        .section-logo {
-          max-width: 120px;
-        }
-
-        #군부-section .section-logo {
-          max-width: 150px;
-          margin: 25px auto 5px;
-        }
-
-        #내란의힘-section .section-logo {
-          max-width: 55px;
-          margin: 10px auto 3px;
-        }
-
-        #경찰-section .section-logo {
-          max-width: 70px;
-          margin: 25px auto 0;
-        }
-
-        #대통령실-section .section-logo {
-          max-width: 100px;
-          margin: 25px auto 0;
-        }
-
-        .section {
-          margin-bottom: 30px;
-          padding: 0 5px;
-        }
-
-        .people-container {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          width: 100%;
-          padding: 0;
-          gap: 0;
-        }
-
-        .person-card {
-          width: calc(100% / 8); /* 8명씩 배치, 간격 1px 고려 */
-          margin: 0;
-          padding: 0;
-          border: none;
-          box-shadow: none;
-        }
-
-        .person-card img {
-          width: 110%;
-          height: auto;
-          aspect-ratio: 3/4;
-          object-fit: cover;
-          margin: 0 -5% !important;
-          border-radius: 0;
-        }
-
-        .person-card .name {
-          font-size: 10px;
-          margin: 2px 0;
-          line-height: 1.2;
-        }
-
-        .person-card .role {
-          font-size: 9px;
-          margin: 1px 0;
-          line-height: 1.1;
-        }
-      }
-
-      @media screen and (max-width: 480px) {
-        .section-logo {
-          max-width: 120px;
-        }
-
-        #군부-section .section-logo {
-          max-width: 150px;
-          margin: 25px auto 5px;
-        }
-
-        #내란의힘-section .section-logo {
-          max-width: 55px;
-          margin: 10px auto 5px; /* 여백 동일하게 적용 */
-        }
-
-        #경찰-section .section-logo {
-          max-width: 70px;
-          margin: 25px auto 0;
-        }
-
-        #대통령실-section .section-logo {
-          max-width: 100px;
-          margin: 25px auto 0;
-        }
-
-        .people-container {
-          gap: 0; /* 1px에서 0px로 감소 */
-        }
-
-        .person-card {
-          width: calc(100% / 8); /* 8명씩 배치, 간격 1px 고려 */
-          padding: 0;
-        }
-
-        .person-card .name {
-          font-size: 9px;
-        }
-
-        .person-card .role {
-          font-size: 8px;
-        }
-      }
-
-      /* 섹션 제목 스타일 */
-      #내란수괴-section h2,
-      #군부-section h2,
-      #경찰-section h2,
-      #대통령실-section h2,
-      #내란의힘-section h2,
-      #기타·극우미디어-section h2 {
-        color: #000;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom-width: 4px;
-        border-bottom-style: solid;
-        text-align: center;
-        font-size: 24px;
-        position: relative;
-        width: 80%;
-        display: inline-block;
-      }
-
-      /* 섹션별 테두리 색상 */
-      #내란수괴-section h2 {
-        border-bottom-color: #8b0000; /* 진한 빨강 */
-      }
-
-      #군부-section h2 {
-        border-bottom-color: #006400; /* 진한 초록 */
-      }
-
-      #경찰-section h2 {
-        border-bottom-color: #00008b; /* 진한 파랑 */
-      }
-
-      #대통령실-section h2 {
-        border-bottom-color: #4b0082; /* 남색 */
-      }
-
-      #내란의힘-section h2 {
-        border-bottom-color: #e61e2b; /* 빨간색 */
-      }
-
-      #기타·극우미디어-section h2 {
-        border-bottom-color: #2f4f4f; /* 진한 회색 */
-      }
-
-      .section h2 span {
-        display: block;
-        margin-top: 10px;
-      }
-
-      /* 모바일 화면에서 섹션 여백 조정 */
-      @media screen and (max-width: 767px) {
-        #내란수괴-section h2,
-        #군부-section h2,
-        #경찰-section h2,
-        #대통령실-section h2,
-        #내란의힘-section h2,
-        #기타·극우미디어-section h2 {
-          font-size: 15px !important;
-          margin-bottom: 5px;
-        }
-
-        #내란수괴-section {
-          margin-bottom: 20px;
-          padding-bottom: 10px;
-        }
-
-        #내란수괴-container {
-          margin-top: -30px;
-        }
-
-        #군부-container {
-          margin-top: -10px;
-        }
-
-        #군부-section {
-          margin-top: -15px;
-        }
-
-        #군부-section img {
-          margin-bottom: 5px;
-        }
-
-        #대통령실-container {
-          margin-top: -10px;
-        }
-
-        #대통령실-section {
-          margin-top: -15px;
-        }
-
-        #대통령실-section img {
-          margin-bottom: 3px;
-        }
-
-        #대통령실-section h2 {
-          margin-top: 2px !important;
-        }
-
-        #기타·극우미디어-section .section-logo {
-          max-width: 50px; /* 로고 크기 줄임 */
-        }
-
-        /* 섹션 제목 폰트 크기 조정 */
-        .section h2 {
-          font-size: 15px;
-        }
-      }
-
-      @media screen and (max-width: 768px) {
-        body {
-          padding: 0;
-          margin: 0;
-        }
-
-        .container {
-          padding: 0;
-          margin: 0;
-          box-shadow: none;
-          max-width: 100%;
-          width: 100%;
-        }
-
-        h1 {
-          margin: 0 0 5px 0;
-          padding: 15px 5px;
-        }
-
-        .grid-container {
-          gap: 2px;
-          padding: 0;
-          width: 100%;
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-        }
-
-        .person-card {
-          margin: 0;
-          width: 100%;
-        }
-
-        .person-card .image-container {
-          padding-top: 140%;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .person-card .image-container img {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-
-        .person-card .name {
-          font-size: 13px;
-          margin: 3px 0;
-          padding: 0;
-        }
-
-        .person-card .position {
-          font-size: 11px;
-          margin: 0;
-          padding: 0;
-        }
-
-        .section {
-          padding: 0;
-          margin-bottom: 20px;
-        }
-
-        .filters {
-          padding: 0;
-          display: flex;
-          width: 100%;
-          gap: 0;
-        }
-
-        .filter-btn {
-          flex: 1;
-          font-size: 7px;
-          padding: 4px 0;
-          white-space: nowrap;
-          overflow: visible;
-          border: none;
-        }
-
-        .filter-btn:hover {
-          background: #8b0000;
-          color: white;
-        }
-
-        .filter-btn.active {
-          background: #8b0000;
-          color: white;
-        }
-
-        .people-container {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          width: 100%;
-          padding: 0;
-          gap: 0;
-        }
-
-        .row {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          width: 100%;
-          gap: 0;
-          margin: 0;
-        }
-
-        .person-container {
-          width: calc(100% / 6) !important;
-          flex: 0 0 calc(100% / 6) !important;
-          margin: 0 0 5px 0 !important;
-          padding: 0;
-        }
-
-        .person-container img {
-          width: 110%;
-          height: auto;
-          aspect-ratio: 3/4;
-          object-fit: cover;
-          margin: 0 -5% !important;
-          border-radius: 0;
-        }
-
-        .person-name {
-          font-size: 8.2px !important;
-          font-weight: bold;
-          margin-top: 1px !important;
-          margin-bottom: 1px !important;
-          line-height: 1.1;
-        }
-
-        .person-role1 {
-          font-size: 6.1px !important;
-          margin: 0 !important;
-          padding: 0;
-          margin: 0 0 0.6px 0;
-          line-height: 1.1;
-        }
-
-        .person-role2 {
-          font-size: 5.8px !important;
-          margin: 0 !important;
-          padding: 0;
-          line-height: 1.1;
-        }
-
-        .martial-law-group,
-        .martial-law-agree-group,
-        .row3-container {
-          margin-bottom: 20px;
-        }
-      }
-
-      @media screen and (max-width: 480px) {
-        .martial-law-group::before,
-        .martial-law-agree-group::before {
-          font-size: 10px;
-          padding: 0 6px;
-          top: -7px;
-          left: 10px;
-        }
-
-        .martial-law-group,
-        .martial-law-agree-group {
-          padding: 15px;
-          margin: 15px 0;
-        }
-
-        .person-container {
-          width: calc(100% / 6) !important;
-          flex: 0 0 calc(100% / 6) !important;
-        }
-
-        .person-name {
-          font-size: 8.2px !important;
-          font-weight: bold;
-        }
-
-        .person-role {
-          font-size: 5.5px !important;
-          margin: 0.5px 0;
-        }
-
-        .person-role2 {
-          font-size: 4.5px !important;
-          margin-top: 0;
-        }
-      }
-
-      /* 필터 버튼 스타일 */
-      .filters {
-        display: flex;
-        flex-wrap: nowrap;
-        justify-content: center;
-        gap: 5px;
-        margin: 20px 0;
-        width: 100%;
-        padding: 0 10px;
-        box-sizing: border-box;
-      }
-
-      .filter-btn {
-        padding: 8px 12px;
-        border: 2px solid #8b0000;
-        background: none;
-        color: #8b0000;
-        cursor: pointer;
-        border-radius: 5px;
-        flex: 1 1 auto;
-        min-width: 65px;
-        white-space: nowrap;
-        font-size: 14px;
-        transition: all 0.3s ease;
-        text-overflow: ellipsis;
-        overflow: hidden;
-      }
-
-      .filter-btn:hover {
-        background: #8b0000;
-        color: white;
-      }
-
-      .filter-btn.active {
-        background: #8b0000;
-        color: white;
-      }
-
-      /* 섹션별 스타일 */
-      #군부 {
-        background: rgba(38, 50, 56, 0.05);
-        border-radius: 15px;
-        padding: 20px;
-      }
-
-      #대통령실 {
-        background: rgba(19, 41, 75, 0.05);
-        border-radius: 15px;
-        padding: 20px;
-      }
-
-      #정치인 {
-        background: rgba(211, 47, 47, 0.05);
-        border-radius: 15px;
-        padding: 20px;
-        margin: 0 auto;
-        width: 100%;
-        box-sizing: border-box;
-        overflow: hidden;
-      }
-
-      #경찰 {
-        background: rgba(211, 47, 47, 0.05);
-        border-radius: 15px;
-        padding: 20px;
-      }
-
-      #기타·극우미디어 {
-        background: rgba(244, 67, 54, 0.05);
-        border-radius: 15px;
-        padding: 20px;
-      }
-
-      /* 인물 카드 레이아웃 스타일 */
-      .people-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        padding: 5px;
-        gap: 3px;
-        box-sizing: border-box;
-      }
-
-      .row {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        width: 100%;
-        gap: 3px;
-        margin-bottom: 5px;
-      }
-
-      .person-container {
-        position: relative;
-        width: calc((100% - 21px) / 8) !important;
-        flex: 0 0 calc((100% - 21px) / 8) !important;
-        margin: 0;
-        padding: 1px;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-
-      .person-container:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      }
-
-      .person-container img {
-        width: 100%;
-        aspect-ratio: 3/4;
-        object-fit: cover;
-        border-radius: 4px;
-        margin-bottom: 2px !important;
-      }
-
-      .person-name {
-        font-size: 15px;
-        font-weight: bold;
-        margin: 5px 0 3px 0;
-        width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        color: #000;
-      }
-
-      .person-role {
-        font-size: 12px;
-        color: #333;
-        margin: 2px 0;
-        width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        font-weight: 500;
-      }
-
-      .person-role2 {
-        font-size: 11px;
-        color: #666;
-        margin-top: 1px;
-        width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      /* 계엄해제 불참자 그룹 스타일 */
-      .martial-law-group {
-        border: 3px solid #ff4444;
-        padding: 30px;
-        margin: 30px 0;
-        position: relative;
-      }
-
-      .martial-law-group::before {
-        content: '계엄해제 불참자';
-        position: absolute;
-        top: -12px;
-        left: 30px;
-        background-color: white;
-        padding: 0 15px;
-        color: #ff4444;
-        font-weight: bold;
-        font-size: 16px;
-      }
-
-      /* 계엄해제 동의자 그룹 스타일 */
-      .martial-law-agree-group {
-        border: 3px solid #1d481d;
-        padding: 30px;
-        margin: 30px 0;
-        position: relative;
-      }
-
-      .martial-law-agree-group::before {
-        content: '계엄해제 동의자';
-        position: absolute;
-        top: -12px;
-        left: 30px;
-        background-color: white;
-        padding: 0 15px;
-        color: #1d481d;
-        font-weight: bold;
-        font-size: 16px;
-      }
-
-      @media screen and (max-width: 768px) {
-        .martial-law-group::before,
-        .martial-law-agree-group::before {
-          font-size: 12px;
-          padding: 0 8px;
-          top: -8px;
-          left: 15px;
-        }
-
-        .martial-law-group,
-        .martial-law-agree-group {
-          padding: 20px;
-          margin: 20px 0;
-          border-width: 2px;
-        }
-      }
-
-      @media screen and (max-width: 480px) {
-        .martial-law-group::before,
-        .martial-law-agree-group::before {
-          font-size: 10px;
-          padding: 0 6px;
-          top: -7px;
-          left: 10px;
-        }
-
-        .martial-law-group,
-        .martial-law-agree-group {
-          padding: 15px;
-          margin: 15px 0;
-        }
-      }
-
-      /* 관리자 목록 스타일 */
-      .admin-list {
-        margin: 20px 0;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-      }
-
-      .admin-list h3 {
-        margin-bottom: 10px;
-        color: #8b0000;
-      }
-
-      .admin-list-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-        margin: 5px 0;
-        background-color: #f9f9f9;
-        border-radius: 3px;
-      }
-
-      .admin-list-item span {
-        margin-right: 10px;
-      }
-
-      .button-container {
-        display: flex;
-        gap: 10px;
-      }
-
-      .button-container button {
-        padding: 5px 10px;
-        border: none;
-        border-radius: 3px;
-        cursor: pointer;
-      }
-
-      .button-container button:first-child {
-        background-color: #4caf50;
-        color: white;
-      }
-
-      .button-container button:last-child {
-        background-color: #f44336;
-        color: white;
-      }
-
-      .empty-message {
-        text-align: center;
-        color: #666;
-        padding: 20px;
-        font-style: italic;
-      }
-
-      /* 하단 컨트롤 스타일 */
-      .bottom-controls {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        display: flex;
-        flex-direction: row;
-        gap: 15px;
-        z-index: 1000;
-        align-items: center;
-      }
-
-      .search-container {
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 25px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-        transition: all 0.3s ease;
-        width: 200px;
-        overflow: hidden;
-        position: relative;
-      }
-
-      .search-container:focus-within {
-        width: 250px;
-        box-shadow: 0 4px 20px rgba(139, 0, 0, 0.2);
-      }
-
-      #searchInput {
-        width: 100%;
-        padding: 12px 20px;
-        border: 2px solid transparent;
-        border-radius: 25px;
-        font-size: 14px;
-        outline: none;
-        transition: all 0.3s ease;
-        background: transparent;
-      }
-
-      #searchInput:focus {
-        border-color: #8b0000;
-      }
-
-      .scroll-top-btn {
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        background: #8b0000;
-        color: white;
-        border: none;
-        cursor: pointer;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .scroll-top-btn:hover {
-        background: #6b0000;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(139, 0, 0, 0.25);
-      }
-
-      .scroll-top-btn::before {
-        content: '↑';
-        font-size: 20px;
-        font-weight: bold;
-      }
-
-      /* 모바일 최적화 */
-      @media screen and (max-width: 768px) {
-        .bottom-controls {
-          bottom: 20px;
-          right: 20px;
-          gap: 10px;
-        }
-
-        .search-container {
-          width: 160px;
-        }
-
-        .search-container:focus-within {
-          width: 200px;
-        }
-
-        #searchInput {
-          padding: 10px 15px;
-          font-size: 13px;
-        }
-
-        .scroll-top-btn {
-          width: 40px;
-          height: 40px;
-        }
-
-        .scroll-top-btn::before {
-          font-size: 18px;
-        }
-      }
-
-      /* 모달 창 */
-      .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        z-index: 2000;
-      }
-
-      .modal-content {
-        position: relative;
-        background-color: #fefefe;
-        margin: 5% auto;
-        padding: 20px;
-        width: 80%;
-        max-width: 800px;
-        border-radius: 15px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      }
-
-      .modal-header {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 2px solid #8b0000;
-      }
-
-      .modal-header img {
-        width: 100px;
-        height: 100px;
-        object-fit: cover;
-        border-radius: 50%;
-        margin-right: 20px;
-      }
-
-      .modal-header-info h2 {
-        margin: 0;
-        color: #8b0000;
-      }
-
-      .modal-header-info p {
-        margin: 5px 0;
-        color: #666;
-      }
-
-      .modal-body {
-        margin-bottom: 20px;
-      }
-
-      .modal-body textarea {
-        width: 100%;
-        min-height: 200px;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        resize: vertical;
-        font-family: inherit;
-      }
-
-      .modal-footer {
-        text-align: right;
-        padding: 10px;
-      }
-
-      .admin-btn,
-      .edit-btn,
-      .save-btn {
-        padding: 5px 15px;
-        background-color: #dc3545;
-        color: white;
-        border: none;
-        border-radius: 3px;
-        cursor: pointer;
-        margin-left: 10px;
-      }
-
-      .admin-btn:hover,
-      .edit-btn:hover,
-      .save-btn:hover {
-        background-color: #c82333;
-      }
-
-      .modal-actions {
-        margin-top: 20px;
-        position: relative;
-        min-height: 100px;
-      }
-
-      #modalActionsView {
-        padding: 10px;
-        background-color: #f8f9fa;
-        border-radius: 3px;
-        min-height: 50px;
-      }
-
-      #modalActions {
-        width: 100%;
-        min-height: 150px;
-        padding: 10px;
-        margin-bottom: 40px;
-      }
-
-      .modal-close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        font-size: 24px;
-        cursor: pointer;
-        color: #8b0000;
-      }
-
-      .save-btn {
-        background-color: #8b0000;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-      }
-
-      .save-btn:hover {
-        background-color: #6b0000;
-      }
-
-      .admin-btn {
-        background-color: #8b0000;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-      }
-
-      .admin-btn:hover {
-        background-color: #6b0000;
-      }
-
-      .pending-message {
-        font-size: 14px;
-        color: #666;
-        margin: 10px 0;
-      }
-
-      .actions-text {
-        font-size: 14px;
-        color: #333;
-        margin: 10px 0;
-      }
-
-      /* 공지사항 팝업 스타일 */
-      .notice-modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        z-index: 3000;
-      }
-
-      .notice-content {
-        position: relative;
-        background-color: #fefefe;
-        margin: 10% auto;
-        padding: 30px;
-        width: 80%;
-        max-width: 600px;
-        border-radius: 15px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      }
-
-      .notice-title {
-        color: #8b0000;
-        font-size: 24px;
-        margin-bottom: 20px;
-      }
-
-      .notice-text {
-        font-size: 13px;
-        line-height: 1.6;
-        margin-bottom: 20px;
-        white-space: pre-line;
-      }
-
-      .notice-close {
-        background-color: #8b0000;
-        color: white;
-        border: none;
-        padding: 10px 30px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.3s;
-      }
-
-      .notice-close:hover {
-        background-color: #6b0000;
-      }
-
-      /* 모바일 화면에서 링크 텍스트 크기 조절 */
-      @media screen and (max-width: 768px) {
-        .notice-text a {
-          font-size: 0.9em;
-        }
-      }
-
-      /* 로딩 스피너 스타일 */
-      .loading-spinner {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        border: 3px solid #f3f3f3;
-        border-top: 3px solid #3498db;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin-right: 10px;
-      }
-
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-
-      /* 로딩 오버레이 스타일 */
-      .loading-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(255, 255, 255, 0.8);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-      }
-
-      /* 관리자 승인 관리 모달 스타일 */
-      .admin-tabs {
-        margin-bottom: 20px;
-        border-bottom: 1px solid #ddd;
-      }
-
-      .tab-btn {
-        background: none;
-        border: none;
-        padding: 10px 20px;
-        cursor: pointer;
-        font-size: 14px;
-        margin-right: 10px;
-      }
-
-      .tab-btn.active {
-        border-bottom: 2px solid #8b0000;
-        color: #8b0000;
-      }
-
-      .tab-content {
-        margin-top: 20px;
-      }
-
-      .admin-item {
-        padding: 10px;
-        border: 1px solid #ddd;
-        margin-bottom: 10px;
-        border-radius: 4px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .admin-item .info {
-        flex-grow: 1;
-      }
-
-      .admin-item .actions {
-        display: flex;
-        gap: 10px;
-      }
-
-      .approve-btn,
-      .reject-btn,
-      .remove-btn {
-        padding: 5px 10px;
-        border: none;
-        border-radius: 3px;
-        cursor: pointer;
-        font-size: 12px;
-      }
-
-      .approve-btn {
-        background-color: #4caf50;
-        color: white;
-      }
-
-      .reject-btn,
-      .remove-btn {
-        background-color: #f44336;
-        color: white;
-      }
-
-      /* 탭 스타일 */
-      .tab {
-        overflow: hidden;
-        border: 1px solid #ccc;
-        background-color: #f1f1f1;
-        margin-bottom: 20px;
-      }
-
-      .tab button {
-        background-color: inherit;
-        float: left;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        padding: 14px 16px;
-        transition: 0.3s;
-        font-size: 16px;
-      }
-
-      .tab button:hover {
-        background-color: #ddd;
-      }
-
-      .tab button.active {
-        background-color: #8b0000;
-        color: white;
-      }
-
-      .tabcontent {
-        display: none;
-        padding: 6px 12px;
-        border: 1px solid #ccc;
-        border-top: none;
-      }
-
-      .tabcontent.active {
-        display: block;
-      }
-
-      /* 관리자 목록 스타일 */
-      .admin-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-        border-bottom: 1px solid #eee;
-      }
-
-      .admin-item:last-child {
-        border-bottom: none;
-      }
-
-      .admin-info {
-        flex-grow: 1;
-      }
-
-      .admin-actions {
-        display: flex;
-        gap: 10px;
-      }
-
-      .approve-btn,
-      .reject-btn {
-        padding: 5px 10px;
-        border: none;
-        border-radius: 3px;
-        cursor: pointer;
-      }
-
-      .approve-btn {
-        background-color: #4caf50;
-        color: white;
-      }
-
-      .reject-btn {
-        background-color: #f44336;
-        color: white;
-      }
-    </style>
+    <link rel="stylesheet" href="assets/css/index.css" />
   </head>
   <body onload="onload()">
     <div class="container">
@@ -1561,11 +276,35 @@
     <div id="noticeModal" class="notice-modal">
       <div class="notice-content">
         <h2 class="notice-title">공지사항</h2>
-        <div class="notice-text">        
-          ❗1. 백엔드 개발자분들을 찾고 있습니다. 연락 부탁드립니다. 
-          ❗2. 인물들의 행적을 함께 조사해주실 국민여러분들을 찾습니다. 
-          🌟<ahref="mailto:criminalyoon@gmail.com" style="color: #0066cc; text-decoration: underline">criminalyoon@gmail.com</a>🌟 
-          🌟<a href="https://open.kakao.com/o/g6m4OK6g" style="color: #0066cc; text-decoration: underline">https://open.kakao.com/o/g6m4OK6g</a>🌟 
+        <div class="notice-text">
+          <div class="event-summary">
+            <p class="text">
+              무안공항 참사 유가족들께 깊은 위로와 애도를 전하며, 슬픔을 함께하고 계실 국민 여러분께도 진심 어린 위로를
+              전합니다.
+            </p>
+            <p class="admin-info">-CriminalYoon 운영진</p>
+          </div>
+          <ol class="notice-list">
+            <li>백엔드 개발자분들을 찾고 있습니다. 연락 부탁드립니다.</li>
+            <li>
+              '자유와 정의를 실천하는 교수들의 모임' 123명에 대해 조사 중입니다.<br />사진 누락 인물 제보 부탁드립니다.
+            </li>
+            <li>인물들의 행적을 함께 조사해주실 국민여러분들을 찾습니다.</li>
+            <li>누락된 범죄자들 제보해주시면 업데이트 시키겠습니다.</li>
+            <li>
+              사이트 공유로 많은 분들께 내란범죄자들을 기억시켜주세요.<br />
+              🌟<a href="mailto:criminalyoon@gmail.com" style="color: #0066cc; text-decoration: underline"
+                >criminalyoon@gmail.com</a
+              >🌟 <br />
+              🌟<a href="https://open.kakao.com/o/g6m4OK6g" style="color: #0066cc; text-decoration: underline"
+                >https://open.kakao.com/o/g6m4OK6g</a
+              >🌟
+            </li>
+          </ol>
+          <p>
+            모바일용 디자인 개발중입니다.<br />
+            인물 클릭 시 행적을 볼 수 있습니다.
+          </p>
         </div>
         <button class="notice-close" onclick="closeNotice()">확인</button>
       </div>
@@ -1705,7 +444,6 @@
         { name: '정성욱', role1: '내란가담자', role2: '정보사대령', group: '군부', row: 4 },
         { name: '고동희', role1: '내란가담자', role2: '정보사대령', group: '군부', row: 4 },
         { name: '김용대', role1: '내란가담자', role2: '드론사령관', group: '군부', row: 4 },
-
 
         { name: '김현태', role1: '내란가담자(?)', role2: '707특임단장', group: '군부', row: 5 },
         { name: '김세운', role1: '부화내동자', role2: '작전항공단장', group: '군부', row: 5 },
@@ -1875,27 +613,81 @@
 
         { name: '이종배B', role1: '내란선전선동자', role2: '서울비례대표', group: '내란의힘', row: 4 },
         { name: '문성호', role1: '내란선전선동자', role2: '서울서대문2구:연희,홍제1‧2동', group: '내란의힘', row: 4 },
-        { name: '이성배', role1: '내란선전선동자', role2: '서울송파4구:삼전,잠실본‧2‧3‧7동', group: '내란의힘',row: 4,},
+        {
+          name: '이성배',
+          role1: '내란선전선동자',
+          role2: '서울송파4구:삼전,잠실본‧2‧3‧7동',
+          group: '내란의힘',
+          row: 4,
+        },
         { name: '이경숙', role1: '내란선전선동자', role2: '서울도봉구1구:창1‧4‧5동', group: '내란의힘', row: 4 },
         { name: '김규남', role1: '내란선전선동자', role2: '서울송파1구:풍납1‧2,잠실4‧6동', group: '내란의힘', row: 4 },
-        { name: '황철규', role1: '내란선전선동자', role2: '서울성동4구:응봉,성수1가1‧2,성수2가1‧3동', group: '내란의힘', row: 4,},
+        {
+          name: '황철규',
+          role1: '내란선전선동자',
+          role2: '서울성동4구:응봉,성수1가1‧2,성수2가1‧3동',
+          group: '내란의힘',
+          row: 4,
+        },
         { name: '이희원', role1: '내란선전선동자', role2: '서울동작4구:흑석,사당1‧2동', group: '내란의힘', row: 4 },
         { name: '송경택', role1: '내란선전선동자', role2: '서울비례대표', group: '내란의힘', row: 4 },
         { name: '박석', role1: '내란선전선동자', role2: '서울도봉3구:쌍문2‧4,방학3동', group: '내란의힘', row: 4 },
         { name: '김혜영', role1: '내란선전선동자', role2: '서울광진4구:자양3‧4,화양동', group: '내란의힘', row: 4 },
-        { name: '강석주', role1: '내란선전선동자', role2: '서울강서2구:화곡3,가양1‧2,방화3동', group: '내란의힘', row: 4 },
-        { name: '유만희', role1: '내란선전선동자', role2: '서울강남4구:일원본‧1,개포3,수서,세곡동', group: '내란의힘', row: 4 },
+        {
+          name: '강석주',
+          role1: '내란선전선동자',
+          role2: '서울강서2구:화곡3,가양1‧2,방화3동',
+          group: '내란의힘',
+          row: 4,
+        },
+        {
+          name: '유만희',
+          role1: '내란선전선동자',
+          role2: '서울강남4구:일원본‧1,개포3,수서,세곡동',
+          group: '내란의힘',
+          row: 4,
+        },
         { name: '김혜지', role1: '내란선전선동자', role2: '서울강동1구:고덕1,암사1‧2‧3동', group: '내란의힘', row: 4 },
         { name: '이승복', role1: '내란선전선동자', role2: '서울양천4구:신월2‧6,신정3‧4동)', group: '내란의힘', row: 4 },
-        { name: '남궁역', role1: '내란선전선동자', role2: '서울동대문3구:전농1‧2,답십리1동', group: '내란의힘', row: 4 },
-        { name: '신복자', role1: '내란선전선동자', role2: '서울동대문4구:답십리2,장안1‧2동', group: '내란의힘', row: 4 },
+        {
+          name: '남궁역',
+          role1: '내란선전선동자',
+          role2: '서울동대문3구:전농1‧2,답십리1동',
+          group: '내란의힘',
+          row: 4,
+        },
+        {
+          name: '신복자',
+          role1: '내란선전선동자',
+          role2: '서울동대문4구:답십리2,장안1‧2동',
+          group: '내란의힘',
+          row: 4,
+        },
         { name: '신동원', role1: '내란선전선동자', role2: '서울노원1구:월계1‧2‧3동', group: '내란의힘', row: 4 },
         { name: '황유정', role1: '내란선전선동자', role2: '서울비례대표', group: '내란의힘', row: 4 },
-        { name: '김영철', role1: '내란선전선동자', role2: '서울강동5구:성내1‧2‧3,둔촌1동‧2동', group: '내란의힘', row: 4 },
-        { name: '박춘선', role1: '내란선전선동자', role2: '서울강동3구:강일,상일1‧2,고덕2동', group: '내란의힘', row: 4 },
+        {
+          name: '김영철',
+          role1: '내란선전선동자',
+          role2: '서울강동5구:성내1‧2‧3,둔촌1동‧2동',
+          group: '내란의힘',
+          row: 4,
+        },
+        {
+          name: '박춘선',
+          role1: '내란선전선동자',
+          role2: '서울강동3구:강일,상일1‧2,고덕2동',
+          group: '내란의힘',
+          row: 4,
+        },
         { name: '고광민', role1: '내란선전선동자', role2: '서울서초3구:서초1‧3,방배2‧3동', group: '내란의힘', row: 4 },
         { name: '김원중', role1: '내란선전선동자', role2: '서울성북2구:정릉1‧2‧3‧4,길음동', group: '내란의힘', row: 4 },
-        { name: '김춘곤', role1: '내란선전선동자', role2: '서울강서4구:등촌3,가양1‧2,방화3동', group: '내란의힘', row: 4 },
+        {
+          name: '김춘곤',
+          role1: '내란선전선동자',
+          role2: '서울강서4구:등촌3,가양1‧2,방화3동',
+          group: '내란의힘',
+          row: 4,
+        },
         { name: '서호연', role1: '내란선전선동자', role2: '서울구로3구:신도림,구로1‧2‧5동', group: '내란의힘', row: 4 },
         { name: '강창석', role1: '내란선전선동자', role2: '창원라구:반송,용지동', group: '내란의힘', row: 5 },
         { name: '구점득', role1: '내란선전선동자', role2: '창원나구:팔룡,의창동', group: '내란의힘', row: 5 },
@@ -1905,24 +697,78 @@
         { name: '김수혜', role1: '내란선전선동자', role2: '창원비례대표', group: '내란의힘', row: 5 },
         { name: '김영록', role1: '내란선전선동자', role2: '창원사구:가음정,성주동', group: '내란의힘', row: 5 },
         { name: '김우진', role1: '내란선전선동자', role2: '창원가구:동읍,대산,북면', group: '내란의힘', row: 5 },
-        { name: '김이근', role1: '내란선전선동자', role2: '창원아구:구산,진동,진북,진전면,현동,가포동', group: '내란의힘', row: 5 },
+        {
+          name: '김이근',
+          role1: '내란선전선동자',
+          role2: '창원아구:구산,진동,진북,진전면,현동,가포동',
+          group: '내란의힘',
+          row: 5,
+        },
         { name: '김혜란', role1: '내란선전선동자', role2: '창원나구:팔룡,의창동', group: '내란의힘', row: 5 },
         { name: '남재욱', role1: '내란선전선동자', role2: '창원카구:내서읍', group: '내란의힘', row: 5 },
         { name: '박강우', role1: '내란선전선동자', role2: '창원비례대표', group: '내란의힘', row: 5 },
-        { name: '박선애', role1: '내란선전선동자', role2: '창원차구:월영,문화,반월중앙,완월동', group: '내란의힘', row: 5 },
-        { name: '박승엽', role1: '내란선전선동자', role2: '창원파구:양덕1‧2,합성2,구암1‧2,봉암동', group: '내란의힘', row: 5 },
-        { name: '서영권', role1: '내란선전선동자', role2: '창원자구:자산,교방,오동,합포,산호동', group: '내란의힘', row: 5 },
+        {
+          name: '박선애',
+          role1: '내란선전선동자',
+          role2: '창원차구:월영,문화,반월중앙,완월동',
+          group: '내란의힘',
+          row: 5,
+        },
+        {
+          name: '박승엽',
+          role1: '내란선전선동자',
+          role2: '창원파구:양덕1‧2,합성2,구암1‧2,봉암동',
+          group: '내란의힘',
+          row: 5,
+        },
+        {
+          name: '서영권',
+          role1: '내란선전선동자',
+          role2: '창원자구:자산,교방,오동,합포,산호동',
+          group: '내란의힘',
+          row: 5,
+        },
         { name: '성보빈', role1: '내란선전선동자', role2: '창원바구:상남,사파동', group: '내란의힘', row: 5 },
-        { name: '손태화', role1: '내란선전선동자', role2: '창원파구:양덕1‧2,합성2,구암1‧2,봉암동', group: '내란의힘', row: 5 },
+        {
+          name: '손태화',
+          role1: '내란선전선동자',
+          role2: '창원파구:양덕1‧2,합성2,구암1‧2,봉암동',
+          group: '내란의힘',
+          row: 5,
+        },
         { name: '안상우', role1: '내란선전선동자', role2: '창원다구:봉림,명곡동', group: '내란의힘', row: 5 },
         { name: '이정희', role1: '내란선전선동자', role2: '창원마구:중앙,웅남동', group: '내란의힘', row: 5 },
-        { name: '이천수', role1: '내란선전선동자', role2: '창원아구:구산,진동,진북,진전면,현동,가포동', group: '내란의힘', row: 5 },
+        {
+          name: '이천수',
+          role1: '내란선전선동자',
+          role2: '창원아구:구산,진동,진북,진전면,현동,가포동',
+          group: '내란의힘',
+          row: 5,
+        },
         { name: '이혜련', role1: '내란선전선동자', role2: '창원하구:충무,여좌,태백동', group: '내란의힘', row: 5 },
-        { name: '정길상', role1: '내란선전선동자', role2: '창원차구:월영,문화,반월중앙,완월동', group: '내란의힘', row: 5 },
+        {
+          name: '정길상',
+          role1: '내란선전선동자',
+          role2: '창원차구:월영,문화,반월중앙,완월동',
+          group: '내란의힘',
+          row: 5,
+        },
         { name: '최정훈', role1: '내란선전선동자', role2: '창원너구:이동,자은,덕산,풍호동', group: '내란의힘', row: 5 },
         { name: '한상석', role1: '내란선전선동자', role2: '창원더구:웅천,웅동1‧2동', group: '내란의힘', row: 5 },
-        { name: '홍용채', role1: '내란선전선동자', role2: '창원자구:자산,교방,오동,합포,산호동', group: '내란의힘', row: 5 },
-        { name: '황점복', role1: '내란선전선동자', role2: '창원타구:회원1‧2,석전,회성,합성1동', group: '내란의힘', row: 5 },
+        {
+          name: '홍용채',
+          role1: '내란선전선동자',
+          role2: '창원자구:자산,교방,오동,합포,산호동',
+          group: '내란의힘',
+          row: 5,
+        },
+        {
+          name: '황점복',
+          role1: '내란선전선동자',
+          role2: '창원타구:회원1‧2,석전,회성,합성1동',
+          group: '내란의힘',
+          row: 5,
+        },
 
         { name: '선주헌', role1: '내란선전선동자', role2: '영월나구', group: '내란의힘', row: 6 },
         { name: '황교안', role1: '내란선전선동자', role2: '유튜버', group: '내란의힘', row: 6 },
@@ -2109,7 +955,6 @@
         { name: '무명1', role1: '내란선전선동자', role2: '???', group: '기타·극우미디어', row: 6 },
         { name: '무명2', role1: '내란선전선동자', role2: '???', group: '기타·극우미디어', row: 6 },
         { name: '무명3', role1: '내란선전선동자', role2: '???', group: '기타·극우미디어', row: 6 },
-
       ]; // 여기를 수정
 
       // 이미지 캐시를 위한 맵
