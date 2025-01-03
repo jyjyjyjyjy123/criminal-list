@@ -1048,6 +1048,15 @@ h1 {
   font-size: 14px;
   color: #333;
   margin: 10px 0;
+  white-space: pre-wrap;
+}
+.actions-text a {
+  color: #8b0000;
+  text-decoration: none;
+}
+.actions-text a:hover {
+  color: #ff69b4;
+  text-decoration: underline;
 }
 
 /* 공지사항 팝업 스타일 */
